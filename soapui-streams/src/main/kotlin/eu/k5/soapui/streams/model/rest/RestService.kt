@@ -8,18 +8,33 @@ import javax.xml.bind.annotation.XmlElement
 @XmlAccessorType(XmlAccessType.NONE)
 class RestService(
     @XmlAttribute
-    override var name: String? = null,
+    override var name: String? = null
+) : SuuRestService {
+    override fun createResource(name: String, path: String): SuuResource {
+        val resource = Resource()
+        resource.name = name
+        resource.path = path
+        return resource
+    }
+
+
     @XmlElement
     override var description: String? = null
-
-) : SuuRestService {
+    @XmlElement
+    override var basePath: String? = null
 
     @XmlElement(name = "resource")
-    private val resources = ArrayList<Resource>()
+    override val resources = ArrayList<Resource>()
 
     override fun addResource(resource: SuuResource) {
         resources.add(resource as Resource)
     }
+
+    override fun getResource(name: String): SuuResource? {
+        return resources.first { it.name == name }
+    }
+
+
 
     override fun toString(): String {
         return "$name $resources"

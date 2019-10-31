@@ -14,13 +14,19 @@ data class Resource(
     override var path: String? = null
 ) : SuuResource {
 
+    @XmlElement
+    override var description: String? = null
+
+
+    override fun getChildResource(name: String): SuuResource? = resources.find { it.name == name }
+
 
     override val parameters: MutableList<RestParameter> = ArrayList()
 
     @XmlElement(name = "resource")
-    private val resources = ArrayList<Resource>()
+    override val resources = ArrayList<Resource>()
     @XmlElement
-    private val methods = ArrayList<RestMethod>()
+    override val methods = ArrayList<RestMethod>()
 
     override fun addResource(resource: SuuResource) {
         resources.add(resource as Resource)
@@ -30,4 +36,13 @@ data class Resource(
         methods.add(suuRestMethod as RestMethod)
     }
 
+    override fun getMethod(name: String): SuuRestMethod? {
+        return methods.first { it.name == name }
+    }
+
+    override fun createMethod(name: String): SuuRestMethod {
+        val method = RestMethod(name = name)
+        methods.add(method)
+        return method
+    }
 }

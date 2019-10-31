@@ -4,42 +4,41 @@ import eu.k5.soapui.streams.model.rest.SuuResource
 import eu.k5.soapui.streams.model.rest.SuuRestMethod
 import eu.k5.soapui.streams.model.rest.SuuRestRequest
 import eu.k5.soapui.streams.model.rest.SuuRestService
-import eu.k5.soapui.visitor.listener.Environment
 
 interface SuuRestServiceListener {
 
-    fun enter(env: Environment, restService: SuuRestService)
-    fun exit()
+    fun enter(restService: SuuRestService)
+    fun exit(restService: SuuRestService)
 
-    fun enterResource(env: Environment, resource: SuuResource)
-    fun exitResource()
+    fun enterResource(suuResource: SuuResource)
+    fun exitResource(suuResource: SuuResource)
 
-    fun enterMethod(env: Environment, suuRestMethod: SuuRestMethod)
-    fun exitMethod()
+    fun enterMethod(suuRestMethod: SuuRestMethod)
+    fun exitMethod(suuRestMethod: SuuRestMethod)
 
-    fun handleRequest(env: Environment, suuRestRequest: SuuRestRequest)
+    fun handleRequest(suuRestRequest: SuuRestRequest)
 
     companion object {
         val NO_OP = object : SuuRestServiceListener {
-            override fun handleRequest(env: Environment, suuRestRequest: SuuRestRequest) {
+            override fun handleRequest(suuRestRequest: SuuRestRequest) {
             }
 
-            override fun enterMethod(env: Environment, directMethod: SuuRestMethod) {
+            override fun enterMethod(directMethod: SuuRestMethod) {
             }
 
-            override fun exitMethod() {
+            override fun exitMethod(suuRestMethod: SuuRestMethod) {
             }
 
-            override fun exit() {
+            override fun exit(restService: SuuRestService) {
             }
 
-            override fun exitResource() {
+            override fun exitResource(suuResource: SuuResource) {
             }
 
-            override fun enterResource(env: Environment, resource: SuuResource) {
+            override fun enterResource(suuResource: SuuResource) {
             }
 
-            override fun enter(env: Environment, resource: SuuRestService) {
+            override fun enter(resource: SuuRestService) {
             }
 
         }

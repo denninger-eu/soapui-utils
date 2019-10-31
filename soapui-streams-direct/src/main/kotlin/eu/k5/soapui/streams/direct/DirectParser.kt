@@ -36,17 +36,18 @@ class DirectParser(
     }
 
     private fun parseRestService(restService: RestService, listener: SuuRestServiceListener) {
-        listener.enter(env, RestServiceDirect(restService))
+        val directRestService = RestServiceDirect(restService)
+        listener.enter(directRestService)
         for (resource in restService.resourceList) {
             parseResource(resource, listener)
         }
-        listener.exit()
+        listener.exit(directRestService)
     }
 
     private fun parseResource(resource: RestResource, listener: SuuRestServiceListener) {
         val directResource = ResourceDirect(resource)
         directResource.parameters.addAll(parseParameters(resource.params))
-        listener.enterResource(env, directResource)
+        listener.enterResource(directResource)
 
         for (method in resource.restMethodList) {
             parseMethod(method, listener)
@@ -56,21 +57,21 @@ class DirectParser(
             parseResource(childResource, listener)
         }
 
-        listener.exitResource()
+        listener.exitResource(directResource)
     }
 
     private fun parseMethod(method: RestMethod, listener: SuuRestServiceListener) {
         val directMethod = RestMethodDirect(method)
         directMethod.parameters.addAll(parseParameters(method.params))
-        listener.enterMethod(env, directMethod)
+        listener.enterMethod(directMethod)
 
         for (request in method.requestList) {
             val directRequest = RestRequestDirect(request)
             val requestHeaders = request.requestHeaders
 
-            listener.handleRequest(env, directRequest)
+            listener.handleRequest(directRequest)
         }
-        listener.exitMethod()
+        listener.exitMethod(directMethod)
     }
 
     private fun parseParameters(input: Map<String, TestProperty>): List<RestParameter> {

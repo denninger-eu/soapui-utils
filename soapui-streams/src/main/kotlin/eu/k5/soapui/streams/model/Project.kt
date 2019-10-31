@@ -13,15 +13,20 @@ data class Project(
     override var name: String = ""
 ) : SuProject {
 
+
     @XmlElement
-    val restServices = ArrayList<RestService>()
+    override val restServices: MutableList<RestService> = ArrayList()
 
     override fun addRestService(restService: SuuRestService) {
         restServices.add(restService as RestService)
     }
 
-
     override fun toString(): String {
         return name + " " + restServices.toString()
     }
+
+    override fun createRestService(name: String): SuuRestService {
+        return RestService(name)
+    }
+
 }

@@ -17,7 +17,6 @@ class DirectLoader : Loader {
     override fun bind(inputStream: InputStream): SuProject {
         val project = WsdlProject(inputStream, null)
 
-        val context = JAXBContext.newInstance(Project::class.java)
         val parser = DirectParser(project, Environment())
 
         val listener = DirectBindListener()
@@ -25,10 +24,8 @@ class DirectLoader : Loader {
 
         println(listener.project)
 
+        println(toXml(listener.project!!))
 
-        val writer = StringWriter()
-        context.createMarshaller().marshal(listener.project, writer)
-        println(writer)
         return ProjectDirect(project)
     }
 
@@ -43,4 +40,13 @@ class DirectLoader : Loader {
     override fun stream(inputStream: InputStream, handler: SuListener) {
     }
 
+    companion object {
+        val CONTEXT = JAXBContext.newInstance(Project::class.java)
+
+        fun toXml(project: Project): String {
+            val writer = StringWriter()
+            CONTEXT.createMarshaller().marshal(project, writer)
+            return writer.toString()
+        }
+    }
 }

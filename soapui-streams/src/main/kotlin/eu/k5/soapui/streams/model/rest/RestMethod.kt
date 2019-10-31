@@ -15,13 +15,18 @@ class RestMethod(
     override var method: SuuRestMethod.HttpMethod? = null
 ) : SuuRestMethod {
 
-    @XmlElement
-    private val requests = ArrayList<RestRequest>()
+    override val parameters: MutableList<RestParameter> = ArrayList()
+
+    @XmlElement(name = "request")
+    override val requests = ArrayList<RestRequest>()
 
     override fun addRequest(request: SuuRestRequest) {
         requests.add(request as RestRequest)
     }
 
-    override val parameters: MutableList<RestParameter> = ArrayList()
+    override fun getRequest(name: String): SuuRestRequest? = requests.first { it.name == name }
 
+    override fun createRequest(name: String): SuuRestRequest {
+        return RestRequest(name)
+    }
 }

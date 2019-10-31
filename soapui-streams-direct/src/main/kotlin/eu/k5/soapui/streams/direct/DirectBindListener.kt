@@ -1,6 +1,5 @@
 package eu.k5.soapui.streams.direct
 
-import com.eviware.soapui.impl.rest.RestRequest
 import eu.k5.soapui.streams.listener.resource.SuuRestServiceListener
 import eu.k5.soapui.streams.model.Project
 import eu.k5.soapui.streams.model.SuProject
@@ -18,7 +17,7 @@ class DirectBindListener : SuListener {
         project = Project(name = suProject.name)
     }
 
-    override fun exitProject() {
+    override fun exitProject(suuProject: SuProject) {
     }
 
 
@@ -48,17 +47,19 @@ class DirectBindRestServiceListener(
 
     private var currentMethod: RestMethod? = null
 
-    override fun enter(env: Environment, suuRestService: SuuRestService) {
-        restService = RestService(suuRestService.name, suuRestService.description)
+    override fun enter(suuRestService: SuuRestService) {
+        restService = RestService(suuRestService.name)
 
+        restService!!.description = suuRestService.description
+        restService!!.basePath = suuRestService.basePath
     }
 
-    override fun exit() {
+    override fun exit(suuRestService: SuuRestService) {
         project.addRestService(restService!!)
     }
 
 
-    override fun enterResource(env: Environment, suuResource: SuuResource) {
+    override fun enterResource(suuResource: SuuResource) {
         LOGGER.info("enterResource {} {}", suuResource.path, suuResource.name)
         val resource = Resource(suuResource.name, suuResource.path)
 
@@ -70,7 +71,7 @@ class DirectBindRestServiceListener(
         currentResource = resource
     }
 
-    override fun exitResource() {
+    override fun exitResource(suuResource: SuuResource) {
         val resource = currentResource!!
         if (resources.isEmpty()) {
             restService!!.addResource(resource)
@@ -82,18 +83,18 @@ class DirectBindRestServiceListener(
     }
 
 
-    override fun enterMethod(env: Environment, suuRestMethod: SuuRestMethod) {
+    override fun enterMethod(suuRestMethod: SuuRestMethod) {
         val method = RestMethod(suuRestMethod.name, suuRestMethod.description, suuRestMethod.method)
         method.parameters.addAll(suuRestMethod.parameters.map { it.copy() })
         currentMethod = method
     }
 
-    override fun exitMethod() {
+    override fun exitMethod(suuRestMethod: SuuRestMethod) {
         currentResource?.addMethod(currentMethod!!)
     }
 
 
-    override fun handleRequest(env: Environment, suuRestRequest: SuuRestRequest) {
+    override fun handleRequest(suuRestRequest: SuuRestRequest) {
         val request = RestRequest(suuRestRequest.name, suuRestRequest.description)
         request.parameters.addAll(suuRestRequest.parameters.map { it.copy() })
         currentMethod?.addRequest(request)

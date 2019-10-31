@@ -6,8 +6,13 @@ interface SuuRestMethod {
     var name: String?
     var description: String?
     var method: HttpMethod?
+    val requests: List<SuuRestRequest>
 
     fun addRequest(request: SuuRestRequest)
+
+    fun getRequest(name: String): SuuRestRequest?
+
+    fun createRequest(name: String): SuuRestRequest
 
     enum class HttpMethod {
         GET, POST, PUT, DELETE, HEAD, PATCH, OPTIONS, TRACE,

@@ -23,6 +23,17 @@ class RestMethodDirect(
     override var method: SuuRestMethod.HttpMethod? =
         map(restMethod.method)
 
+    override val requests: List<SuuRestRequest>
+        get() = restMethod.requestList.map { RestRequestDirect(it) }
+
+    override fun getRequest(name: String): SuuRestRequest? {
+        return requests.first{ it.name == name}
+    }
+
+    override fun createRequest(name: String): SuuRestRequest {
+        TODO("implement")
+    }
+
     companion object {
         private fun map(method: RestRequestInterface.HttpMethod): SuuRestMethod.HttpMethod {
             return SuuRestMethod.HttpMethod.valueOf(method.name)
