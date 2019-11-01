@@ -1,6 +1,5 @@
-package eu.k5.soapui.streams.direct
+package eu.k5.soapui.streams.listener.resource
 
-import eu.k5.soapui.streams.listener.resource.SuuRestServiceListener
 import eu.k5.soapui.streams.model.Project
 import eu.k5.soapui.streams.model.SuProject
 import eu.k5.soapui.streams.model.rest.*
@@ -36,68 +35,60 @@ class DirectBindListener : SuListener {
 }
 
 class DirectBindRestServiceListener(
-    private val project: SuProject
+    private val project: Project
 ) : SuuRestServiceListener {
 
 
     private var restService: RestService? = null
 
-    private val resources: Deque<Resource?> = ArrayDeque()
-    private var currentResource: Resource? = null
+    private val restResources: Deque<RestResource> = ArrayDeque()
 
     private var currentMethod: RestMethod? = null
 
     override fun enter(suuRestService: SuuRestService) {
-        restService = RestService(suuRestService.name)
-
+        restService = project.createRestService(suuRestService.name!!)
         restService!!.description = suuRestService.description
         restService!!.basePath = suuRestService.basePath
     }
 
     override fun exit(suuRestService: SuuRestService) {
-        project.addRestService(restService!!)
     }
 
 
     override fun enterResource(suuResource: SuuResource) {
         LOGGER.info("enterResource {} {}", suuResource.path, suuResource.name)
-        val resource = Resource(suuResource.name, suuResource.path)
+
+        val resource =
+            if (!restResources.isEmpty()) {
+                restResources.peek().createChildResource(suuResource.name!!, suuResource.path!!)
+            } else {
+                restService!!.createResource(suuResource.name!!, suuResource.path!!)
+            }
 
         resource.parameters.addAll(suuResource.parameters.map { it.copy() })
 
-        if (currentResource != null) {
-            resources.push(currentResource)
-        }
-        currentResource = resource
+        restResources.push(resource)
     }
 
     override fun exitResource(suuResource: SuuResource) {
-        val resource = currentResource!!
-        if (resources.isEmpty()) {
-            restService!!.addResource(resource)
-            currentResource = null
-        } else {
-            currentResource = resources.pop()
-            currentResource!!.addResource(resource)
-        }
     }
 
-
     override fun enterMethod(suuRestMethod: SuuRestMethod) {
-        val method = RestMethod(suuRestMethod.name, suuRestMethod.description, suuRestMethod.method)
+        val method = restResources.peek().createMethod(suuRestMethod.name!!)
+        method.description = suuRestMethod.description
+        method.method = suuRestMethod.method
         method.parameters.addAll(suuRestMethod.parameters.map { it.copy() })
         currentMethod = method
     }
 
     override fun exitMethod(suuRestMethod: SuuRestMethod) {
-        currentResource?.addMethod(currentMethod!!)
     }
 
 
     override fun handleRequest(suuRestRequest: SuuRestRequest) {
-        val request = RestRequest(suuRestRequest.name, suuRestRequest.description)
+        val request = currentMethod!!.createRequest(suuRestRequest.name!!)
+        request.description = suuRestRequest.description
         request.parameters.addAll(suuRestRequest.parameters.map { it.copy() })
-        currentMethod?.addRequest(request)
     }
 
 

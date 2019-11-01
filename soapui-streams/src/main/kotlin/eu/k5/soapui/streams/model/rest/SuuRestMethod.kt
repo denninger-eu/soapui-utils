@@ -8,7 +8,6 @@ interface SuuRestMethod {
     var method: HttpMethod?
     val requests: List<SuuRestRequest>
 
-    fun addRequest(request: SuuRestRequest)
 
     fun getRequest(name: String): SuuRestRequest?
 

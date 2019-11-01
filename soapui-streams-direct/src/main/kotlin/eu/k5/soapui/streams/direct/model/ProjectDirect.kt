@@ -10,16 +10,13 @@ class ProjectDirect(
     private val wsdlProject: WsdlProject
 ) : SuProject {
 
-
-    override fun addRestService(restService: SuuRestService) = throw UnsupportedOperationException()
-
     override var name: String = wsdlProject.name
-
 
     override val restServices: List<SuuRestService>
         get() = wsdlProject.interfaceList.filterIsInstance<RestService>().map { RestServiceDirect(it) }
 
     override fun createRestService(name: String): SuuRestService {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val newRestService = wsdlProject.addNewInterface(name, "RestService") as RestService
+        return RestServiceDirect(newRestService)
     }
 }

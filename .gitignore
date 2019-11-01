@@ -1,0 +1,5 @@
+/bin/
+*/target/*
+/soapui-streams-direct/global-groovy.log
+/soapui-streams-direct/soapui.log
+/soapui-streams-direct/soapui-errors.log

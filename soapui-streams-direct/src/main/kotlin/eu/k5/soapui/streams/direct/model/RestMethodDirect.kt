@@ -18,8 +18,6 @@ class RestMethodDirect(
     override val parameters: MutableList<RestParameter> = ArrayList()
 
 
-    override fun addRequest(request: SuuRestRequest) = throw UnsupportedOperationException()
-
     override var method: SuuRestMethod.HttpMethod? =
         map(restMethod.method)
 
@@ -27,11 +25,12 @@ class RestMethodDirect(
         get() = restMethod.requestList.map { RestRequestDirect(it) }
 
     override fun getRequest(name: String): SuuRestRequest? {
-        return requests.first{ it.name == name}
+        return requests.first { it.name == name }
     }
 
     override fun createRequest(name: String): SuuRestRequest {
-        TODO("implement")
+        val request = restMethod.addNewRequest(name)
+        return RestRequestDirect(request)
     }
 
     companion object {

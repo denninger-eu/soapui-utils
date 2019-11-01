@@ -1,7 +1,6 @@
 package eu.k5.soapui.streams.direct.model
 
 import com.eviware.soapui.impl.rest.RestService
-import eu.k5.soapui.streams.model.rest.Resource
 import eu.k5.soapui.streams.model.rest.SuuResource
 import eu.k5.soapui.streams.model.rest.SuuRestService
 import java.lang.UnsupportedOperationException
@@ -17,7 +16,6 @@ class RestServiceDirect(
 
     override var basePath: String? = restService.basePath
 
-    override fun addResource(resource: SuuResource) = throw UnsupportedOperationException()
 
     override fun getResource(name: String): SuuResource? {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.

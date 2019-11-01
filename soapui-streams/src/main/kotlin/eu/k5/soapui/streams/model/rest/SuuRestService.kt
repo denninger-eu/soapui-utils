@@ -7,7 +7,7 @@ interface SuuRestService {
     var description: String?
     var basePath: String?
     val resources: List<SuuResource>
-    fun addResource(resource: SuuResource)
+
     fun getResource(name: String): SuuResource?
 
     fun createResource(name: String, path: String): SuuResource

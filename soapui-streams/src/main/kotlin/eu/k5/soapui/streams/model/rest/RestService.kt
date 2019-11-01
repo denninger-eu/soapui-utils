@@ -10,12 +10,6 @@ class RestService(
     @XmlAttribute
     override var name: String? = null
 ) : SuuRestService {
-    override fun createResource(name: String, path: String): SuuResource {
-        val resource = Resource()
-        resource.name = name
-        resource.path = path
-        return resource
-    }
 
 
     @XmlElement
@@ -24,17 +18,20 @@ class RestService(
     override var basePath: String? = null
 
     @XmlElement(name = "resource")
-    override val resources = ArrayList<Resource>()
+    override val resources = ArrayList<RestResource>()
 
-    override fun addResource(resource: SuuResource) {
-        resources.add(resource as Resource)
-    }
 
     override fun getResource(name: String): SuuResource? {
         return resources.first { it.name == name }
     }
 
-
+    override fun createResource(name: String, path: String): RestResource {
+        val resource = RestResource()
+        resource.name = name
+        resource.path = path
+        resources.add(resource)
+        return resource
+    }
 
     override fun toString(): String {
         return "$name $resources"

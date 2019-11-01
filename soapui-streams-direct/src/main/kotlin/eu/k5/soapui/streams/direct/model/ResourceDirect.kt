@@ -11,15 +11,13 @@ class ResourceDirect(
 ) : SuuResource {
 
 
+
     override var name: String? = resource.name
     override var path: String? = resource.path
     override var description: String? = resource.description
 
     override val parameters: MutableList<RestParameter> = ArrayList()
 
-    override fun addResource(resource: SuuResource) = throw UnsupportedOperationException()
-
-    override fun addMethod(currentMethod: SuuRestMethod) = throw UnsupportedOperationException()
 
 
     override val methods: List<SuuRestMethod>
@@ -42,5 +40,11 @@ class ResourceDirect(
         val method = resource.addNewMethod(name)
         return RestMethodDirect(method)
     }
+
+    override fun createChildResource(name: String, path: String): SuuResource {
+        val childResource = resource.addNewChildResource(name, path)
+        return ResourceDirect(childResource)
+    }
+
 
 }

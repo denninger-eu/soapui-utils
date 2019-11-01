@@ -3,6 +3,7 @@ package eu.k5.soapui.streams.direct
 import com.eviware.soapui.impl.wsdl.WsdlProject
 import eu.k5.soapui.streams.Loader
 import eu.k5.soapui.streams.direct.model.ProjectDirect
+import eu.k5.soapui.streams.listener.resource.DirectBindListener
 import eu.k5.soapui.streams.model.Project
 import eu.k5.soapui.streams.model.SuProject
 import eu.k5.soapui.visitor.listener.Environment
@@ -24,7 +25,7 @@ class DirectLoader : Loader {
 
         println(listener.project)
 
-        println(toXml(listener.project!!))
+        println(listener.project!!.toXml())
 
         return ProjectDirect(project)
     }
@@ -40,13 +41,5 @@ class DirectLoader : Loader {
     override fun stream(inputStream: InputStream, handler: SuListener) {
     }
 
-    companion object {
-        val CONTEXT = JAXBContext.newInstance(Project::class.java)
 
-        fun toXml(project: Project): String {
-            val writer = StringWriter()
-            CONTEXT.createMarshaller().marshal(project, writer)
-            return writer.toString()
-        }
-    }
 }

@@ -1,7 +1,6 @@
-package eu.k5.soapui.streams.direct
+package eu.k5.soapui.streams.listener.resource
 
 import eu.k5.soapui.streams.apply
-import eu.k5.soapui.streams.listener.resource.SuuRestServiceListener
 import eu.k5.soapui.streams.model.SuProject
 import eu.k5.soapui.streams.model.rest.SuuResource
 import eu.k5.soapui.streams.model.rest.SuuRestMethod
@@ -30,10 +29,9 @@ class DirectSyncListener(
         val missingRestServices = ArrayList(referenceProject.restServices)
         suuProject.restServices.forEach { found -> missingRestServices.removeIf { it.name == found.name } }
 
+        val copyListener = CopyListener(suuProject).createResourceListener()
         for (missingRestService in missingRestServices) {
-            val newRestService = suuProject.createRestService(missingRestService.name!!)
-            missingRestService.apply(CopyRestServiceListener(newRestService))
-            suuProject.addRestService(newRestService)
+            missingRestService.apply(copyListener)
         }
     }
 
@@ -42,7 +40,11 @@ class DirectSyncListener(
     }
 
     override fun createResourceListener(): SuuRestServiceListener {
-        return DirectSyncResourceListener(environment!!, referenceProject, targetProject!!)
+        return DirectSyncResourceListener(
+            environment!!,
+            referenceProject,
+            targetProject!!
+        )
     }
 
     override fun createTestSuiteListener(): SuTestSuiteListener? {
@@ -136,22 +138,43 @@ class DirectSyncResourceListener(
 }
 
 class CopyListener(
-    val suuRestService: SuuRestService
-) {
+    val suuProject: SuProject
+) : SuListener {
+    override fun enterProject(env: Environment, project: SuProject) {
+    }
+
+    override fun exitProject(suuProject: SuProject) {
+    }
+
+    override fun createWsdlInterfaceListener(): SuWsdlInterfaceListener? {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun createResourceListener(): SuuRestServiceListener {
+        return CopyRestServiceListener(suuProject)
+    }
+
+    override fun createTestSuiteListener(): SuTestSuiteListener? {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
 }
 
 class CopyRestServiceListener(
-    private val target: SuuRestService
+    private val target: SuProject
 ) : SuuRestServiceListener {
+
+    private var targetRestService: SuuRestService? = null
 
     private val targetResources: Deque<SuuResource> = ArrayDeque()
 
     private var targetMethod: SuuRestMethod? = null
 
     override fun enter(restService: SuuRestService) {
-        target.description = restService.description
-        target.basePath = restService.basePath
+        val newRestService = target.createRestService(restService.name!!)
+        newRestService.description = restService.description
+        newRestService.basePath = restService.basePath
+        targetRestService = newRestService
     }
 
     override fun exit(restService: SuuRestService) {
@@ -159,10 +182,12 @@ class CopyRestServiceListener(
     }
 
     override fun enterResource(suuResource: SuuResource) {
-        val newResource = target.createResource(suuResource.name!!, suuResource.path!!)
+        val newResource = if (targetResources.isEmpty()) {
+            targetRestService!!.createResource(suuResource.name!!, suuResource.path!!)
+        } else {
+            targetResources.peek().createChildResource(suuResource.name!!, suuResource.path!!)
+        }
         newResource.description = suuResource.description
-        target.addResource(newResource)
-
         targetResources.push(newResource)
     }
 
@@ -174,14 +199,16 @@ class CopyRestServiceListener(
         val newMethod = targetResources.peek().createMethod(suuRestMethod.name!!)
         newMethod.description = suuRestMethod.description
         newMethod.method = suuRestMethod.method
-
-
+        targetMethod = newMethod
     }
 
     override fun exitMethod(suuRestMethod: SuuRestMethod) {
     }
 
     override fun handleRequest(suuRestRequest: SuuRestRequest) {
+        val newRequest = targetMethod!!.createRequest(suuRestRequest.name!!)
+        newRequest.description = suuRestRequest.description
+
     }
 
 }
