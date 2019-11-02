@@ -1,3 +1,4 @@
+/*
 package eu.k5.soapui.streams.listener.resource
 
 import eu.k5.soapui.streams.model.Project
@@ -35,7 +36,7 @@ class DirectBindListener : SuListener {
 }
 
 class DirectBindRestServiceListener(
-    private val project: Project
+    val project: Project
 ) : SuuRestServiceListener {
 
 
@@ -66,7 +67,7 @@ class DirectBindRestServiceListener(
             }
 
         resource.parameters.addAll(suuResource.parameters.map { it.copy() })
-
+        resource.description = suuResource.description
         restResources.push(resource)
     }
 
@@ -95,4 +96,4 @@ class DirectBindRestServiceListener(
     companion object {
         private val LOGGER = LoggerFactory.getLogger(DirectBindRestServiceListener::class.java)
     }
-}
+}*/

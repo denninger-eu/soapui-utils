@@ -8,7 +8,7 @@ interface SuProject {
 
     val restServices: List<SuuRestService>
 
-    fun getRestService(name: String): SuuRestService? = restServices.first { it.name == name }
+    fun getRestService(name: String): SuuRestService? = restServices.firstOrNull { it.name == name }
 
     fun createRestService(name: String): SuuRestService
 

@@ -73,6 +73,71 @@ class DirectLoaderTest {
     }
 
     @Test
+    fun `sync Resource into RestService`() {
+        val target = getTestProject("RestServiceOnly").use { DirectLoader().bind(it) } as Project
+
+        getTestProject("RestServiceWithResourceOnly").use {
+            val source = DirectLoader().bind(it)
+
+            val listener = DirectSyncListener(source)
+            target.apply(listener)
+
+            val restService = target.getRestService("RestServiceName")
+
+            assertNotNull(restService, "Rest service should have been created")
+            assertFalse(restService.resources.isEmpty())
+
+            val resource = restService.resources[0]
+
+            println("target " + target.toXml())
+
+            assertEquals("resourceDescription", resource.description)
+            assertEquals("resourcePath", resource.path)
+            assertEquals("resourceName", resource.name)
+
+
+        }
+    }
+
+    @Test
+    fun `sync Method into Resource`() {
+        val target = testProject("RestServiceWithResourceOnly")
+        val source = testProject("RestServiceWithMethodOnly")
+
+        target.apply(DirectSyncListener(source))
+        val restService = target.getRestService("RestServiceName")
+
+        assertNotNull(restService, "Rest service should have been created")
+        assertFalse(restService.resources.isEmpty())
+        assertFalse(restService.resources[0].methods.isEmpty(), "Method should have been created")
+
+        val method = restService.resources[0].methods[0]
+        assertEquals("methodDescription", method.description)
+        assertEquals("methodName", method.name)
+        assertEquals(SuuRestMethod.HttpMethod.GET, method.method)
+
+    }
+
+    @Test
+    fun `sync ChildResource into Resource`() {
+        val target = testProject("RestServiceWithResourceOnly")
+        val source = testProject("RestServiceWithChildResource")
+
+        target.apply(DirectSyncListener(source))
+        val restService = target.getRestService("RestServiceName")
+
+        assertNotNull(restService, "Rest service should have been created")
+        assertFalse(restService.resources.isEmpty())
+        assertFalse(restService.resources[0].resources.isEmpty(), "No child resource found")
+        val resource = restService.resources[0].resources[0]
+        println(" target " + target.toXml())
+
+        assertEquals("childResourceDescription", resource.description)
+        assertEquals("childResourcePath", resource.path)
+        assertEquals("childResourceName", resource.name)
+    }
+
+    @Test
     fun `sync ChildResource`() {
         getTestProject("RestServiceWithChildResource").use {
             val source = DirectLoader().bind(it)
@@ -120,6 +185,7 @@ class DirectLoaderTest {
         }
     }
 
+
     @Test
     fun `sync Request`() {
         getTestProject("RestServiceWithRequest").use {
@@ -145,7 +211,54 @@ class DirectLoaderTest {
         }
     }
 
+    @Test
+    fun `sync Request into Method`() {
+
+        val source = testProject("RestServiceWithRequest")
+        val target = testProject("RestServiceWithMethodOnly")
+
+        target.apply(DirectSyncListener(source))
+        val restService = target.getRestService("RestServiceName")
+
+        assertNotNull(restService, "Rest service should have been created")
+        assertFalse(restService.resources.isEmpty())
+        assertFalse(restService.resources[0].methods.isEmpty())
+        assertFalse(restService.resources[0].methods[0].requests.isEmpty())
+
+        val request = restService.resources[0].methods[0].requests[0]
+        assertEquals("requestDescription", request.description)
+        assertEquals("requestName", request.name)
+    }
+
+    @Test
+    fun `sync Change`() {
+
+        val source = testProject("RestServiceWithRequestChanged")
+        val target = testProject("RestServiceWithRequest")
+
+        target.apply(DirectSyncListener(source))
+        val restService = target.getRestService("RestServiceName")
+
+        assertNotNull(restService, "Rest service should have been created")
+        assertFalse(restService.resources.isEmpty())
+        assertFalse(restService.resources[0].methods.isEmpty())
+        assertFalse(restService.resources[0].methods[0].requests.isEmpty())
+
+        val request = restService.resources[0].methods[0].requests[0]
+        assertEquals("requestDescriptionChanged", request.description)
+        assertEquals("requestName", request.name)
+
+        assertEquals("DescriptionValueChanged", restService.description)
+        assertEquals("resourceDescriptionChanged", restService.resources[0].description)
+
+    }
+
+
     companion object {
+
+        fun testProject(name: String): Project {
+            return getTestProject(name).use { DirectLoader().bind(it) } as Project
+        }
 
         fun getTestProject(name: String): InputStream {
             val path = Paths.get("src", "test", "resources", "testcases", "$name-soapui-project.xml")

@@ -10,6 +10,8 @@
     <packaging>pom</packaging>
     <modules>
         <module>soapui-plugin</module>
+        <module>soapui-streams</module>
+        <module>soapui-streams-direct</module>
 
     </modules>
 
@@ -55,6 +57,7 @@
             </repository>
         </repositories>-->
     <dependencies>
+
 
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -113,6 +116,17 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>eu.k5.soapui</groupId>
+                <artifactId>soapui-streams</artifactId>
+                <version>0.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>eu.k5.soapui</groupId>
+                <artifactId>soapui-streams-direct</artifactId>
+                <version>0.1-SNAPSHOT</version>
+            </dependency>
 
             <dependency>
                 <groupId>com.google.guava</groupId>

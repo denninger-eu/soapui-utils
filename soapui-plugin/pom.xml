@@ -14,7 +14,6 @@
     </parent>
 
 
-
     <profiles>
         <profile>
             <id>standalone</id>
@@ -39,6 +38,14 @@
                                         </transformer>
                                     </transformers>
 
+                                    <artifactSet>
+                                        <excludes>
+                                            <exclude>com.smartbear.soapui:*</exclude>
+                                            <exclude>org.jetbrains.kotlin:*</exclude>
+                                            <exclude>com.google.guava:*</exclude>
+                                        </excludes>
+                                    </artifactSet>
+
 
                                     <!--artifactSet>
                                         <excludes>
@@ -50,11 +57,12 @@
                                             <pattern>org.fife</pattern>
                                             <shadedPattern>shaded.fife</shadedPattern>
                                         </relocation>
+                                        <!--
                                         <relocation>
                                             <pattern>org.slf4j</pattern>
                                             <shadedPattern>shaded.slf4j</shadedPattern>
                                         </relocation>
-
+-->
                                     </relocations>
 
                                 </configuration>
@@ -73,21 +81,22 @@
         <dependency>
             <groupId>com.smartbear.soapui</groupId>
             <artifactId>soapui</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.fifesoft</groupId>
-            <artifactId>rsyntaxtextarea</artifactId>
-            <version>2.5.8</version>
+            <scope>provided</scope>
         </dependency>
 
 
         <dependency>
-            <groupId>org.xmlunit</groupId>
-            <artifactId>xmlunit-core</artifactId>
-            <version>2.5.1</version>
-            <scope>test</scope>
+            <artifactId>soapui-streams-direct</artifactId>
+            <groupId>eu.k5.soapui</groupId>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.smartbear.soapui</groupId>
+                    <artifactId>soapui</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
+
+
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
@@ -106,8 +115,5 @@
 
     </dependencies>
 
-    <properties>
-        <dropwizard.version>1.2.2</dropwizard.version>
-    </properties>
 
 </project>

@@ -24,9 +24,6 @@ class RestMethodDirect(
     override val requests: List<SuuRestRequest>
         get() = restMethod.requestList.map { RestRequestDirect(it) }
 
-    override fun getRequest(name: String): SuuRestRequest? {
-        return requests.first { it.name == name }
-    }
 
     override fun createRequest(name: String): SuuRestRequest {
         val request = restMethod.addNewRequest(name)

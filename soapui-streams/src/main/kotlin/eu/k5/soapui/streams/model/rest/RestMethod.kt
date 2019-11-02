@@ -20,7 +20,7 @@ class RestMethod(
     @XmlElement(name = "request")
     override val requests = ArrayList<RestRequest>()
 
-    override fun getRequest(name: String): SuuRestRequest? = requests.first { it.name == name }
+    override fun getRequest(name: String): SuuRestRequest? = requests.firstOrNull{ it.name == name }
 
     override fun createRequest(name: String): SuuRestRequest {
         val request = RestRequest(name)

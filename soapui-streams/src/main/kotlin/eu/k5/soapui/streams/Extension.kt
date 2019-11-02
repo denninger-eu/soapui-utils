@@ -9,12 +9,13 @@ import eu.k5.soapui.streams.model.rest.SuuRestService
 import eu.k5.soapui.visitor.listener.Environment
 import eu.k5.soapui.visitor.listener.SuListener
 
-fun SuProject.apply(listener: SuListener) {
+fun SuProject.apply(listener: SuListener): SuProject {
     listener.enterProject(Environment(), this)
     for (restService in this.restServices) {
         restService.apply(listener.createResourceListener())
     }
     listener.exitProject(this)
+    return this
 }
 
 fun SuuRestService.apply(listener: SuuRestServiceListener) {

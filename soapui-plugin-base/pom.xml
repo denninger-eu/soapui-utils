@@ -13,6 +13,7 @@
         <version>0.1-SNAPSHOT</version>
     </parent>
 
+
     <profiles>
         <profile>
             <id>standalone</id>
@@ -44,10 +45,10 @@
                                         </excludes>
                                     </-artifactSet -->
                                     <relocations>
-                       <!--                 <relocation>
-                                            <pattern>org.fife</pattern>
-                                            <shadedPattern>shaded.fife</shadedPattern>
-                                        </relocation>-->
+                                        <!--                 <relocation>
+                                                             <pattern>org.fife</pattern>
+                                                             <shadedPattern>shaded.fife</shadedPattern>
+                                                         </relocation>-->
                                         <relocation>
                                             <pattern>org.slf4j</pattern>
                                             <shadedPattern>shaded.slf4j</shadedPattern>
@@ -73,34 +74,16 @@
             <artifactId>soapui</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>com.fifesoft</groupId>
-            <artifactId>rsyntaxtextarea</artifactId>
-            <version>2.5.8</version>
-        </dependency>
 
 
+<!--
         <dependency>
             <groupId>org.xmlunit</groupId>
             <artifactId>xmlunit-core</artifactId>
             <version>2.5.1</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-core</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <!-- dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.6.1</version>
-        </dependency -->
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-slf4j-impl</artifactId>
-            <scope>provided</scope>
-        </dependency>
+-->
 
     </dependencies>
 

@@ -9,7 +9,7 @@ interface SuuRestMethod {
     val requests: List<SuuRestRequest>
 
 
-    fun getRequest(name: String): SuuRestRequest?
+    fun getRequest(name: String): SuuRestRequest? = requests.firstOrNull { it.name == name }
 
     fun createRequest(name: String): SuuRestRequest
 
