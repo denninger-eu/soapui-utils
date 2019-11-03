@@ -2,10 +2,9 @@ package eu.k5.soapui.streams.direct.model
 
 import com.eviware.soapui.impl.rest.RestMethod
 import com.eviware.soapui.impl.rest.RestRequestInterface
-import eu.k5.soapui.streams.model.rest.RestParameter
+import eu.k5.soapui.streams.jaxb.rest.RestParameter
 import eu.k5.soapui.streams.model.rest.SuuRestMethod
 import eu.k5.soapui.streams.model.rest.SuuRestRequest
-import java.lang.UnsupportedOperationException
 
 
 class RestMethodDirect(

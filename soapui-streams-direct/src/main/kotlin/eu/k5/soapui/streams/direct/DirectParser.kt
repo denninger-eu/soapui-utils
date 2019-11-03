@@ -1,3 +1,4 @@
+/*
 package eu.k5.soapui.streams.direct
 
 import com.eviware.soapui.impl.rest.RestMethod
@@ -9,7 +10,7 @@ import com.eviware.soapui.impl.wsdl.WsdlProject
 import com.eviware.soapui.model.testsuite.TestProperty
 import eu.k5.soapui.streams.direct.model.*
 import eu.k5.soapui.streams.listener.resource.SuuRestServiceListener
-import eu.k5.soapui.streams.model.rest.RestParameter
+import eu.k5.soapui.streams.jaxb.rest.RestParameter
 import eu.k5.soapui.visitor.listener.Environment
 import eu.k5.soapui.visitor.listener.SuListener
 import org.slf4j.LoggerFactory
@@ -92,4 +93,4 @@ class DirectParser(
         val LOGGER = LoggerFactory.getLogger(DirectParser::class.java)
     }
 
-}
+}*/

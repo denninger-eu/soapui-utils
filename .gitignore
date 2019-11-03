@@ -1,6 +1,6 @@
 /bin/
-*/target/*
-global-groovy.log
-soapui.log
-soapui-errors.log
-dependency-reduced-pom.xml
+target/
+**/global-groovy.log
+**/soapui.log
+**/soapui-errors.log
+**/dependency-reduced-pom.xml

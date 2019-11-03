@@ -17,10 +17,6 @@ class RestServiceDirect(
     override var basePath: String? = restService.basePath
 
 
-    override fun getResource(name: String): SuuResource? {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
     override fun createResource(name: String, path: String): SuuResource {
         val newResource = restService.addNewResource(name, path)
         return ResourceDirect(newResource)

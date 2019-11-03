@@ -1,7 +1,7 @@
-package eu.k5.soapui.streams.model
+package eu.k5.soapui.streams.jaxb
 
-import eu.k5.soapui.streams.model.rest.RestService
-import eu.k5.soapui.streams.model.rest.SuuRestService
+import eu.k5.soapui.streams.model.SuProject
+import eu.k5.soapui.streams.jaxb.rest.RestService
 import java.io.StringWriter
 import javax.xml.bind.JAXBContext
 import javax.xml.bind.annotation.XmlAccessType
@@ -14,6 +14,10 @@ import javax.xml.bind.annotation.XmlRootElement
 data class Project(
     override var name: String = ""
 ) : SuProject {
+
+
+    @XmlElement
+    override var description: String? = null
 
 
     @XmlElement
@@ -31,7 +35,7 @@ data class Project(
     }
 
     fun toXml(): String {
-        return Companion.toXml(this)
+        return toXml(this)
     }
 
     companion object {

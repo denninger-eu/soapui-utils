@@ -1,5 +1,7 @@
 package eu.k5.soapui.streams.model.rest
 
+import eu.k5.soapui.streams.jaxb.rest.RestParameter
+
 interface SuuResource {
 
     var name: String?
@@ -10,9 +12,9 @@ interface SuuResource {
     val resources: List<SuuResource>
 
 
-    fun getChildResource(name: String): SuuResource?
+    fun getChildResource(name: String): SuuResource? = resources.find { it.name == name }
 
-    fun getMethod(name: String): SuuRestMethod?
+    fun getMethod(name: String): SuuRestMethod? = methods.first { it.name == name }
 
     fun createMethod(name: String): SuuRestMethod
 

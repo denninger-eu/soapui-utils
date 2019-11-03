@@ -1,5 +1,7 @@
-package eu.k5.soapui.streams.model.rest
+package eu.k5.soapui.streams.jaxb.rest
 
+import eu.k5.soapui.streams.model.rest.SuuRestMethod
+import eu.k5.soapui.streams.model.rest.SuuRestRequest
 import javax.xml.bind.annotation.XmlAccessType
 import javax.xml.bind.annotation.XmlAccessorType
 import javax.xml.bind.annotation.XmlAttribute
@@ -20,7 +22,6 @@ class RestMethod(
     @XmlElement(name = "request")
     override val requests = ArrayList<RestRequest>()
 
-    override fun getRequest(name: String): SuuRestRequest? = requests.firstOrNull{ it.name == name }
 
     override fun createRequest(name: String): SuuRestRequest {
         val request = RestRequest(name)

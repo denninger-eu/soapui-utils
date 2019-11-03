@@ -1,5 +1,6 @@
-package eu.k5.soapui.streams.model.rest
+package eu.k5.soapui.streams.jaxb.rest
 
+import eu.k5.soapui.streams.model.rest.SuuResource
 import javax.xml.bind.annotation.XmlAccessType
 import javax.xml.bind.annotation.XmlAccessorType
 import javax.xml.bind.annotation.XmlAttribute
@@ -18,21 +19,14 @@ data class RestResource(
     @XmlElement
     override var description: String? = null
 
-
-    override fun getChildResource(name: String): SuuResource? = resources.find { it.name == name }
-
-
-    override val parameters: MutableList<RestParameter> = ArrayList()
-
     @XmlElement(name = "resource")
     override val resources = ArrayList<RestResource>()
     @XmlElement
     override val methods = ArrayList<RestMethod>()
 
 
-    override fun getMethod(name: String): SuuRestMethod? {
-        return methods.first { it.name == name }
-    }
+    override val parameters: MutableList<RestParameter> = ArrayList()
+
 
     override fun createMethod(name: String): RestMethod {
         val method = RestMethod(name = name)

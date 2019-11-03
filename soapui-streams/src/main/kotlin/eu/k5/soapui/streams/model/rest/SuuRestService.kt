@@ -8,7 +8,7 @@ interface SuuRestService {
     var basePath: String?
     val resources: List<SuuResource>
 
-    fun getResource(name: String): SuuResource?
+    fun getResource(name: String): SuuResource? = resources.firstOrNull { it.name == name }
 
     fun createResource(name: String, path: String): SuuResource
 }

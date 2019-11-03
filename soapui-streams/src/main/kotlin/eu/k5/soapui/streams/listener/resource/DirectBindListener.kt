@@ -1,7 +1,7 @@
 /*
 package eu.k5.soapui.streams.listener.resource
 
-import eu.k5.soapui.streams.model.Project
+import eu.k5.soapui.streams.jaxb.Project
 import eu.k5.soapui.streams.model.SuProject
 import eu.k5.soapui.streams.model.rest.*
 import eu.k5.soapui.streams.model.rest.SuuResource

@@ -1,10 +1,9 @@
 package eu.k5.soapui.streams.direct.model
 
 import com.eviware.soapui.impl.rest.RestResource
-import eu.k5.soapui.streams.model.rest.RestParameter
+import eu.k5.soapui.streams.jaxb.rest.RestParameter
 import eu.k5.soapui.streams.model.rest.SuuResource
 import eu.k5.soapui.streams.model.rest.SuuRestMethod
-import java.lang.UnsupportedOperationException
 
 class ResourceDirect(
     private val resource: RestResource
