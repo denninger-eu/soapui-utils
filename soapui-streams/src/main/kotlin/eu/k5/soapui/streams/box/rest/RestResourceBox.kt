@@ -1,40 +1,84 @@
 package eu.k5.soapui.streams.box.rest
 
 import eu.k5.soapui.streams.box.Box
+import eu.k5.soapui.streams.jaxb.rest.RestMethod
 import eu.k5.soapui.streams.jaxb.rest.RestParameter
+import eu.k5.soapui.streams.jaxb.rest.RestResource
 import eu.k5.soapui.streams.model.rest.SuuResource
 import eu.k5.soapui.streams.model.rest.SuuRestMethod
 
 class RestResourceBox(
     private val box: Box
 ) : SuuResource {
-    private val resource: RestResourceYaml
-        get() = box.load(RestResourceYaml::class.java)
 
-    override var name: String? = resource.name
-    override var description: String? = resource.description
-    override var path: String? = resource.path
+    private val resource by lazy { box.load(RestResourceYaml::class.java) }
+
+    override var name: String?
+        get() = resource.name
+        set(value) {
+            resource.name = name
+            store()
+        }
+    override var description: String?
+        get() = resource.description
+        set(value) {
+            resource.description = value
+            store()
+        }
+    override var path: String?
+        get() = resource.path
+        set(value) {
+            resource.path = value
+            store()
+        }
 
 
     override val parameters: MutableList<RestParameter>
         get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
-    override val methods: List<SuuRestMethod>
-        get() = box.findFolderBox { it.fileName.toString() == "method.box.yaml" }.map { RestMethodBox(it) }
-    override val resources: List<SuuResource>
-        get() = box.findFolderBox { it.fileName.toString() == "resource.box.yaml" }.map { RestResourceBox(it) }
+
+    override val methods by lazy {
+        box.findSubFolderBox { it.fileName.toString() == RestMethodBox.FILE_NAME }
+            .map { RestMethodBox(it) }
+            .toMutableList()
+    }
+    override val resources by lazy {
+        box.findSubFolderBox { it.fileName.toString() == FILE_NAME }
+            .map { RestResourceBox(it) }
+            .toMutableList()
+    }
 
     override fun createMethod(name: String): SuuRestMethod {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val init = methods
+        val newRestMethod = RestMethodBox.create(box, name)
+        init.add(newRestMethod)
+        return newRestMethod
     }
 
     override fun createChildResource(name: String, path: String): SuuResource {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return RestResource()
     }
 
+    private fun store() {
+        box.write(RestResourceYaml::class.java, resource)
+    }
 
     class RestResourceYaml {
         var name: String? = null
         var description: String? = null
         var path: String? = null
+    }
+
+    companion object {
+        const val FILE_NAME = "resource.box.yaml"
+
+        fun create(parent: Box, name: String, path: String): RestResourceBox {
+            val folder = parent.createFolder(name, FILE_NAME)
+            val newResource = RestResourceYaml()
+            newResource.name = name
+            newResource.path = path
+            folder.write(RestResourceYaml::class.java, newResource)
+            return RestResourceBox(folder)
+        }
+
     }
 }

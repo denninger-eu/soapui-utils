@@ -7,7 +7,7 @@ interface SuuRestMethod {
     val parameters: MutableList<RestParameter>
     var name: String?
     var description: String?
-    var method: HttpMethod?
+    var httpMethod: HttpMethod?
     val requests: List<SuuRestRequest>
 
 

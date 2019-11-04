@@ -114,7 +114,7 @@ class DirectLoaderTest {
         val method = restService.resources[0].methods[0]
         assertEquals("methodDescription", method.description)
         assertEquals("methodName", method.name)
-        assertEquals(SuuRestMethod.HttpMethod.GET, method.method)
+        assertEquals(SuuRestMethod.HttpMethod.GET, method.httpMethod)
 
     }
 
@@ -181,7 +181,7 @@ class DirectLoaderTest {
             val method = restService.resources[0].methods[0]
             assertEquals("methodDescription", method.description)
             assertEquals("methodName", method.name)
-            assertEquals(SuuRestMethod.HttpMethod.GET, method.method)
+            assertEquals(SuuRestMethod.HttpMethod.GET, method.httpMethod)
         }
     }
 

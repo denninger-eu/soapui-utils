@@ -1,27 +1,48 @@
 package eu.k5.soapui.streams.box.rest
 
 import eu.k5.soapui.streams.box.Box
-import eu.k5.soapui.streams.box.ProjectBox
 import eu.k5.soapui.streams.jaxb.rest.RestResource
 import eu.k5.soapui.streams.model.rest.SuuResource
 import eu.k5.soapui.streams.model.rest.SuuRestService
 
 class RestServiceBox(
-    val box: Box
+    private val box: Box
 ) : SuuRestService {
 
-    private val restService: RestServiceYaml
-        get() = box.load(RestServiceYaml::class.java)
+    private val restService: RestServiceYaml by lazy { box.load(RestServiceYaml::class.java) }
 
-    override var name: String? = restService.name
-    override var description: String? = restService.description
-    override var basePath: String? = restService.basePath
+    override var name: String?
+        get() = restService.name
+        set(value) {
+            restService.name = value
+            store()
+        }
 
-    override val resources: List<SuuResource>
-        get() = box.findFolderBox { it.fileName.toString() == "resource.box.yaml" }.map { RestResourceBox(it) }
+    override var description: String?
+        get() = restService.description
+        set(value) {
+            restService.description = value
+            store()
+        }
+
+    override var basePath: String?
+        get() = restService.basePath
+        set(value) {
+            restService.basePath = value
+            store()
+        }
+
+    override val resources by lazy {
+        box.findSubFolderBox { it.fileName.toString() == RestResourceBox.FILE_NAME }
+            .map { RestResourceBox(it) }
+            .toMutableList()
+    }
 
     override fun createResource(name: String, path: String): SuuResource {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val init = resources
+        val newRestService = RestResourceBox.create(box, name, path)
+        init.add(newRestService)
+        return newRestService
     }
 
     class RestServiceYaml {
@@ -29,4 +50,21 @@ class RestServiceBox(
         var description: String? = null
         var basePath: String? = null
     }
+
+    private fun store() {
+        box.write(RestServiceYaml::class.java, restService)
+    }
+
+    companion object {
+        fun create(parentBox: Box, name: String): RestServiceBox {
+            val box = parentBox.createFolder(name, FILE_NAME)
+            val restService = RestServiceYaml()
+            restService.name = name
+            box.write(RestServiceYaml::class.java, restService)
+            return RestServiceBox(box)
+        }
+
+        const val FILE_NAME = "restservice.box.yaml"
+    }
+
 }

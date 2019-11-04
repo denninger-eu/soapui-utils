@@ -14,7 +14,7 @@ class RestMethod(
     @XmlElement
     override var description: String? = null,
     @XmlAttribute
-    override var method: SuuRestMethod.HttpMethod? = null
+    override var httpMethod: SuuRestMethod.HttpMethod? = null
 ) : SuuRestMethod {
 
     override val parameters: MutableList<RestParameter> = ArrayList()

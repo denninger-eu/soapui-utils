@@ -30,10 +30,6 @@ class ExportRestServiceAction : AbstractSoapUIAction<RestService>("Synchronize",
 
             val restService = RestServiceDirect(restService)
 
-
-
-            DirectSyncResourceListener()
-
             val directSyncListener = DirectSyncListener(Project("dummy"))
 
 

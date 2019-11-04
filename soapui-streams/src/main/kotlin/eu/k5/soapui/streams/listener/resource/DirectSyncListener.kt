@@ -216,7 +216,7 @@ class CopyRestServiceListener(
     override fun enterMethod(suuRestMethod: SuuRestMethod) {
         val newMethod = targetResources.peek().createMethod(suuRestMethod.name!!)
         newMethod.description = suuRestMethod.description
-        newMethod.method = suuRestMethod.method
+        newMethod.httpMethod = suuRestMethod.httpMethod
         targetMethod = newMethod
     }
 
@@ -228,6 +228,7 @@ class CopyRestServiceListener(
     override fun handleRequest(suuRestRequest: SuuRestRequest) {
         val newRequest = targetMethod!!.createRequest(suuRestRequest.name!!)
         newRequest.description = suuRestRequest.description
+        newRequest.content = suuRestRequest.content
     }
 
 }

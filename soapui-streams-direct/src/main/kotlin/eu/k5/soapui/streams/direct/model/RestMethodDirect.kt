@@ -17,7 +17,7 @@ class RestMethodDirect(
     override val parameters: MutableList<RestParameter> = ArrayList()
 
 
-    override var method: SuuRestMethod.HttpMethod? =
+    override var httpMethod: SuuRestMethod.HttpMethod? =
         map(restMethod.method)
 
     override val requests: List<SuuRestRequest>

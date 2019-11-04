@@ -9,24 +9,53 @@ class RestRequestBox(
 ) : SuuRestRequest {
 
 
-    private val restRequest: RequestRequestYaml
-        get() = box.load(RequestRequestYaml::class.java)
+    private val restRequest by lazy { box.load(RestRequestYaml::class.java) }
 
-    override var name: String? = restRequest.name
-    override var description: String? = restRequest.description
+    override var name
+        get() = restRequest.name
+        set(value) {
+            restRequest.name = value
+            store()
+        }
 
+    override var description
+        get() = restRequest.description
+        set(value) {
+            restRequest.description = value
+            store()
+        }
 
-    override var content: String?
+    override var content
         get() = box.loadSection("content")
-        set(value) = TODO("implement")
+        set(value) = storeContent(value)
 
     override val parameters: MutableList<RestParameter>
         get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
 
 
-    class RequestRequestYaml {
+    class RestRequestYaml {
         var name: String? = null
         var description: String? = null
+    }
+
+    private fun store() {
+        box.write(RestRequestYaml::class.java, restRequest)
+    }
+
+    private fun storeContent(content: String?) {
+        box.writeSection("content", content)
+    }
+
+    companion object {
+
+        fun create(parent: Box, name: String): RestRequestBox {
+            val box = parent.createFile(name, ".box.yaml")
+
+            val newRequest = RestRequestYaml()
+            newRequest.name = name
+            box.write(RestRequestYaml::class.java, newRequest)
+            return RestRequestBox(box)
+        }
 
     }
 }
