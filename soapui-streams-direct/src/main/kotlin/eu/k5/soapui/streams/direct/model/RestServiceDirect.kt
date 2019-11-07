@@ -1,9 +1,8 @@
 package eu.k5.soapui.streams.direct.model
 
 import com.eviware.soapui.impl.rest.RestService
-import eu.k5.soapui.streams.model.rest.SuuResource
+import eu.k5.soapui.streams.model.rest.SuuRestResource
 import eu.k5.soapui.streams.model.rest.SuuRestService
-import java.lang.UnsupportedOperationException
 
 class RestServiceDirect(
     private val restService: RestService
@@ -17,12 +16,12 @@ class RestServiceDirect(
     override var basePath: String? = restService.basePath
 
 
-    override fun createResource(name: String, path: String): SuuResource {
+    override fun createResource(name: String, path: String): SuuRestResource {
         val newResource = restService.addNewResource(name, path)
         return ResourceDirect(newResource)
     }
 
-    override val resources: List<SuuResource>
+    override val resources: List<SuuRestResource>
         get() = restService.resourceList.map { ResourceDirect(it) }
 
 }

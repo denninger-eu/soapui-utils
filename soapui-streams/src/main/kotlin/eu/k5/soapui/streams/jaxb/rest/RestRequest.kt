@@ -1,5 +1,6 @@
 package eu.k5.soapui.streams.jaxb.rest
 
+import eu.k5.soapui.streams.model.rest.SuuRestParameters
 import eu.k5.soapui.streams.model.rest.SuuRestRequest
 import javax.xml.bind.annotation.XmlAccessType
 import javax.xml.bind.annotation.XmlAccessorType
@@ -16,6 +17,9 @@ class RestRequest(
 
     override var content: String? = null
 
-    override val parameters: MutableList<RestParameter> = ArrayList()
+
+    override var parameters: SuuRestParameters?
+        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+        set(value) {}
 
 }

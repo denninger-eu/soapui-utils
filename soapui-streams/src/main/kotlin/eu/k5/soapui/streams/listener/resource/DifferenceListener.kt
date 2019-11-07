@@ -1,7 +1,7 @@
 package eu.k5.soapui.streams.listener.resource
 
 import eu.k5.soapui.streams.model.SuProject
-import eu.k5.soapui.streams.model.rest.SuuResource
+import eu.k5.soapui.streams.model.rest.SuuRestResource
 import eu.k5.soapui.streams.model.rest.SuuRestMethod
 import eu.k5.soapui.streams.model.rest.SuuRestRequest
 import eu.k5.soapui.streams.model.rest.SuuRestService
@@ -42,11 +42,11 @@ class RestServiceDifferenceListener() : SuuRestServiceListener {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun enterResource(suuResource: SuuResource) {
+    override fun enterResource(suuResource: SuuRestResource) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun exitResource(suuResource: SuuResource) {
+    override fun exitResource(suuResource: SuuRestResource) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

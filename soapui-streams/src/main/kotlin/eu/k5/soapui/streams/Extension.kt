@@ -2,9 +2,8 @@ package eu.k5.soapui.streams
 
 import eu.k5.soapui.streams.listener.resource.SuuRestServiceListener
 import eu.k5.soapui.streams.model.SuProject
-import eu.k5.soapui.streams.model.rest.SuuResource
+import eu.k5.soapui.streams.model.rest.SuuRestResource
 import eu.k5.soapui.streams.model.rest.SuuRestMethod
-import eu.k5.soapui.streams.model.rest.SuuRestRequest
 import eu.k5.soapui.streams.model.rest.SuuRestService
 import eu.k5.soapui.visitor.listener.Environment
 import eu.k5.soapui.visitor.listener.SuListener
@@ -26,12 +25,12 @@ fun SuuRestService.apply(listener: SuuRestServiceListener) {
     listener.exit(this)
 }
 
-fun SuuResource.apply(listener: SuuRestServiceListener) {
+fun SuuRestResource.apply(listener: SuuRestServiceListener) {
     listener.enterResource(this)
     for (method in this.methods) {
         method.apply(listener)
     }
-    for (resource in this.resources) {
+    for (resource in this.childResources) {
         resource.apply(listener)
     }
     listener.exitResource(this)

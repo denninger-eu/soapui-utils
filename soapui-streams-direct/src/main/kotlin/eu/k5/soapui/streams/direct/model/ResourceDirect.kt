@@ -2,12 +2,12 @@ package eu.k5.soapui.streams.direct.model
 
 import com.eviware.soapui.impl.rest.RestResource
 import eu.k5.soapui.streams.jaxb.rest.RestParameter
-import eu.k5.soapui.streams.model.rest.SuuResource
+import eu.k5.soapui.streams.model.rest.SuuRestResource
 import eu.k5.soapui.streams.model.rest.SuuRestMethod
 
 class ResourceDirect(
     private val resource: RestResource
-) : SuuResource {
+) : SuuRestResource {
 
 
 
@@ -24,10 +24,10 @@ class ResourceDirect(
             RestMethodDirect(it)
         }
 
-    override val resources: List<SuuResource>
+    override val childResources: List<SuuRestResource>
         get() = resource.childResourceList.map { ResourceDirect(it) }
 
-    override fun getChildResource(name: String): SuuResource? {
+    override fun getChildResource(name: String): SuuRestResource? {
         return resource.childResourceList.filter { it.name == name }.map { ResourceDirect(it) }.first()
     }
 
@@ -40,7 +40,7 @@ class ResourceDirect(
         return RestMethodDirect(method)
     }
 
-    override fun createChildResource(name: String, path: String): SuuResource {
+    override fun createChildResource(name: String, path: String): SuuRestResource {
         val childResource = resource.addNewChildResource(name, path)
         return ResourceDirect(childResource)
     }

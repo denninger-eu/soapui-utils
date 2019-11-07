@@ -1,4 +1,8 @@
 name: "requestName"
 description: "requestDescription"
+parameters:
+  - name: "requestParameterName"
+    style: "requestParameterStyle"
+    value: "requestParameterValue"
 ### content
 { "test":"test" }

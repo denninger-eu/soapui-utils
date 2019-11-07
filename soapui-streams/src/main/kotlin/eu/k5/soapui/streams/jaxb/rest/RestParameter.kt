@@ -4,8 +4,4 @@ data class RestParameter(
     var name: String?,
     var value: String?,
     var style: String?
-) {
-
-
-
-}
+)

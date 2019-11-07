@@ -1,6 +1,6 @@
 package eu.k5.soapui.streams.jaxb.rest
 
-import eu.k5.soapui.streams.model.rest.SuuResource
+import eu.k5.soapui.streams.model.rest.SuuRestResource
 import javax.xml.bind.annotation.XmlAccessType
 import javax.xml.bind.annotation.XmlAccessorType
 import javax.xml.bind.annotation.XmlAttribute
@@ -13,14 +13,14 @@ data class RestResource(
 
     @XmlElement
     override var path: String? = null
-) : SuuResource {
+) : SuuRestResource {
 
 
     @XmlElement
     override var description: String? = null
 
     @XmlElement(name = "resource")
-    override val resources = ArrayList<RestResource>()
+    override val childResources = ArrayList<RestResource>()
     @XmlElement
     override val methods = ArrayList<RestMethod>()
 
@@ -36,7 +36,7 @@ data class RestResource(
 
     override fun createChildResource(name: String, path: String): RestResource {
         val resource = RestResource(name = name, path = path)
-        resources.add(resource)
+        childResources.add(resource)
         return resource
     }
 

@@ -76,6 +76,7 @@ class Box(
                 if (matcher.matches()) {
                     val newSection = matcher.group("section")
                     sections[section] = sectionBuilder.toString()
+                    sectionBuilder.clear()
                     section = newSection
                 }
             } else {

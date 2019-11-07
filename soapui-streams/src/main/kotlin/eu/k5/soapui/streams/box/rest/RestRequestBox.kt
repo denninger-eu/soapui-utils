@@ -1,11 +1,11 @@
 package eu.k5.soapui.streams.box.rest
 
 import eu.k5.soapui.streams.box.Box
-import eu.k5.soapui.streams.jaxb.rest.RestParameter
+import eu.k5.soapui.streams.model.rest.SuuRestParameters
 import eu.k5.soapui.streams.model.rest.SuuRestRequest
 
 class RestRequestBox(
-    val box: Box
+    private val box: Box
 ) : SuuRestRequest {
 
 
@@ -25,17 +25,20 @@ class RestRequestBox(
             store()
         }
 
+
+    override val parameters: SuuRestParameters by lazy { RestParameters(restRequest.parameters!!) { store() } }
+
     override var content
         get() = box.loadSection("content")
         set(value) = storeContent(value)
 
-    override val parameters: MutableList<RestParameter>
-        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
-
+/*    override val parameters: SuuRestParameters
+        get() = restRequest.parameters.getSuuParameters { store() }*/
 
     class RestRequestYaml {
         var name: String? = null
         var description: String? = null
+        var parameters: MutableList<RestParameters.RestParameterYaml>? = ArrayList()
     }
 
     private fun store() {

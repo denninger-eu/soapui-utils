@@ -1,15 +1,14 @@
 package eu.k5.soapui.streams.box.rest
 
 import eu.k5.soapui.streams.box.Box
-import eu.k5.soapui.streams.jaxb.rest.RestMethod
 import eu.k5.soapui.streams.jaxb.rest.RestParameter
 import eu.k5.soapui.streams.jaxb.rest.RestResource
-import eu.k5.soapui.streams.model.rest.SuuResource
+import eu.k5.soapui.streams.model.rest.SuuRestResource
 import eu.k5.soapui.streams.model.rest.SuuRestMethod
 
 class RestResourceBox(
     private val box: Box
-) : SuuResource {
+) : SuuRestResource {
 
     private val resource by lazy { box.load(RestResourceYaml::class.java) }
 
@@ -41,7 +40,7 @@ class RestResourceBox(
             .map { RestMethodBox(it) }
             .toMutableList()
     }
-    override val resources by lazy {
+    override val childResources by lazy {
         box.findSubFolderBox { it.fileName.toString() == FILE_NAME }
             .map { RestResourceBox(it) }
             .toMutableList()
@@ -54,7 +53,7 @@ class RestResourceBox(
         return newRestMethod
     }
 
-    override fun createChildResource(name: String, path: String): SuuResource {
+    override fun createChildResource(name: String, path: String): SuuRestResource {
         return RestResource()
     }
 

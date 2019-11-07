@@ -128,8 +128,8 @@ class DirectLoaderTest {
 
         assertNotNull(restService, "Rest service should have been created")
         assertFalse(restService.resources.isEmpty())
-        assertFalse(restService.resources[0].resources.isEmpty(), "No child resource found")
-        val resource = restService.resources[0].resources[0]
+        assertFalse(restService.resources[0].childResources.isEmpty(), "No child resource found")
+        val resource = restService.resources[0].childResources[0]
         println(" target " + target.toXml())
 
         assertEquals("childResourceDescription", resource.description)
@@ -150,8 +150,8 @@ class DirectLoaderTest {
 
             assertNotNull(restService, "Rest service should have been created")
             assertFalse(restService.resources.isEmpty())
-            assertFalse(restService.resources[0].resources.isEmpty(), "No child resource found")
-            val resource = restService.resources[0].resources[0]
+            assertFalse(restService.resources[0].childResources.isEmpty(), "No child resource found")
+            val resource = restService.resources[0].childResources[0]
             println(" target " + target.toXml())
 
             assertEquals("childResourceDescription", resource.description)

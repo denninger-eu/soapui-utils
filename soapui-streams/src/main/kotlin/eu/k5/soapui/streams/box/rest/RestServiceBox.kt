@@ -1,8 +1,7 @@
 package eu.k5.soapui.streams.box.rest
 
 import eu.k5.soapui.streams.box.Box
-import eu.k5.soapui.streams.jaxb.rest.RestResource
-import eu.k5.soapui.streams.model.rest.SuuResource
+import eu.k5.soapui.streams.model.rest.SuuRestResource
 import eu.k5.soapui.streams.model.rest.SuuRestService
 
 class RestServiceBox(
@@ -38,7 +37,7 @@ class RestServiceBox(
             .toMutableList()
     }
 
-    override fun createResource(name: String, path: String): SuuResource {
+    override fun createResource(name: String, path: String): SuuRestResource {
         val init = resources
         val newRestService = RestResourceBox.create(box, name, path)
         init.add(newRestService)
@@ -51,7 +50,7 @@ class RestServiceBox(
         var basePath: String? = null
     }
 
-    private fun store() {
+    fun store() {
         box.write(RestServiceYaml::class.java, restService)
     }
 

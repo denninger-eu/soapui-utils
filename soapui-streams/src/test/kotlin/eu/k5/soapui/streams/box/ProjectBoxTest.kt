@@ -51,8 +51,8 @@ class ProjectBoxTest {
         assertEquals("requestDescription", request.description)
         assertEquals("{ \"test\":\"test\" }\n", request.content)
 
-        assertEquals(1, resource.resources.size)
-        val childResource = resource.resources[0]
+        assertEquals(1, resource.childResources.size)
+        val childResource = resource.childResources[0]
         assertEquals("childResourceName", childResource.name)
         assertEquals("childResourceDescription", childResource.description)
         assertEquals("childResourcePath", childResource.path)

@@ -57,7 +57,7 @@ class DirectSyncResourceListener(
 ) : SuuRestServiceListener {
 
     private var referenceRestService: SuuRestService? = null
-    private var referenceResources: Deque<SuuResource> = ArrayDeque()
+    private var referenceResources: Deque<SuuRestResource> = ArrayDeque()
     private var referenceMethod: SuuRestMethod? = null
 
 
@@ -80,7 +80,7 @@ class DirectSyncResourceListener(
     }
 
 
-    private fun findReferenceResource(name: String): SuuResource? {
+    private fun findReferenceResource(name: String): SuuRestResource? {
         return if (!referenceResources.isEmpty()) {
             referenceResources.peek().getChildResource(name)
         } else {
@@ -88,7 +88,7 @@ class DirectSyncResourceListener(
         }
     }
 
-    override fun enterResource(suuResource: SuuResource) {
+    override fun enterResource(suuResource: SuuRestResource) {
         val ref = findReferenceResource(suuResource.name!!)
         if (ref == null) {
             TODO("implement, remove")
@@ -96,7 +96,7 @@ class DirectSyncResourceListener(
         referenceResources.push(ref)
     }
 
-    override fun exitResource(suuResource: SuuResource) {
+    override fun exitResource(suuResource: SuuRestResource) {
         val missingMethods = ArrayList(referenceResources.peek().methods)
         suuResource.methods.forEach { found -> missingMethods.removeIf { it.name == found.name } }
 
@@ -105,8 +105,8 @@ class DirectSyncResourceListener(
             missingMethod.apply(copyListener)
         }
 
-        val missingChildResources = ArrayList(referenceResources.peek().resources)
-        suuResource.resources.forEach { found -> missingChildResources.removeIf { it.name == found.name } }
+        val missingChildResources = ArrayList(referenceResources.peek().childResources)
+        suuResource.childResources.forEach { found -> missingChildResources.removeIf { it.name == found.name } }
         for (missingChildResource in missingChildResources) {
             missingChildResource.apply(copyListener)
         }
@@ -116,6 +116,8 @@ class DirectSyncResourceListener(
 
     override fun enterMethod(suuRestMethod: SuuRestMethod) {
         referenceMethod = referenceResources.peek().getMethod(suuRestMethod.name!!)
+
+
     }
 
     override fun exitMethod(suuRestMethod: SuuRestMethod) {
@@ -173,7 +175,7 @@ class CopyRestServiceListener(
         targetRestService = restService
     }
 
-    constructor(suuRestResource: SuuResource) : this(null) {
+    constructor(suuRestResource: SuuRestResource) : this(null) {
         targetResources.push(suuRestResource)
     }
 
@@ -183,7 +185,7 @@ class CopyRestServiceListener(
 
     private var targetRestService: SuuRestService? = null
 
-    private val targetResources: Deque<SuuResource> = ArrayDeque()
+    private val targetResources: Deque<SuuRestResource> = ArrayDeque()
 
     private var targetMethod: SuuRestMethod? = null
 
@@ -198,7 +200,7 @@ class CopyRestServiceListener(
 
     }
 
-    override fun enterResource(suuResource: SuuResource) {
+    override fun enterResource(suuResource: SuuRestResource) {
         val newResource = if (targetResources.isEmpty()) {
             targetRestService!!.createResource(suuResource.name!!, suuResource.path!!)
         } else {
@@ -209,7 +211,7 @@ class CopyRestServiceListener(
         targetResources.push(newResource)
     }
 
-    override fun exitResource(suuResource: SuuResource) {
+    override fun exitResource(suuResource: SuuRestResource) {
         targetResources.pop()
     }
 
@@ -229,6 +231,26 @@ class CopyRestServiceListener(
         val newRequest = targetMethod!!.createRequest(suuRestRequest.name!!)
         newRequest.description = suuRestRequest.description
         newRequest.content = suuRestRequest.content
+
+        handleParameters(newRequest.parameters!!, suuRestRequest.parameters!!)
     }
 
+    private fun handleParameters(target: SuuRestParameters, source: SuuRestParameters) {
+
+        val missing = ArrayList<String>()
+        for (targetParameter in target.parameters) {
+            if (!source.hasParameter(targetParameter.name)) {
+                missing.add(targetParameter.name!!)
+            }
+        }
+        missing.forEach { target.remove(it) }
+
+        for (parameter in source.parameters) {
+            target.addOrUpdate(parameter)
+        }
+
+        target.addOrUpdate("testName", "testValue", "testStyle")
+        target.addOrUpdate("testName", "testValue", "testStyle")
+
+    }
 }

@@ -9,6 +9,6 @@ interface SuuRestRequest {
 
     var content: String?
     
-    val parameters: MutableList<RestParameter>
+    val parameters: SuuRestParameters?
 
 }
