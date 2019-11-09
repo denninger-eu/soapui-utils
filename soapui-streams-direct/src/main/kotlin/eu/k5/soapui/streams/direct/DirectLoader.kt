@@ -13,6 +13,15 @@ import java.io.Reader
 
 class DirectLoader : Loader {
 
+    fun newProject(): ProjectDirect {
+        return ProjectDirect(WsdlProject())
+    }
+
+    fun direct(inputStream: InputStream): ProjectDirect {
+        val wsdlProject = WsdlProject(inputStream, null)
+        return ProjectDirect(wsdlProject)
+    }
+
     override fun bind(inputStream: InputStream): SuProject {
         val wsdlProject = WsdlProject(inputStream, null)
 

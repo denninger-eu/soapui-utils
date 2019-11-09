@@ -9,11 +9,23 @@ class RestServiceDirect(
 ) : SuuRestService {
 
 
-    override var name: String? = restService.name
+    override var name: String?
+        get() = restService.name
+        set(value) {
+            restService.name = value
+        }
 
-    override var description: String? = restService.description
+    override var description: String?
+        get() = restService.description
+        set(value) {
+            restService.description = value
+        }
 
-    override var basePath: String? = restService.basePath
+    override var basePath: String?
+        get() = restService.basePath
+        set(value) {
+            restService.basePath = value
+        }
 
 
     override fun createResource(name: String, path: String): SuuRestResource {

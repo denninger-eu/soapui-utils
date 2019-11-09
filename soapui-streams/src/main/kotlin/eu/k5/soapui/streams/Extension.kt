@@ -1,5 +1,6 @@
 package eu.k5.soapui.streams
 
+import eu.k5.soapui.streams.listener.VisitResult
 import eu.k5.soapui.streams.listener.resource.SuuRestServiceListener
 import eu.k5.soapui.streams.model.SuProject
 import eu.k5.soapui.streams.model.rest.SuuRestResource
@@ -18,7 +19,10 @@ fun SuProject.apply(listener: SuListener): SuProject {
 }
 
 fun SuuRestService.apply(listener: SuuRestServiceListener) {
-    listener.enter(this)
+    val result = listener.enter(this)
+    if (result == VisitResult.TERMINATE) {
+        return
+    }
     for (resource in this.resources) {
         resource.apply(listener)
     }

@@ -1,6 +1,7 @@
 package eu.k5.soapui.streams.listener.resource
 
 import eu.k5.soapui.streams.apply
+import eu.k5.soapui.streams.listener.VisitResult
 import eu.k5.soapui.streams.model.SuProject
 import eu.k5.soapui.streams.model.rest.*
 import eu.k5.soapui.visitor.listener.Environment
@@ -20,6 +21,9 @@ class DirectSyncListener(
     override fun enterProject(env: Environment, project: SuProject) {
         environment = env
         targetProject = project
+
+        project.name = referenceProject.name
+        project.description = referenceProject.description
     }
 
     override fun exitProject(suuProject: SuProject) {
@@ -61,11 +65,16 @@ class DirectSyncResourceListener(
     private var referenceMethod: SuuRestMethod? = null
 
 
-    override fun enter(restService: SuuRestService) {
+    override fun enter(restService: SuuRestService): VisitResult {
         referenceRestService = referenceProject.getRestService(restService.name!!)
         if (referenceRestService == null) {
 //            TODO("implement, remove")
+            return VisitResult.TERMINATE
         }
+        restService.description = referenceRestService!!.description
+        restService.basePath = referenceRestService!!.basePath
+
+        return VisitResult.CONTINUE
     }
 
     override fun exit(suuRestService: SuuRestService) {
@@ -88,12 +97,14 @@ class DirectSyncResourceListener(
         }
     }
 
-    override fun enterResource(suuResource: SuuRestResource) {
+    override fun enterResource(suuResource: SuuRestResource): VisitResult {
         val ref = findReferenceResource(suuResource.name!!)
         if (ref == null) {
             TODO("implement, remove")
+            return VisitResult.TERMINATE
         }
         referenceResources.push(ref)
+        return VisitResult.CONTINUE
     }
 
     override fun exitResource(suuResource: SuuRestResource) {
@@ -114,10 +125,13 @@ class DirectSyncResourceListener(
     }
 
 
-    override fun enterMethod(suuRestMethod: SuuRestMethod) {
+    override fun enterMethod(suuRestMethod: SuuRestMethod) : VisitResult {
         referenceMethod = referenceResources.peek().getMethod(suuRestMethod.name!!)
 
+        suuRestMethod.description = referenceMethod!!.description
+        suuRestMethod.httpMethod = referenceMethod!!.httpMethod
 
+        return VisitResult.CONTINUE
     }
 
     override fun exitMethod(suuRestMethod: SuuRestMethod) {
@@ -189,18 +203,20 @@ class CopyRestServiceListener(
 
     private var targetMethod: SuuRestMethod? = null
 
-    override fun enter(restService: SuuRestService) {
+    override fun enter(restService: SuuRestService): VisitResult {
         val newRestService = target!!.createRestService(restService.name!!)
         newRestService.description = restService.description
         newRestService.basePath = restService.basePath
         targetRestService = newRestService
+
+        return VisitResult.CONTINUE
     }
 
     override fun exit(restService: SuuRestService) {
 
     }
 
-    override fun enterResource(suuResource: SuuRestResource) {
+    override fun enterResource(suuResource: SuuRestResource): VisitResult {
         val newResource = if (targetResources.isEmpty()) {
             targetRestService!!.createResource(suuResource.name!!, suuResource.path!!)
         } else {
@@ -208,18 +224,22 @@ class CopyRestServiceListener(
         }
         println(suuResource.description)
         newResource.description = suuResource.description
+        handleParameters(newResource.parameters, suuResource.parameters)
         targetResources.push(newResource)
+        return VisitResult.CONTINUE
     }
 
     override fun exitResource(suuResource: SuuRestResource) {
         targetResources.pop()
     }
 
-    override fun enterMethod(suuRestMethod: SuuRestMethod) {
+    override fun enterMethod(suuRestMethod: SuuRestMethod) : VisitResult {
         val newMethod = targetResources.peek().createMethod(suuRestMethod.name!!)
         newMethod.description = suuRestMethod.description
         newMethod.httpMethod = suuRestMethod.httpMethod
+        handleParameters(newMethod.parameters, suuRestMethod.parameters)
         targetMethod = newMethod
+        return VisitResult.CONTINUE
     }
 
     override fun exitMethod(suuRestMethod: SuuRestMethod) {
@@ -238,19 +258,15 @@ class CopyRestServiceListener(
     private fun handleParameters(target: SuuRestParameters, source: SuuRestParameters) {
 
         val missing = ArrayList<String>()
-        for (targetParameter in target.parameters) {
+        for (targetParameter in target.allParameters) {
             if (!source.hasParameter(targetParameter.name)) {
                 missing.add(targetParameter.name!!)
             }
         }
         missing.forEach { target.remove(it) }
 
-        for (parameter in source.parameters) {
+        for (parameter in source.allParameters) {
             target.addOrUpdate(parameter)
         }
-
-        target.addOrUpdate("testName", "testValue", "testStyle")
-        target.addOrUpdate("testName", "testValue", "testStyle")
-
     }
 }

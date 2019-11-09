@@ -1,0 +1,7 @@
+name: "methodName"
+description: "methodDescription"
+httpMethod: "GET"
+parameters:
+  - name: "methodParameterName"
+    value: "methodParameterValue"
+    style: "QUERY"

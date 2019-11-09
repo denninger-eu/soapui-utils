@@ -3,6 +3,7 @@ package eu.k5.soapui.streams.box.rest
 import eu.k5.soapui.streams.box.Box
 import eu.k5.soapui.streams.jaxb.rest.RestParameter
 import eu.k5.soapui.streams.model.rest.SuuRestMethod
+import eu.k5.soapui.streams.model.rest.SuuRestParameters
 import eu.k5.soapui.streams.model.rest.SuuRestRequest
 
 class RestMethodBox(
@@ -11,7 +12,7 @@ class RestMethodBox(
     private val method by lazy { box.load(RestMethodYaml::class.java) }
 
     override var name
-        get() = method.name
+        get() = method.name ?: ""
         set(value) {
             method.name = value
             store()
@@ -29,8 +30,7 @@ class RestMethodBox(
             store()
         }
 
-    override val parameters: MutableList<RestParameter>
-        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+    override val parameters: SuuRestParameters by lazy { RestParameters(method.parameters!!) { store() } }
 
     override val requests by lazy {
         box.findFolderBox { it.fileName.toString() != "method.box.yaml" }
@@ -53,6 +53,7 @@ class RestMethodBox(
         var name: String? = null
         var description: String? = null
         var httpMethod: SuuRestMethod.HttpMethod? = null
+        var parameters: MutableList<RestParameters.RestParameterYaml>? = ArrayList()
     }
 
     companion object {

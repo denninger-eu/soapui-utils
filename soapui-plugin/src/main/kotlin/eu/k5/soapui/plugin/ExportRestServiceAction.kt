@@ -33,7 +33,7 @@ class ExportRestServiceAction : AbstractSoapUIAction<RestService>("Synchronize",
             val directSyncListener = DirectSyncListener(Project("dummy"))
 
 
-            restService.apply(directSyncListener)
+            restService.apply(directSyncListener.createResourceListener())
 
             println("target: " + directSyncListener.project.toXml())
         } catch (exception: Throwable) {

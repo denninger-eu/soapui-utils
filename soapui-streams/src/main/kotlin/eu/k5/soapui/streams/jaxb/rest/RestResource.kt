@@ -1,5 +1,6 @@
 package eu.k5.soapui.streams.jaxb.rest
 
+import eu.k5.soapui.streams.model.rest.SuuRestParameters
 import eu.k5.soapui.streams.model.rest.SuuRestResource
 import javax.xml.bind.annotation.XmlAccessType
 import javax.xml.bind.annotation.XmlAccessorType
@@ -9,7 +10,7 @@ import javax.xml.bind.annotation.XmlElement
 @XmlAccessorType(XmlAccessType.NONE)
 data class RestResource(
     @XmlAttribute
-    override var name: String? = null,
+    override var name: String = "",
 
     @XmlElement
     override var path: String? = null
@@ -25,7 +26,7 @@ data class RestResource(
     override val methods = ArrayList<RestMethod>()
 
 
-    override val parameters: MutableList<RestParameter> = ArrayList()
+    override val parameters: SuuRestParameters = TODO()
 
 
     override fun createMethod(name: String): RestMethod {

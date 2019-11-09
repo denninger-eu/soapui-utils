@@ -12,7 +12,7 @@ class RestRequestBox(
     private val restRequest by lazy { box.load(RestRequestYaml::class.java) }
 
     override var name
-        get() = restRequest.name
+        get() = restRequest.name ?: ""
         set(value) {
             restRequest.name = value
             store()

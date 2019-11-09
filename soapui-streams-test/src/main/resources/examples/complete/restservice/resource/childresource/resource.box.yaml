@@ -1,0 +1,7 @@
+name: childResourceName
+description: childResourceDescription
+path: childResourcePath
+parameters:
+  - name: "childResourceParameterName"
+    style: "QUERY"
+    value: "childResourceParameterValue"

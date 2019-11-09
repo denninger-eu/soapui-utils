@@ -1,22 +1,35 @@
 package eu.k5.soapui.streams.direct.model
 
+import com.eviware.soapui.impl.rest.RestRequestInterface
 import com.eviware.soapui.impl.rest.RestResource
-import eu.k5.soapui.streams.jaxb.rest.RestParameter
 import eu.k5.soapui.streams.model.rest.SuuRestResource
 import eu.k5.soapui.streams.model.rest.SuuRestMethod
+import eu.k5.soapui.streams.model.rest.SuuRestParameter
+import eu.k5.soapui.streams.model.rest.SuuRestParameters
 
 class ResourceDirect(
     private val resource: RestResource
 ) : SuuRestResource {
 
 
+    override var name: String
+        get() = resource.name ?: ""
+        set(value) {
+            resource.name = value
+        }
+    override var path: String?
+        get() = resource.path
+        set(value) {
+            resource.path = value
+        }
+    override var description: String?
+        get() = resource.description
+        set(value) {
+            resource.description = value
+        }
 
-    override var name: String? = resource.name
-    override var path: String? = resource.path
-    override var description: String? = resource.description
-
-    override val parameters: MutableList<RestParameter> = ArrayList()
-
+    override val parameters: SuuRestParameters =
+        RestParametersDirect(resource.params, RestParametersDirect.Owner.RESOURCE)
 
 
     override val methods: List<SuuRestMethod>
@@ -37,6 +50,7 @@ class ResourceDirect(
 
     override fun createMethod(name: String): SuuRestMethod {
         val method = resource.addNewMethod(name)
+        method.method = RestRequestInterface.HttpMethod.GET
         return RestMethodDirect(method)
     }
 

@@ -16,4 +16,25 @@ interface SuTestStepListener {
     }
 
     fun createAssertionListener(env: Environment, step: SuTestStep): SuAssertionListener?
+
+    companion object {
+        val NO_OP = object : SuTestStepListener {
+            override fun request(env: Environment, step: SuWsdlTestRequestStep) {
+            }
+
+            override fun delay(env: Environment, step: SuWsdlDelayTestStep) {
+            }
+
+            override fun transfer(env: Environment, step: SuPropertyTransfersTestStep) {
+            }
+
+            override fun gotoStep(env: Environment, step: SuWsdlGotoTestStep) {
+            }
+
+            override fun createAssertionListener(env: Environment, step: SuTestStep): SuAssertionListener? {
+                return SuAssertionListener.NO_OP
+            }
+
+        }
+    }
 }

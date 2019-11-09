@@ -2,8 +2,9 @@ package eu.k5.soapui.streams.direct.model
 
 import com.eviware.soapui.impl.rest.RestMethod
 import com.eviware.soapui.impl.rest.RestRequestInterface
-import eu.k5.soapui.streams.jaxb.rest.RestParameter
 import eu.k5.soapui.streams.model.rest.SuuRestMethod
+import eu.k5.soapui.streams.model.rest.SuuRestParameter
+import eu.k5.soapui.streams.model.rest.SuuRestParameters
 import eu.k5.soapui.streams.model.rest.SuuRestRequest
 
 
@@ -12,13 +13,26 @@ class RestMethodDirect(
 ) : SuuRestMethod {
 
 
-    override var name: String? = restMethod.name
-    override var description: String? = restMethod.description
-    override val parameters: MutableList<RestParameter> = ArrayList()
+    override val parameters: SuuRestParameters =
+        RestParametersDirect(restMethod.params, RestParametersDirect.Owner.METHOD)
+
+    override var name: String
+        get() = restMethod.name ?: ""
+        set(value) {
+            restMethod.name = value
+        }
+    override var description: String?
+        get() = restMethod.description
+        set(value) {
+            restMethod.description = value
+        }
 
 
-    override var httpMethod: SuuRestMethod.HttpMethod? =
-        map(restMethod.method)
+    override var httpMethod: SuuRestMethod.HttpMethod?
+        get() = map(restMethod.method)
+        set(value) {
+            restMethod.method = map(value)
+        }
 
     override val requests: List<SuuRestRequest>
         get() = restMethod.requestList.map { RestRequestDirect(it) }
@@ -32,6 +46,13 @@ class RestMethodDirect(
     companion object {
         private fun map(method: RestRequestInterface.HttpMethod): SuuRestMethod.HttpMethod {
             return SuuRestMethod.HttpMethod.valueOf(method.name)
+        }
+
+        private fun map(method: SuuRestMethod.HttpMethod?): RestRequestInterface.HttpMethod {
+            if (method == null){
+                return RestRequestInterface.HttpMethod.GET
+            }
+            return RestRequestInterface.HttpMethod.valueOf(method.name)
         }
     }
 }

@@ -7,7 +7,9 @@ import eu.k5.soapui.streams.model.rest.SuuRestMethod
 import org.junit.jupiter.api.Test
 import java.io.InputStream
 import java.nio.file.Files
+import java.nio.file.Path
 import java.nio.file.Paths
+import java.time.Instant
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
@@ -266,6 +268,15 @@ class DirectLoaderTest {
             require(Files.exists(path)) { "Testcase with name $name does not exist" }
 
             return Files.newInputStream(path)
+        }
+
+        private fun tempPath(name: String): Path {
+            val path = Paths.get("target", "projects")
+                .resolve(String.format("%s_%s", name, Instant.now().toString().replace(":", "_")))
+            if (!Files.exists(path)) {
+                Files.createDirectories(path)
+            }
+            return path
         }
     }
 }

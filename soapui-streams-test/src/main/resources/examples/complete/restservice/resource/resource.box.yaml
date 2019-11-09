@@ -1,0 +1,7 @@
+name: resourceName
+description: resourceDescription
+path: resourcePath
+parameters:
+  - name: "resourceParameterName"
+    value: "resourceParameterValue"
+    style: "QUERY"

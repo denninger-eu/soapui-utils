@@ -1,0 +1,7 @@
+name: "postMethodName"
+description: "postMethodDescription"
+httpMethod: "POST"
+parameters:
+  - name: "methodParameterName"
+    style: "TEMPLATE"
+    value: "methodParameterValue"

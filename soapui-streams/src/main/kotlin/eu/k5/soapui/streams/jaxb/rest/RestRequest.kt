@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlElement
 @XmlAccessorType(XmlAccessType.NONE)
 class RestRequest(
     @XmlAttribute
-    override var name: String? = null,
+    override var name: String = "",
     @XmlElement
     override var description: String? = null
 ) : SuuRestRequest {
@@ -18,7 +18,7 @@ class RestRequest(
     override var content: String? = null
 
 
-    override var parameters: SuuRestParameters?
+    override var parameters: SuuRestParameters
         get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
         set(value) {}
 

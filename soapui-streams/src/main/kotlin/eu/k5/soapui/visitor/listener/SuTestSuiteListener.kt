@@ -18,4 +18,25 @@ interface SuTestSuiteListener {
     fun exitTestCase(env: Environment, testCase: SuWsdlTestCase)
 
     fun createTestStepListener(): SuTestStepListener
+
+    companion object {
+        val NO_OP = object : SuTestSuiteListener {
+            override fun enterTestSuite(env: Environment, suite: SuWsdlTestSuite) {
+            }
+
+            override fun exitTestSuite(env: Environment, suite: SuWsdlTestSuite) {
+            }
+
+            override fun enterTestCase(env: Environment, testCase: SuWsdlTestCase) {
+            }
+
+            override fun exitTestCase(env: Environment, testCase: SuWsdlTestCase) {
+            }
+
+            override fun createTestStepListener(): SuTestStepListener {
+                return SuTestStepListener.NO_OP
+            }
+
+        }
+    }
 }

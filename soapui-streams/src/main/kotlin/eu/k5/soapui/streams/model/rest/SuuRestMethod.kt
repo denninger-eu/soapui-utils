@@ -4,8 +4,8 @@ import eu.k5.soapui.streams.jaxb.rest.RestParameter
 
 interface SuuRestMethod {
 
-    val parameters: MutableList<RestParameter>
-    var name: String?
+    val parameters: SuuRestParameters
+    var name: String
     var description: String?
     var httpMethod: HttpMethod?
     val requests: List<SuuRestRequest>

@@ -1,0 +1,6 @@
+!!eu.k5.soapui.streams.box.rest.RestRequestBox$RestRequestYaml
+description: requestDescription
+name: request2Name
+
+### content
+{ "test":"test" }
