@@ -45,7 +45,7 @@ class ProjectBoxTest {
         assertEquals("methodDescription", method.description)
         assertEquals(SuuRestMethod.HttpMethod.GET, method.httpMethod)
 
-        assertEquals(1, method.requests.size)
+        assertEquals(2, method.requests.size)
         val request = method.requests[0]
         assertEquals("requestName", request.name)
         assertEquals("requestDescription", request.description)

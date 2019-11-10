@@ -3,6 +3,7 @@ package eu.k5.soapui.streams.box
 import eu.k5.soapui.streams.box.rest.RestServiceBox
 import eu.k5.soapui.streams.model.SuProject
 import eu.k5.soapui.streams.model.rest.SuuRestService
+import java.net.FileNameMap
 import java.nio.file.Path
 
 class ProjectBox(
@@ -41,6 +42,10 @@ class ProjectBox(
             project.name = name
             val box = Box(path).write(ProjectYaml::class.java, project)
             return ProjectBox(box)
+        }
+
+        fun load(path: Path): ProjectBox {
+            return ProjectBox(Box(path.resolve(FILE_NAME)))
         }
     }
 

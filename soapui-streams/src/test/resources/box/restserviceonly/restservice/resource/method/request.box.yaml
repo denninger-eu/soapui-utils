@@ -2,7 +2,7 @@ name: "requestName"
 description: "requestDescription"
 parameters:
   - name: "requestParameterName"
-    style: "requestParameterStyle"
+    style: "QUERY"
     value: "requestParameterValue"
 ### content
 { "test":"test" }

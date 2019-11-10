@@ -3,10 +3,7 @@ description: requestDescription
 name: request2Name
 parameters:
   - name: requestParameterName
-    style: requestParameterStyle
+    style: QUERY
     value: requestParameterValue
-  - name: testName
-    style: testStyle
-    value: testValue
 ### content
 { "test":"test" }

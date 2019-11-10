@@ -14,7 +14,7 @@ interface SuuRestResource {
 
     fun getChildResource(name: String): SuuRestResource? = childResources.find { it.name == name }
 
-    fun getMethod(name: String): SuuRestMethod? = methods.first { it.name == name }
+    fun getMethod(name: String): SuuRestMethod? = methods.find { it.name == name }
 
     fun createMethod(name: String): SuuRestMethod
 

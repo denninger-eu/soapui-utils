@@ -20,7 +20,7 @@ import java.nio.file.Paths
     toolbarIcon = "/favicon.png", //
     description = "Quick Repair Tool"
 )//
-class ExportRestServiceAction : AbstractSoapUIAction<RestService>("Export", "Export to Folder") {
+class ExportRestServiceAction : AbstractSoapUIAction<RestService>("Synchronize", "Synchronize with Folder") {
 
 
     override fun perform(restService: RestService, o: Any?) {

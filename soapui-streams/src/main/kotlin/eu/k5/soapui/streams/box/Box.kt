@@ -16,7 +16,8 @@ import java.nio.file.attribute.BasicFileAttributes
 import java.util.regex.Pattern
 
 class Box(
-    val path: Path
+    private val path: Path,
+    private val mode: Mode = Mode.WRITE
 ) {
 
     fun findSubFolderBox(predicate: (Path) -> Boolean): List<Box> {
@@ -61,7 +62,7 @@ class Box(
     }
 
     private fun loadSections(): LinkedHashMap<String, String> {
-        if (!Files.exists(path)){
+        if (!Files.exists(path)) {
             return LinkedHashMap()
         }
         val sections = LinkedHashMap<String, String>()
@@ -192,6 +193,10 @@ class Box(
                 return options
             }
 
+    }
+
+    enum class Mode {
+        READ_ONLY, WRITE
     }
 
 }

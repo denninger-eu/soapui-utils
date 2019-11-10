@@ -41,11 +41,11 @@ class ResourceDirect(
         get() = resource.childResourceList.map { ResourceDirect(it) }
 
     override fun getChildResource(name: String): SuuRestResource? {
-        return resource.childResourceList.filter { it.name == name }.map { ResourceDirect(it) }.first()
+        return resource.childResourceList.filter { it.name == name }.map { ResourceDirect(it) }.firstOrNull()
     }
 
     override fun getMethod(name: String): SuuRestMethod? {
-        return resource.restMethodList.filter { it.name == name }.map { RestMethodDirect(it) }.first()
+        return resource.restMethodList.filter { it.name == name }.map { RestMethodDirect(it) }.firstOrNull()
     }
 
     override fun createMethod(name: String): SuuRestMethod {

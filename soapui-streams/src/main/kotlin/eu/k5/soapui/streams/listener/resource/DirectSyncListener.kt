@@ -26,11 +26,11 @@ class DirectSyncListener(
         project.description = referenceProject.description
     }
 
-    override fun exitProject(suuProject: SuProject) {
+    override fun exitProject(target: SuProject) {
         val missingRestServices = ArrayList(referenceProject.restServices)
-        suuProject.restServices.forEach { found -> missingRestServices.removeIf { it.name == found.name } }
+        target.restServices.forEach { found -> missingRestServices.removeIf { it.name == found.name } }
 
-        val copyListener = CopyListener(suuProject).createResourceListener()
+        val copyListener = CopyListener(target).createResourceListener()
         for (missingRestService in missingRestServices) {
             missingRestService.apply(copyListener)
         }
@@ -65,23 +65,22 @@ class DirectSyncResourceListener(
     private var referenceMethod: SuuRestMethod? = null
 
 
-    override fun enter(restService: SuuRestService): VisitResult {
-        referenceRestService = referenceProject.getRestService(restService.name!!)
+    override fun enter(targetRestService: SuuRestService): VisitResult {
+        referenceRestService = referenceProject.getRestService(targetRestService.name!!)
         if (referenceRestService == null) {
-//            TODO("implement, remove")
             return VisitResult.TERMINATE
         }
-        restService.description = referenceRestService!!.description
-        restService.basePath = referenceRestService!!.basePath
+        targetRestService.description = referenceRestService!!.description
+        targetRestService.basePath = referenceRestService!!.basePath
 
         return VisitResult.CONTINUE
     }
 
-    override fun exit(suuRestService: SuuRestService) {
+    override fun exit(targetRestService: SuuRestService) {
         val missingResources = ArrayList(referenceRestService!!.resources)
-        suuRestService.resources.forEach { found -> missingResources.removeIf { it.name == found.name } }
+        targetRestService.resources.forEach { found -> missingResources.removeIf { it.name == found.name } }
 
-        val copyListener = CopyRestServiceListener(suuRestService)
+        val copyListener = CopyRestServiceListener(targetRestService)
         for (missingResource in missingResources) {
             missingResource.apply(copyListener)
         }
@@ -97,27 +96,32 @@ class DirectSyncResourceListener(
         }
     }
 
-    override fun enterResource(suuResource: SuuRestResource): VisitResult {
-        val ref = findReferenceResource(suuResource.name!!)
-        if (ref == null) {
+    override fun enterResource(targetRestResource: SuuRestResource): VisitResult {
+        val reference = findReferenceResource(targetRestResource.name!!)
+        if (reference == null) {
             TODO("implement, remove")
             return VisitResult.TERMINATE
         }
-        referenceResources.push(ref)
+        targetRestResource.description = reference.description
+        targetRestResource.path = reference.path
+
+        CopyRestServiceListener.handleParameters(targetRestResource.parameters, reference.parameters)
+
+        referenceResources.push(reference)
         return VisitResult.CONTINUE
     }
 
-    override fun exitResource(suuResource: SuuRestResource) {
+    override fun exitResource(targetRestResource: SuuRestResource) {
         val missingMethods = ArrayList(referenceResources.peek().methods)
-        suuResource.methods.forEach { found -> missingMethods.removeIf { it.name == found.name } }
+        targetRestResource.methods.forEach { found -> missingMethods.removeIf { it.name == found.name } }
 
-        val copyListener = CopyRestServiceListener(suuResource)
+        val copyListener = CopyRestServiceListener(targetRestResource)
         for (missingMethod in missingMethods) {
             missingMethod.apply(copyListener)
         }
 
         val missingChildResources = ArrayList(referenceResources.peek().childResources)
-        suuResource.childResources.forEach { found -> missingChildResources.removeIf { it.name == found.name } }
+        targetRestResource.childResources.forEach { found -> missingChildResources.removeIf { it.name == found.name } }
         for (missingChildResource in missingChildResources) {
             missingChildResource.apply(copyListener)
         }
@@ -125,12 +129,14 @@ class DirectSyncResourceListener(
     }
 
 
-    override fun enterMethod(suuRestMethod: SuuRestMethod) : VisitResult {
-        referenceMethod = referenceResources.peek().getMethod(suuRestMethod.name!!)
+    override fun enterMethod(targetRestMethod: SuuRestMethod): VisitResult {
+        val reference = referenceResources.peek().getMethod(targetRestMethod.name)
+            ?: return VisitResult.TERMINATE
+        targetRestMethod.description = reference.description
+        targetRestMethod.httpMethod = reference.httpMethod
 
-        suuRestMethod.description = referenceMethod!!.description
-        suuRestMethod.httpMethod = referenceMethod!!.httpMethod
-
+        CopyRestServiceListener.handleParameters(targetRestMethod.parameters, reference.parameters)
+        referenceMethod = reference
         return VisitResult.CONTINUE
     }
 
@@ -146,14 +152,11 @@ class DirectSyncResourceListener(
     }
 
 
-    override fun handleRequest(suuRestRequest: SuuRestRequest) {
-        val referenceRequest = referenceMethod!!.getRequest(suuRestRequest.name!!)
-        if (referenceRequest == null) {
-            return
-            //TODO("implement remove")
-        }
-
-        suuRestRequest.description = referenceRequest.description
+    override fun handleRequest(targetRestRequest: SuuRestRequest) {
+        val referenceRequest = referenceMethod!!.getRequest(targetRestRequest.name) ?: return
+        targetRestRequest.description = referenceRequest.description
+        targetRestRequest.content = referenceRequest.content
+        CopyRestServiceListener.handleParameters(targetRestRequest.parameters, referenceRequest.parameters)
     }
 
 }
@@ -233,7 +236,7 @@ class CopyRestServiceListener(
         targetResources.pop()
     }
 
-    override fun enterMethod(suuRestMethod: SuuRestMethod) : VisitResult {
+    override fun enterMethod(suuRestMethod: SuuRestMethod): VisitResult {
         val newMethod = targetResources.peek().createMethod(suuRestMethod.name!!)
         newMethod.description = suuRestMethod.description
         newMethod.httpMethod = suuRestMethod.httpMethod
@@ -255,18 +258,20 @@ class CopyRestServiceListener(
         handleParameters(newRequest.parameters!!, suuRestRequest.parameters!!)
     }
 
-    private fun handleParameters(target: SuuRestParameters, source: SuuRestParameters) {
+    companion object {
+        fun handleParameters(target: SuuRestParameters, source: SuuRestParameters) {
 
-        val missing = ArrayList<String>()
-        for (targetParameter in target.allParameters) {
-            if (!source.hasParameter(targetParameter.name)) {
-                missing.add(targetParameter.name!!)
+            val missing = ArrayList<String>()
+            for (targetParameter in target.allParameters) {
+                if (!source.hasParameter(targetParameter.name)) {
+                    missing.add(targetParameter.name!!)
+                }
             }
-        }
-        missing.forEach { target.remove(it) }
+            missing.forEach { target.remove(it) }
 
-        for (parameter in source.allParameters) {
-            target.addOrUpdate(parameter)
+            for (parameter in source.allParameters) {
+                target.addOrUpdate(parameter)
+            }
         }
     }
 }

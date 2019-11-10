@@ -30,7 +30,10 @@ fun SuuRestService.apply(listener: SuuRestServiceListener) {
 }
 
 fun SuuRestResource.apply(listener: SuuRestServiceListener) {
-    listener.enterResource(this)
+    val result = listener.enterResource(this)
+    if (result == VisitResult.TERMINATE){
+        return
+    }
     for (method in this.methods) {
         method.apply(listener)
     }
@@ -41,7 +44,10 @@ fun SuuRestResource.apply(listener: SuuRestServiceListener) {
 }
 
 fun SuuRestMethod.apply(listener: SuuRestServiceListener) {
-    listener.enterMethod(this)
+    val result = listener.enterMethod(this)
+    if (result == VisitResult.TERMINATE){
+        return
+    }
     for (request in this.requests) {
         listener.handleRequest(request)
     }

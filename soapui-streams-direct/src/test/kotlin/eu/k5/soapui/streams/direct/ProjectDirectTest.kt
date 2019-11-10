@@ -1,5 +1,6 @@
 package eu.k5.soapui.streams.direct
 
+import eu.k5.soapui.streams.Suu
 import eu.k5.soapui.streams.apply
 import eu.k5.soapui.streams.box.Box
 import eu.k5.soapui.streams.box.ProjectBox
@@ -20,6 +21,17 @@ import kotlin.test.assertNotNull
 
 class ProjectDirectTest {
 
+
+    @Test
+    fun syncTest() {
+        val testProject = getTestProject("RestServiceComplete").use { DirectLoader().direct(it) }
+
+        val folder = Paths.get("target", "box", Instant.now().toString().replace(":", "_"))
+        Files.createDirectories(folder)
+
+        val project = ProjectBox.create(folder.resolve(ProjectBox.FILE_NAME), "name")
+        Suu.syncRestService(testProject, project, testProject.restServices[0].name!!)
+    }
 
     @Test
     fun writeRestProject() {

@@ -54,7 +54,10 @@ class RestResourceBox(
     }
 
     override fun createChildResource(name: String, path: String): SuuRestResource {
-        return RestResource()
+        val init = childResources
+        val newRestService = create(box, name, path)
+        init.add(newRestService)
+        return newRestService
     }
 
     private fun store() {
