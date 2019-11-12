@@ -17,7 +17,6 @@ import kotlin.test.assertNotNull
 class DirectLoaderTest {
 
 
-
     @Test
     fun test() {
 

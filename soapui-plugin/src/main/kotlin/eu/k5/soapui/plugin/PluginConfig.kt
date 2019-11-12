@@ -9,7 +9,7 @@ import com.eviware.soapui.plugins.PluginConfiguration
     name = "SoapUI Utils",
     version = "1.0.0",
     autoDetect = true,
-    description = "TolerantReader Plugin to migrate and repair xml requests",
+    description = "Plugin to connect soapui projects with scv",
     infoUrl = "https://bitbucket.org/k5_/soapui-utils"
 )
 class PluginConfig : PluginAdapter()

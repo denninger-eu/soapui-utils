@@ -2,8 +2,10 @@ package eu.k5.soapui.streams.direct.model
 
 import com.eviware.soapui.impl.rest.RestService
 import com.eviware.soapui.impl.wsdl.WsdlProject
+import com.eviware.soapui.impl.wsdl.WsdlTestSuite
 import eu.k5.soapui.streams.model.SuProject
 import eu.k5.soapui.streams.model.rest.SuuRestService
+import eu.k5.soapui.streams.model.test.SuuTestSuite
 import java.lang.UnsupportedOperationException
 import java.nio.file.Path
 
@@ -30,6 +32,15 @@ class ProjectDirect(
         val newRestService = wsdlProject.addNewInterface(name, "rest") as RestService
         return RestServiceDirect(newRestService)
     }
+
+    override val testSuites: List<TestSuiteDirect>
+        get() = wsdlProject.testSuiteList.filterIsInstance<WsdlTestSuite>().map { TestSuiteDirect(it) }
+
+    override fun createTestSuite(name: String): SuuTestSuite {
+        val newTestSuite = wsdlProject.addNewTestSuite(name)
+        return TestSuiteDirect(newTestSuite)
+    }
+
 
     fun save(path: Path) {
         wsdlProject.saveIn(path.toFile())

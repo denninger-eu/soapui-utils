@@ -2,6 +2,7 @@ package eu.k5.soapui.streams.jaxb
 
 import eu.k5.soapui.streams.model.SuProject
 import eu.k5.soapui.streams.jaxb.rest.RestService
+import eu.k5.soapui.streams.model.test.SuuTestSuite
 import java.io.StringWriter
 import javax.xml.bind.JAXBContext
 import javax.xml.bind.annotation.XmlAccessType
@@ -37,6 +38,16 @@ data class Project(
     fun toXml(): String {
         return toXml(this)
     }
+
+
+    override val testSuites: List<SuuTestSuite>
+        get() = ArrayList()
+
+    override fun createTestSuite(name: String): SuuTestSuite {
+
+        TODO()
+    }
+
 
     companion object {
         private val CONTEXT = JAXBContext.newInstance(Project::class.java)

@@ -4,6 +4,8 @@ import com.eviware.soapui.impl.rest.RestService
 import com.eviware.soapui.plugins.ActionConfiguration
 import com.eviware.soapui.plugins.ToolbarPosition
 import com.eviware.soapui.support.action.support.AbstractSoapUIAction
+import eu.k5.soapui.plugin.imex.ImexModel
+import eu.k5.soapui.plugin.imex.ImexView
 import eu.k5.soapui.streams.Suu
 import eu.k5.soapui.streams.apply
 import eu.k5.soapui.streams.box.ProjectBox
@@ -20,7 +22,7 @@ import java.nio.file.Paths
     toolbarIcon = "/favicon.png", //
     description = "Quick Repair Tool"
 )//
-class ExportRestServiceAction : AbstractSoapUIAction<RestService>("Synchronize", "Synchronize with Folder") {
+class SynchronizeRestServiceAction : AbstractSoapUIAction<RestService>("Synchronize", "Export to Folder") {
 
 
     override fun perform(restService: RestService, o: Any?) {
@@ -28,19 +30,11 @@ class ExportRestServiceAction : AbstractSoapUIAction<RestService>("Synchronize",
 
         try {
 
-            val path = Paths.get("c:", "data", "Transient", "project")
+            val model = ImexModel(ProjectDirect(restService.project), config = SuuConfig.loadDefault())
+            model.restService = RestServiceDirect(restService)
 
-
-            val project = ProjectBox.load(path)
-
-
-            Suu.syncRestService(ProjectDirect(restService.project), project, restService.name)
-/*
-            val listener =
-                DirectSyncResourceListener(Environment(), ProjectDirect(restService.project), project)
-
-            RestServiceDirect(restService).apply(listener)
-*/
+            val view = ImexView(model)
+            view.display()
 
         } catch (exception: Throwable) {
             exception.printStackTrace(System.err)
