@@ -1,9 +1,8 @@
-package eu.k5.soapui.streams.direct.model
+package eu.k5.soapui.streams.direct.model.test
 
 import com.eviware.soapui.impl.wsdl.teststeps.PropertyTransfersTestStep
 import eu.k5.soapui.streams.model.test.SuuPropertyTransfer
 import eu.k5.soapui.streams.model.test.SuuTestStepPropertyTransfers
-import java.util.stream.IntStream
 
 
 class TestStepPropertyTransfersDirect(
@@ -12,7 +11,11 @@ class TestStepPropertyTransfersDirect(
 
 
     override val transfers: List<SuuPropertyTransfer>
-        get() = IntRange(0, propertyTransfer.transferCount-1).map { propertyTransfer.getTransferAt(it) }.map { PropertyTransferDirect(it) }
+        get() = IntRange(0, propertyTransfer.transferCount-1).map { propertyTransfer.getTransferAt(it) }.map {
+            PropertyTransferDirect(
+                it
+            )
+        }
 
 
 }

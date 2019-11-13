@@ -1,13 +1,17 @@
 package eu.k5.soapui.streams.box.test
 
 import eu.k5.soapui.streams.box.Box
+import eu.k5.soapui.streams.box.PropertiesBox
 import eu.k5.soapui.streams.box.rest.RestServiceBox
+import eu.k5.soapui.streams.model.SuuProperties
 import eu.k5.soapui.streams.model.test.SuuTestCase
 import eu.k5.soapui.streams.model.test.SuuTestSuite
 
 class TestSuiteBox(
     private val box: Box
 ) : SuuTestSuite {
+
+
     private val testSuite: TestSuiteYaml = box.load(TestSuiteYaml::class.java)
 
     override var name: String
@@ -22,15 +26,26 @@ class TestSuiteBox(
         get() = testSuite.enabled ?: true
         set(value) {
             if (testSuite.enabled != value) {
-                testSuite.enabled
+                testSuite.enabled = value
                 store()
             }
         }
 
+    override val properties: SuuProperties
+            by lazy { PropertiesBox(testSuite.properties!!) { store() } }
 
-    override val testCases: List<SuuTestCase>
-        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+    override val testCases: MutableList<TestCaseBox> by lazy {
+        box.findSubFolderBox { it.fileName.toString() == TestCaseBox.FILE_NAME }.map { TestCaseBox(it) }
+            .toMutableList()
+    }
 
+
+    override fun createTestCase(name: String): SuuTestCase {
+        val init = testCases
+        val newTestCase = TestCaseBox.create(box, name)
+        init.add(newTestCase)
+        return newTestCase
+    }
 
     private fun store() {
         box.write(TestSuiteYaml::class.java, testSuite)
@@ -39,7 +54,7 @@ class TestSuiteBox(
     class TestSuiteYaml {
         var name: String? = null
         var enabled: Boolean? = null
-
+        var properties: MutableList<PropertiesBox.PropertyYaml>? = ArrayList()
     }
 
 

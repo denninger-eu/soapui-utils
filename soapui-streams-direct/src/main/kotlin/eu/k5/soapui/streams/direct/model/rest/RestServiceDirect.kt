@@ -1,4 +1,4 @@
-package eu.k5.soapui.streams.direct.model
+package eu.k5.soapui.streams.direct.model.rest
 
 import com.eviware.soapui.impl.rest.RestService
 import eu.k5.soapui.streams.model.rest.SuuRestResource

@@ -1,9 +1,8 @@
-package eu.k5.soapui.streams.direct.model
+package eu.k5.soapui.streams.direct.model.test
 
 import com.eviware.soapui.impl.wsdl.teststeps.PathLanguage
 import com.eviware.soapui.impl.wsdl.teststeps.PropertyTransfer
 import eu.k5.soapui.streams.model.test.SuuPropertyTransfer
-import javax.xml.xpath.XPath
 
 class PropertyTransferDirect(
     private val propertyTransfer: PropertyTransfer
@@ -20,9 +19,11 @@ class PropertyTransferDirect(
             propertyTransfer.isDisabled = !value
         }
 
-    override val source = SourceReference(propertyTransfer)
+    override val source =
+        SourceReference(propertyTransfer)
 
-    override val target = TargetReference(propertyTransfer)
+    override val target =
+        TargetReference(propertyTransfer)
 
 
     class SourceReference(
@@ -46,7 +47,8 @@ class PropertyTransferDirect(
         override var language: SuuPropertyTransfer.Language
             get() = mapLanguage(propertyTransfer.sourcePathLanguage)
             set(value) {
-                propertyTransfer.sourcePathLanguage = mapLanguage(value)
+                propertyTransfer.sourcePathLanguage =
+                    mapLanguage(value)
             }
 
     }
@@ -62,7 +64,8 @@ class PropertyTransferDirect(
         override var language: SuuPropertyTransfer.Language
             get() = mapLanguage(propertyTransfer.targetPathLanguage)
             set(value) {
-                propertyTransfer.targetPathLanguage = mapLanguage(value)
+                propertyTransfer.targetPathLanguage =
+                    mapLanguage(value)
             }
         override var propertyName: String?
             get() = propertyTransfer.targetPropertyName

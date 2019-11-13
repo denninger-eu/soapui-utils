@@ -1,9 +1,8 @@
-package eu.k5.soapui.streams.direct.model
+package eu.k5.soapui.streams.direct.model.rest
 
 import com.eviware.soapui.impl.rest.RestMethod
 import com.eviware.soapui.impl.rest.RestRequestInterface
 import eu.k5.soapui.streams.model.rest.SuuRestMethod
-import eu.k5.soapui.streams.model.rest.SuuRestParameter
 import eu.k5.soapui.streams.model.rest.SuuRestParameters
 import eu.k5.soapui.streams.model.rest.SuuRestRequest
 
@@ -14,7 +13,10 @@ class RestMethodDirect(
 
 
     override val parameters: SuuRestParameters =
-        RestParametersDirect(restMethod.params, RestParametersDirect.Owner.METHOD)
+        RestParametersDirect(
+            restMethod.params,
+            RestParametersDirect.Owner.METHOD
+        )
 
     override var name: String
         get() = restMethod.name ?: ""

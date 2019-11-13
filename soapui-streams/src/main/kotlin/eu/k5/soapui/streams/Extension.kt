@@ -6,13 +6,20 @@ import eu.k5.soapui.streams.model.SuProject
 import eu.k5.soapui.streams.model.rest.SuuRestResource
 import eu.k5.soapui.streams.model.rest.SuuRestMethod
 import eu.k5.soapui.streams.model.rest.SuuRestService
+import eu.k5.soapui.streams.model.test.SuuTestSuite
 import eu.k5.soapui.visitor.listener.Environment
-import eu.k5.soapui.visitor.listener.SuListener
+import eu.k5.soapui.streams.model.SuListener
+import eu.k5.soapui.streams.model.test.SuuTestCase
+import eu.k5.soapui.streams.model.test.SuuTestSuiteListener
 
 fun SuProject.apply(listener: SuListener): SuProject {
     listener.enterProject(Environment(), this)
     for (restService in this.restServices) {
         restService.apply(listener.createResourceListener())
+    }
+    val testSuiteListener = listener.createTestSuiteListener()
+    for (testSuite in this.testSuites) {
+        testSuite.apply(testSuiteListener)
     }
     listener.exitProject(this)
     return this
@@ -31,7 +38,7 @@ fun SuuRestService.apply(listener: SuuRestServiceListener) {
 
 fun SuuRestResource.apply(listener: SuuRestServiceListener) {
     val result = listener.enterResource(this)
-    if (result == VisitResult.TERMINATE){
+    if (result == VisitResult.TERMINATE) {
         return
     }
     for (method in this.methods) {
@@ -45,11 +52,28 @@ fun SuuRestResource.apply(listener: SuuRestServiceListener) {
 
 fun SuuRestMethod.apply(listener: SuuRestServiceListener) {
     val result = listener.enterMethod(this)
-    if (result == VisitResult.TERMINATE){
+    if (result == VisitResult.TERMINATE) {
         return
     }
     for (request in this.requests) {
         listener.handleRequest(request)
     }
     listener.exitMethod(this)
+}
+
+fun SuuTestSuite.apply(listener: SuuTestSuiteListener) {
+    val result = listener.enter(this)
+    if (result == VisitResult.TERMINATE){
+        return
+    }
+    for (testCase in this.testCases) {
+        testCase.apply(listener)
+    }
+    listener.exit(this)
+}
+
+fun SuuTestCase.apply(listener: SuuTestSuiteListener) {
+    listener.enterTestCase(this)
+
+    listener.exitTestCase(this)
 }

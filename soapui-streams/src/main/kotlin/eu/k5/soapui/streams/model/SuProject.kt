@@ -2,12 +2,13 @@ package eu.k5.soapui.streams.model
 
 import eu.k5.soapui.streams.model.rest.SuuRestService
 import eu.k5.soapui.streams.model.test.SuuTestSuite
-import eu.k5.soapui.visitor.listener.SuListener
 
 interface SuProject {
     var name: String
 
     var description: String?
+
+    val properties: SuuProperties
 
     val restServices: List<SuuRestService>
 

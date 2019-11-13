@@ -1,7 +1,7 @@
 package eu.k5.soapui.streams.box
 
 import eu.k5.soapui.streams.apply
-import eu.k5.soapui.streams.listener.resource.DirectSyncListener
+import eu.k5.soapui.streams.listener.resource.SyncListener
 import eu.k5.soapui.streams.model.rest.SuuRestMethod
 import org.junit.jupiter.api.Test
 import java.nio.file.Files
@@ -63,7 +63,7 @@ class ProjectBoxTest {
     fun sync() {
         val project = loadProject("restserviceonly")
         val targetProject = ProjectBox.create(tempPath("sync").resolve(ProjectBox.FILE_NAME), "targetProjectName")
-        targetProject.apply(DirectSyncListener(project))
+        targetProject.apply(SyncListener(project))
         assertFalse(targetProject.restServices.isEmpty())
 
         val targetRestService = targetProject.restServices[0]

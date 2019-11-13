@@ -1,9 +1,11 @@
-package eu.k5.soapui.streams.direct.model
+package eu.k5.soapui.streams.direct.model.test
 
 import com.eviware.soapui.impl.wsdl.testcase.WsdlTestCase
 import com.eviware.soapui.impl.wsdl.teststeps.PropertyTransfersTestStep
 import com.eviware.soapui.impl.wsdl.teststeps.WsdlDelayTestStep
 import com.eviware.soapui.model.testsuite.TestStep
+import eu.k5.soapui.streams.direct.model.PropertiesDirect
+import eu.k5.soapui.streams.model.SuuProperties
 import eu.k5.soapui.streams.model.test.SuuTestCase
 import eu.k5.soapui.streams.model.test.SuuTestStep
 
@@ -23,14 +25,24 @@ class TestCaseDirect(
         }
 
     override val steps
-        get() = testCase.testStepList.filter { supported(it) }.map { mapTestStep(it) }.toMutableList()
+        get() = testCase.testStepList.filter {
+            supported(
+                it
+            )
+        }.map { mapTestStep(it) }.toMutableList()
+
+
+    override val properties: SuuProperties
+        get() = PropertiesDirect(testCase)
 
 
     companion object {
         private val stepFactories = HashMap<Class<out Any>, (TestStep) -> SuuTestStep>()
 
         init {
-            stepFactories[WsdlDelayTestStep::class.java] = { TestStepDelayDirect(it as WsdlDelayTestStep) }
+            stepFactories[WsdlDelayTestStep::class.java] = {
+                TestStepDelayDirect(it as WsdlDelayTestStep)
+            }
             stepFactories[PropertyTransfersTestStep::class.java] =
                 { TestStepPropertyTransfersDirect(it as PropertyTransfersTestStep) }
         }

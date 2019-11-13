@@ -22,8 +22,10 @@ class RestResourceBox(
     override var description: String?
         get() = resource.description
         set(value) {
-            resource.description = value
-            store()
+            if (resource.description != value) {
+                resource.description = value
+                store()
+            }
         }
     override var path: String?
         get() = resource.path

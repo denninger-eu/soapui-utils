@@ -1,4 +1,4 @@
-package eu.k5.soapui.streams.direct.model
+package eu.k5.soapui.streams.direct.model.test
 
 import com.eviware.soapui.impl.wsdl.teststeps.WsdlDelayTestStep
 import eu.k5.soapui.streams.model.test.SuuTestStepDelay

@@ -1,7 +1,9 @@
-package eu.k5.soapui.streams.direct.model
+package eu.k5.soapui.streams.direct.model.test
 
 import com.eviware.soapui.impl.wsdl.teststeps.WsdlTestStep
 import com.eviware.soapui.model.testsuite.TestStep
+import eu.k5.soapui.streams.direct.model.PropertiesDirect
+import eu.k5.soapui.streams.model.SuuProperties
 import eu.k5.soapui.streams.model.test.SuuTestStep
 
 abstract class AbstractTestStepDirect(
@@ -25,6 +27,11 @@ abstract class AbstractTestStepDirect(
         set(value) {
             testStep.description = value
         }
+
+
+    override val properties: SuuProperties
+        get() = PropertiesDirect(testStep)
+
 
 }
 

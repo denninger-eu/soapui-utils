@@ -1,7 +1,6 @@
-package eu.k5.soapui.streams.direct.model
+package eu.k5.soapui.streams.direct.model.rest
 
 import com.eviware.soapui.impl.rest.RestRequest
-import eu.k5.soapui.streams.model.rest.SuuRestParameter
 import eu.k5.soapui.streams.model.rest.SuuRestParameters
 import eu.k5.soapui.streams.model.rest.SuuRestRequest
 
@@ -29,6 +28,9 @@ class RestRequestDirect(
 
 
     override val parameters: SuuRestParameters =
-        RestParametersDirect(request.params, RestParametersDirect.Owner.REQUEST)
+        RestParametersDirect(
+            request.params,
+            RestParametersDirect.Owner.REQUEST
+        )
 
 }

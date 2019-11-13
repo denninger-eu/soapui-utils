@@ -1,7 +1,7 @@
 package eu.k5.soapui.streams.tests
 
 import eu.k5.soapui.streams.apply
-import eu.k5.soapui.streams.listener.resource.DifferenceListener
+import eu.k5.soapui.streams.listener.difference.DifferenceListener
 import eu.k5.soapui.streams.model.SuProject
 
 class SuuAssert {

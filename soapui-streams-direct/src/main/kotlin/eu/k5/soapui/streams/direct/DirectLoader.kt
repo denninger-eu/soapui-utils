@@ -4,10 +4,10 @@ import com.eviware.soapui.impl.wsdl.WsdlProject
 import eu.k5.soapui.streams.Loader
 import eu.k5.soapui.streams.apply
 import eu.k5.soapui.streams.direct.model.ProjectDirect
-import eu.k5.soapui.streams.listener.resource.DirectSyncListener
+import eu.k5.soapui.streams.listener.resource.SyncListener
 import eu.k5.soapui.streams.jaxb.Project
 import eu.k5.soapui.streams.model.SuProject
-import eu.k5.soapui.visitor.listener.SuListener
+import eu.k5.soapui.streams.model.SuListener
 import java.io.InputStream
 import java.io.Reader
 
@@ -27,7 +27,7 @@ class DirectLoader : Loader {
 
 
         val project = Project()
-        val sync = DirectSyncListener(ProjectDirect(wsdlProject))
+        val sync = SyncListener(ProjectDirect(wsdlProject))
         project.apply(sync)
         return project
 

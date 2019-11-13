@@ -6,15 +6,8 @@ import com.eviware.soapui.plugins.ToolbarPosition
 import com.eviware.soapui.support.action.support.AbstractSoapUIAction
 import eu.k5.soapui.plugin.imex.ImexModel
 import eu.k5.soapui.plugin.imex.ImexView
-import eu.k5.soapui.streams.Suu
-import eu.k5.soapui.streams.apply
-import eu.k5.soapui.streams.box.ProjectBox
 import eu.k5.soapui.streams.direct.model.ProjectDirect
-import eu.k5.soapui.streams.direct.model.RestServiceDirect
-import eu.k5.soapui.streams.listener.resource.DirectSyncListener
-import eu.k5.soapui.streams.listener.resource.DirectSyncResourceListener
-import eu.k5.soapui.visitor.listener.Environment
-import java.nio.file.Paths
+import eu.k5.soapui.streams.direct.model.rest.RestServiceDirect
 
 @ActionConfiguration(
     actionGroup = "RestServiceActions", //

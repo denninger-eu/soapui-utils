@@ -1,6 +1,6 @@
 package eu.k5.soapui.streams
 
-import eu.k5.soapui.streams.listener.resource.DirectSyncListener
+import eu.k5.soapui.streams.listener.resource.SyncListener
 import eu.k5.soapui.streams.model.SuProject
 import eu.k5.soapui.visitor.listener.Environment
 
@@ -20,7 +20,7 @@ class Suu {
                 restService = target.createRestService(name)
             }
 
-            val listener = DirectSyncListener(source)
+            val listener = SyncListener(source)
 
             listener.enterProject(Environment(), target)
             restService.apply(listener.createResourceListener())

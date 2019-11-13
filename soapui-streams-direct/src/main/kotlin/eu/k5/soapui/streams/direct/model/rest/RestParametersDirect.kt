@@ -1,4 +1,4 @@
-package eu.k5.soapui.streams.direct.model
+package eu.k5.soapui.streams.direct.model.rest
 
 import com.eviware.soapui.impl.rest.actions.support.NewRestResourceActionBase
 import com.eviware.soapui.impl.rest.support.RestParamsPropertyHolder
@@ -36,7 +36,10 @@ class RestParametersDirect(
             is XmlBeansRestParamsTestPropertyHolder.XmlBeansRestParamProperty
             -> RestParameterDirectForResource(value, owner)
             is RestRequestParamsPropertyHolder.InternalRestParamProperty
-            -> RestParameterDirectForMethodAndRequest(value, owner)
+            -> RestParameterDirectForMethodAndRequest(
+                value,
+                owner
+            )
             else
             -> RestParameterDirectGeneric(value, owner)
         }
@@ -58,8 +61,14 @@ class RestParametersDirect(
     ) : SuuRestParameter {
         override var name: String = paramProperty.name ?: ""
         override var value: String = paramProperty.value
-        override var style: SuuRestParameter.Style = mapStyle(paramProperty.style)
-        override val location: SuuRestParameter.Location = mapLocation(paramProperty, owner, paramProperty.paramLocation)
+        override var style: SuuRestParameter.Style =
+            mapStyle(paramProperty.style)
+        override val location: SuuRestParameter.Location =
+            mapLocation(
+                paramProperty,
+                owner,
+                paramProperty.paramLocation
+            )
 
     }
 
@@ -69,8 +78,14 @@ class RestParametersDirect(
     ) : SuuRestParameter {
         override var name: String = paramProperty.name ?: ""
         override var value: String = paramProperty.value
-        override var style: SuuRestParameter.Style = mapStyle(paramProperty.style)
-        override val location: SuuRestParameter.Location = mapLocation(paramProperty, owner, paramProperty.paramLocation)
+        override var style: SuuRestParameter.Style =
+            mapStyle(paramProperty.style)
+        override val location: SuuRestParameter.Location =
+            mapLocation(
+                paramProperty,
+                owner,
+                paramProperty.paramLocation
+            )
     }
 
     companion object {

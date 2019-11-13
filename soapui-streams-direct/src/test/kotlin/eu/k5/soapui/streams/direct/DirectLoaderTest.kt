@@ -1,7 +1,7 @@
 package eu.k5.soapui.streams.direct
 
 import eu.k5.soapui.streams.apply
-import eu.k5.soapui.streams.listener.resource.DirectSyncListener
+import eu.k5.soapui.streams.listener.resource.SyncListener
 import eu.k5.soapui.streams.jaxb.Project
 import eu.k5.soapui.streams.model.rest.SuuRestMethod
 import org.junit.jupiter.api.Test
@@ -33,7 +33,7 @@ class DirectLoaderTest {
             val source = DirectLoader().bind(it)
             val target = Project()
 
-            val listener = DirectSyncListener(source)
+            val listener = SyncListener(source)
             target.apply(listener)
 
 
@@ -56,7 +56,7 @@ class DirectLoaderTest {
             val source = DirectLoader().bind(it)
             val target = Project()
 
-            val listener = DirectSyncListener(source)
+            val listener = SyncListener(source)
             target.apply(listener)
 
             val restService = target.getRestService("RestServiceName")
@@ -81,7 +81,7 @@ class DirectLoaderTest {
         getTestProject("RestServiceWithResourceOnly").use {
             val source = DirectLoader().bind(it)
 
-            val listener = DirectSyncListener(source)
+            val listener = SyncListener(source)
             target.apply(listener)
 
             val restService = target.getRestService("RestServiceName")
@@ -106,7 +106,7 @@ class DirectLoaderTest {
         val target = testProject("RestServiceWithResourceOnly")
         val source = testProject("RestServiceWithMethodOnly")
 
-        target.apply(DirectSyncListener(source))
+        target.apply(SyncListener(source))
         val restService = target.getRestService("RestServiceName")
 
         assertNotNull(restService, "Rest service should have been created")
@@ -125,7 +125,7 @@ class DirectLoaderTest {
         val target = testProject("RestServiceWithResourceOnly")
         val source = testProject("RestServiceWithChildResource")
 
-        target.apply(DirectSyncListener(source))
+        target.apply(SyncListener(source))
         val restService = target.getRestService("RestServiceName")
 
         assertNotNull(restService, "Rest service should have been created")
@@ -145,7 +145,7 @@ class DirectLoaderTest {
             val source = DirectLoader().bind(it)
             val target = Project()
 
-            val listener = DirectSyncListener(source)
+            val listener = SyncListener(source)
             target.apply(listener)
 
             val restService = target.getRestService("RestServiceName")
@@ -169,7 +169,7 @@ class DirectLoaderTest {
             val source = DirectLoader().bind(it)
             val target = Project()
 
-            val listener = DirectSyncListener(source)
+            val listener = SyncListener(source)
             target.apply(listener)
 
             val restService = target.getRestService("RestServiceName")
@@ -194,7 +194,7 @@ class DirectLoaderTest {
             val source = DirectLoader().bind(it)
             val target = Project()
 
-            val listener = DirectSyncListener(source)
+            val listener = SyncListener(source)
             target.apply(listener)
 
             val restService = target.getRestService("RestServiceName")
@@ -219,7 +219,7 @@ class DirectLoaderTest {
         val source = testProject("RestServiceWithRequest")
         val target = testProject("RestServiceWithMethodOnly")
 
-        target.apply(DirectSyncListener(source))
+        target.apply(SyncListener(source))
         val restService = target.getRestService("RestServiceName")
 
         assertNotNull(restService, "Rest service should have been created")
@@ -238,7 +238,7 @@ class DirectLoaderTest {
         val source = testProject("RestServiceWithRequestChanged")
         val target = testProject("RestServiceWithRequest")
 
-        target.apply(DirectSyncListener(source))
+        target.apply(SyncListener(source))
         val restService = target.getRestService("RestServiceName")
 
         assertNotNull(restService, "Rest service should have been created")

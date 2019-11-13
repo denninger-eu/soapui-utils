@@ -1,8 +1,9 @@
-package eu.k5.soapui.visitor.listener
+package eu.k5.soapui.streams.model
 
 import eu.k5.soapui.streams.listener.resource.SuuRestServiceListener
-import eu.k5.soapui.streams.model.SuProject
-import eu.k5.soapui.streams.model.rest.SuuRestService
+import eu.k5.soapui.streams.model.test.SuuTestSuiteListener
+import eu.k5.soapui.visitor.listener.Environment
+import eu.k5.soapui.visitor.listener.SuWsdlInterfaceListener
 
 
 interface SuListener {
@@ -15,7 +16,7 @@ interface SuListener {
 
     fun createResourceListener(): SuuRestServiceListener
 
-    fun createTestSuiteListener(): SuTestSuiteListener?
+    fun createTestSuiteListener(): SuuTestSuiteListener
 
     companion object {
 
