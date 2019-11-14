@@ -5,13 +5,15 @@ import eu.k5.soapui.streams.model.SuProject
 import eu.k5.soapui.streams.model.test.SuuTestCase
 import eu.k5.soapui.streams.model.test.SuuTestSuite
 import eu.k5.soapui.streams.model.test.SuuTestSuiteListener
-import eu.k5.soapui.visitor.listener.SuTestStepListener
+import eu.k5.soapui.streams.model.test.SuuTestStepListener
 
 class DifferenceTestSuiteListener(
     private val differences: Differences,
     private val referenceProject: SuProject
 
 ) : SuuTestSuiteListener {
+
+    private var referenceTestCase: SuuTestCase? = null
 
     private var referenceTestSuite: SuuTestSuite? = null
 
@@ -46,15 +48,15 @@ class DifferenceTestSuiteListener(
         differences.addChange("enabled", ref.enabled, testCase.enabled)
         DifferenceListener.handleProperties(differences, ref.properties, testCase.properties)
 
-
-        return VisitResult.TERMINATE
+        referenceTestCase = ref
+        return VisitResult.CONTINUE
     }
 
     override fun exitTestCase(testCase: SuuTestCase) {
     }
 
-    override fun createTestStepListener(): SuTestStepListener {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun createTestStepListener(): SuuTestStepListener {
+        return DifferenceTestStepListener(referenceTestCase!!, differences)
     }
 
 }

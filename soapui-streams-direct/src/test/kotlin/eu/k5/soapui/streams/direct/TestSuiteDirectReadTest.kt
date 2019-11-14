@@ -4,9 +4,11 @@ import eu.k5.soapui.streams.apply
 import eu.k5.soapui.streams.direct.model.test.TestStepDelayDirect
 import eu.k5.soapui.streams.listener.difference.DifferenceListener
 import eu.k5.soapui.streams.listener.resource.SyncListener
+import eu.k5.soapui.streams.model.assertion.*
 import eu.k5.soapui.streams.model.test.SuuPropertyTransfer
 import eu.k5.soapui.streams.model.test.SuuTestCase
 import eu.k5.soapui.streams.model.test.SuuTestStepPropertyTransfers
+import eu.k5.soapui.streams.model.test.SuuTestStepRestRequest
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -33,7 +35,7 @@ class TestSuiteDirectReadTest : AbstractDirectTest() {
     fun readTestSuiteProject() {
         val project = ProjectDirectTest.testProject("TestSuiteProject")
 
-        assertEquals(1, project.properties.properties.size)
+        assertEquals(2, project.properties.properties.size)
 
         val property = project.properties.properties[0]
         assertEquals("ProjectPropertyName", property.name)
@@ -74,8 +76,44 @@ class TestSuiteDirectReadTest : AbstractDirectTest() {
         assertFalse(delayStepDisabled!!.enabled)
 
         assertTestStepPropertyTransfer(testCase.getStep("PropertyTransferName") as SuuTestStepPropertyTransfers)
+        assertTestStepRestRequest(testCase.getStep("restRequestStep") as SuuTestStepRestRequest)
     }
 
+    private fun assertTestStepRestRequest(restRequest: SuuTestStepRestRequest) {
+        val request = restRequest.request
+
+
+        val invalidCodes = restRequest.assertions.getAssertion("invalidCodes") as SuuAssertionInvalidStatus
+        assertTrue(invalidCodes.enabled)
+        assertEquals("400", invalidCodes.statusCodes)
+
+        val validCodes = restRequest.assertions.getAssertion("validCodes") as SuuAssertionValidStatus
+        assertTrue(validCodes.enabled)
+        assertEquals("200", validCodes.statusCodes)
+
+        val script = restRequest.assertions.getAssertion("script") as SuuAssertionScript
+        assertTrue(script.enabled)
+        assertEquals("scriptValue", script.script)
+
+        val sla = restRequest.assertions.getAssertion("sla") as SuuAssertionDuration
+        assertTrue(sla.enabled)
+        assertEquals("200", sla.time)
+
+
+        val contains = restRequest.assertions.getAssertion("contains") as SuuAssertionContains
+        assertTrue(contains.enabled)
+        assertEquals("contentValue", contains.content)
+        assertFalse(contains.caseSensitive)
+        assertTrue(contains.regexp)
+
+        val notContains = restRequest.assertions.getAssertion("notContains") as SuuAssertionNotContains
+        assertTrue(notContains.enabled)
+        assertEquals("notContainsContent", notContains.content)
+        assertTrue(notContains.caseSensitive)
+        assertFalse(notContains.regexp)
+
+
+    }
 
     private fun assertTestStepPropertyTransfer(propertyTransfer: SuuTestStepPropertyTransfers) {
         assertEquals("PropertyTransferName", propertyTransfer.name)

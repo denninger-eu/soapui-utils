@@ -78,6 +78,16 @@ class Differences {
         }
     }
 
+    fun addChange(type: Type, name: String) {
+        val location = Location(type, name)
+        differences.add(
+            DifferenceChange(
+                ArrayList(this.path).map { it.toString() }.asReversed(),
+                location.toString()
+            )
+        )
+    }
+
     fun addMissing(type: Type, name: String) {
         val location = Location(type, name)
         differences.add(
@@ -104,7 +114,9 @@ class Differences {
 
         TEST_SUITE,
 
-        TEST_CASE
+        TEST_CASE,
+
+        TEST_STEP
     }
 
     class Location(

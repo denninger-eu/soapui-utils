@@ -19,7 +19,7 @@ class PropertiesBox(
         store()
     }
 
-    override fun addOrUpdate(name: String, value: String) {
+    override fun addOrUpdate(name: String, value: String?) {
         var existing = base.firstOrNull { it.name == name }
         if (existing == null) {
             existing = PropertyYaml(name = name)
@@ -33,7 +33,7 @@ class PropertiesBox(
         private val property: PropertyYaml
     ) : SuuProperty {
         override var name: String = property.name ?: ""
-        override var value: String = property.value ?: ""
+        override var value: String? = property.value
     }
 
 

@@ -6,7 +6,7 @@ import eu.k5.soapui.streams.model.SuProject
 import eu.k5.soapui.streams.model.test.SuuTestCase
 import eu.k5.soapui.streams.model.test.SuuTestSuite
 import eu.k5.soapui.streams.model.test.SuuTestSuiteListener
-import eu.k5.soapui.visitor.listener.SuTestStepListener
+import eu.k5.soapui.streams.model.test.SuuTestStepListener
 
 class CopyTestSuiteListener(
     private val target: SuProject
@@ -33,6 +33,9 @@ class CopyTestSuiteListener(
 
         val target = targetTestSuite!!.createTestCase(testCase.name)
         target.enabled = testCase.enabled
+
+        SyncListener.handleProperties(testCase.properties, target.properties)
+        targetTestCase = target
         return VisitResult.CONTINUE
     }
 
@@ -40,8 +43,8 @@ class CopyTestSuiteListener(
         targetTestCase = null
     }
 
-    override fun createTestStepListener(): SuTestStepListener {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun createTestStepListener(): SuuTestStepListener {
+        return CopyTestStepListener(targetTestCase!!)
     }
 
 }

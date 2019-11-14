@@ -4,7 +4,7 @@ interface SuuPropertyTransfer {
 
     var name: String
 
-    val enabled: Boolean
+    var enabled: Boolean
 
     val source: PropertyReference
     val target: PropertyReference

@@ -12,6 +12,8 @@ interface SuuTestCase {
 
     val steps: List<SuuTestStep>
 
-
     fun getStep(name: String) = steps.firstOrNull { it.name == name }
+
+    fun <T : SuuTestStep> createStep(name: String, java: Class<T>): T
+
 }

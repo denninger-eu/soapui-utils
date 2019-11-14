@@ -5,7 +5,6 @@ import org.yaml.snakeyaml.TypeDescription
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.constructor.Constructor
 import java.io.IOException
-import java.io.StringWriter
 import java.lang.StringBuilder
 import java.nio.charset.StandardCharsets
 import java.nio.file.FileVisitResult
@@ -33,12 +32,19 @@ class Box(
     }
 
 
+    fun findOrderFiles(): List<Box> {
+        val result = ArrayList<Path>()
+        Files.walkFileTree(path.parent, FileVisitor({ NUMBER.matcher(it.fileName.toString()).matches() }, result, 1))
+        return result.map { Box(it) }
+    }
+
     fun <T> load(type: Class<T>): T {
         return load("main", type)
     }
 
     private fun <T> load(section: String, type: Class<T>): T {
         val yaml = Yaml(Constructor(type))
+
 
         val section = extractSection(section)
         if (section != null) {
@@ -49,6 +55,10 @@ class Box(
 
     fun loadSection(section: String): String? {
         return extractSection(section)
+    }
+
+    fun write(yaml: Yaml, instance: Any): Box {
+        return write(yaml, instance, "main")
     }
 
     fun <T> write(type: Class<T>, instance: T): Box {
@@ -129,6 +139,29 @@ class Box(
         return Box(resolved)
     }
 
+    fun createOrderedFile(pattern: String, name: String): Box {
+        val index = findFileIndex() + 10
+
+        val fileName = String.format(pattern, index, name)
+        val resolved = path.parent.resolve(fileName)
+        check(!Files.exists(resolved)) { "Already exists" }
+        return Box(resolved)
+    }
+
+    private fun findFileIndex(): Int {
+        return Files.list(path.parent).map { getWeight(it) }.max(Integer::compare).orElse(0)
+    }
+
+    private fun getWeight(file: Path): Int {
+        val matcher = NUMBER.matcher(file.fileName.toString())
+        return if (matcher.matches()) {
+            Integer.parseInt(matcher.group("number"))
+        } else {
+            0
+        }
+    }
+
+
     fun writeSection(section: String, content: String?) {
         val sections = loadSections()
         sections[section] = content ?: ""
@@ -148,6 +181,33 @@ class Box(
                 }
             }
         }
+    }
+
+    fun load(yaml: Yaml): Any {
+        val section = extractSection("main")
+        if (section != null) {
+            return yaml.load(section)
+        }
+        return yaml.load("")
+    }
+
+    fun <T> load(yaml: Yaml, type: Class<T>): T {
+        return load(yaml, type, "main")
+    }
+
+    fun <T> load(yaml: Yaml, type: Class<T>, section: String): T {
+
+        val section = extractSection(section)
+        if (section != null) {
+            return type.cast(yaml.load(section))
+        }
+        return yaml.load("")
+    }
+
+    fun write(yaml: Yaml, instance: Any, section: String): Box {
+        val dump = yaml.dump(instance)
+        writeSection(section, dump)
+        return this
     }
 
 
@@ -184,6 +244,7 @@ class Box(
 
     companion object {
 
+        private val NUMBER = Pattern.compile("(?<number>[0-9]{1,5}).*")
         private val SECTION_PATTERN = Pattern.compile("### (?<section>[a-zA-Z0-9]{1,8})")
 
         val options: DumperOptions

@@ -6,7 +6,7 @@ import eu.k5.soapui.streams.model.test.SuuTestCase
 import eu.k5.soapui.streams.model.test.SuuTestSuite
 import eu.k5.soapui.streams.model.test.SuuTestSuiteListener
 import eu.k5.soapui.visitor.listener.Environment
-import eu.k5.soapui.visitor.listener.SuTestStepListener
+import eu.k5.soapui.streams.model.test.SuuTestStepListener
 
 class TestSuiteSyncListener(
     private val environment: Environment,
@@ -43,8 +43,8 @@ class TestSuiteSyncListener(
     override fun exitTestCase(testCase: SuuTestCase) {
     }
 
-    override fun createTestStepListener(): SuTestStepListener {
-        return SuTestStepListener.NO_OP
+    override fun createTestStepListener(): SuuTestStepListener {
+        return SuuTestStepListener.NO_OP
     }
 
 }

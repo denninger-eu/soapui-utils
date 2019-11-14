@@ -22,7 +22,7 @@ interface SuuTestSuiteListener {
     }
 
 
-    fun createTestStepListener(): SuTestStepListener
+    fun createTestStepListener(): SuuTestStepListener
 
     companion object {
         val NO_OP = object : SuuTestSuiteListener {
@@ -42,7 +42,7 @@ interface SuuTestSuiteListener {
                 TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
 
-            override fun createTestStepListener(): SuTestStepListener {
+            override fun createTestStepListener(): SuuTestStepListener {
                 TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
         }

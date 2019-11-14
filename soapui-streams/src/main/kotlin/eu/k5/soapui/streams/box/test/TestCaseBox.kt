@@ -3,12 +3,13 @@ package eu.k5.soapui.streams.box.test
 import eu.k5.soapui.streams.box.Box
 import eu.k5.soapui.streams.box.PropertiesBox
 import eu.k5.soapui.streams.model.SuuProperties
-import eu.k5.soapui.streams.model.test.SuuTestCase
-import eu.k5.soapui.streams.model.test.SuuTestStep
+import eu.k5.soapui.streams.model.test.*
 
 class TestCaseBox(
     private val box: Box
 ) : SuuTestCase {
+
+
     private val testCase = box.load(TestCaseYaml::class.java)
 
     override var name: String
@@ -32,14 +33,17 @@ class TestCaseBox(
             by lazy { PropertiesBox(testCase.properties!!) { store() } }
 
     override val steps: List<SuuTestStep>
-        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+            by lazy { box.findOrderFiles().map { mapBox(it) } }
 
+
+    override fun <T : SuuTestStep> createStep(name: String, type: Class<T>): T {
+        return type.cast(createStep(box, name, type))
+    }
 
     class TestCaseYaml {
         var name: String? = null
         var enabled: Boolean? = null
         var properties: MutableList<PropertiesBox.PropertyYaml>? = ArrayList()
-
     }
 
     fun store() {
@@ -48,6 +52,40 @@ class TestCaseBox(
 
     companion object {
         const val FILE_NAME = "testcase.box.yaml"
+
+        private val stepFactory = HashMap<Class<out Any>, (Box, String) -> SuuTestStep>()
+        private val stepMapFactories = HashMap<Class<out Any>, (Box) -> SuuTestStep>()
+
+        init {
+            stepFactory[SuuTestStepPropertyTransfers::class.java] = { parent: Box, name: String ->
+                TestStepPropertyTransfersBox.create(parent, name)
+            }
+            stepFactory[SuuTestStepDelay::class.java] = { parent: Box, name: String ->
+                TestStepDelayBox.create(parent, name)
+            }
+            stepFactory[SuuTestStepRestRequest::class.java] = { parent: Box, name: String ->
+                TestStepRestRequestBox.create(parent, name)
+            }
+        }
+
+        fun <T : SuuTestStep> supported(type: Class<T>): Boolean = stepFactory.containsKey(type)
+
+
+        fun mapBox(box: Box): TestStepBox {
+            val load = box.load(TestStepBox.YAML_LOAD)
+            if (load is TestStepPropertyTransfersBox.PropertyTransfersYaml) {
+                return TestStepPropertyTransfersBox(box)
+            } else if (load is TestStepDelayBox.DelayYaml) {
+                return TestStepDelayBox(box)
+            } else if (load is TestStepRestRequestBox.RestRequestYaml) {
+                return TestStepRestRequestBox(box)
+            }
+            TODO(load.javaClass.toString())
+        }
+
+        fun <T : SuuTestStep> createStep(parent: Box, name: String, type: Class<T>): T {
+            return type.cast(stepFactory[type]!!(parent, name))
+        }
 
         fun create(parent: Box, name: String): TestCaseBox {
 

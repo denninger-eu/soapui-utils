@@ -19,7 +19,7 @@ class PropertiesDirect(
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun addOrUpdate(name: String, value: String) {
+    override fun addOrUpdate(name: String, value: String?) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
@@ -29,7 +29,7 @@ class PropertiesDirect(
 
         override val name: String = property.name
 
-        override var value: String
+        override var value: String?
             get() = property.value
             set(value) {
                 property.value = value

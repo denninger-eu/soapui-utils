@@ -6,11 +6,9 @@ import eu.k5.soapui.streams.model.SuProject
 import eu.k5.soapui.streams.model.rest.SuuRestResource
 import eu.k5.soapui.streams.model.rest.SuuRestMethod
 import eu.k5.soapui.streams.model.rest.SuuRestService
-import eu.k5.soapui.streams.model.test.SuuTestSuite
 import eu.k5.soapui.visitor.listener.Environment
 import eu.k5.soapui.streams.model.SuListener
-import eu.k5.soapui.streams.model.test.SuuTestCase
-import eu.k5.soapui.streams.model.test.SuuTestSuiteListener
+import eu.k5.soapui.streams.model.test.*
 
 fun SuProject.apply(listener: SuListener): SuProject {
     listener.enterProject(Environment(), this)
@@ -63,7 +61,7 @@ fun SuuRestMethod.apply(listener: SuuRestServiceListener) {
 
 fun SuuTestSuite.apply(listener: SuuTestSuiteListener) {
     val result = listener.enter(this)
-    if (result == VisitResult.TERMINATE){
+    if (result == VisitResult.TERMINATE) {
         return
     }
     for (testCase in this.testCases) {
@@ -73,7 +71,21 @@ fun SuuTestSuite.apply(listener: SuuTestSuiteListener) {
 }
 
 fun SuuTestCase.apply(listener: SuuTestSuiteListener) {
-    listener.enterTestCase(this)
+    val result = listener.enterTestCase(this)
+    if (result == VisitResult.TERMINATE) {
+        return
+    }
+
+    val testStepListener = listener.createTestStepListener()
+    for (step in this.steps) {
+        if (step is SuuTestStepPropertyTransfers) {
+            testStepListener.transfer(step)
+        } else if (step is SuuTestStepDelay){
+            testStepListener.delay(step)
+        } else if (step is SuuTestStepRestRequest){
+            testStepListener.restRequest(step)
+        }
+    }
 
     listener.exitTestCase(this)
 }
