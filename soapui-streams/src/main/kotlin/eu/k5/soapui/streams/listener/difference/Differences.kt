@@ -116,7 +116,9 @@ class Differences {
 
         TEST_CASE,
 
-        TEST_STEP
+        TEST_STEP,
+
+        ASSERTION
     }
 
     class Location(

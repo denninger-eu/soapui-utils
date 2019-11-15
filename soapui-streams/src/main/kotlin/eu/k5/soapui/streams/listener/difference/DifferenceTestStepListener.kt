@@ -1,6 +1,6 @@
 package eu.k5.soapui.streams.listener.difference
 
-import eu.k5.soapui.streams.model.SuProject
+import eu.k5.soapui.streams.listener.VisitResult
 import eu.k5.soapui.streams.model.test.*
 import eu.k5.soapui.visitor.listener.*
 
@@ -9,6 +9,7 @@ class DifferenceTestStepListener(
     private val differences: Differences
 ) : SuuTestStepListener {
 
+    private var restRequest: SuuTestStepRestRequest? = null
 
     private fun handleTestStep(ref: SuuTestStep, step: SuuTestStep) {
         differences.push(Differences.Type.TEST_STEP, step.name)
@@ -41,16 +42,19 @@ class DifferenceTestStepListener(
         differences.pop()
     }
 
-    override fun restRequest(step: SuuTestStepRestRequest) {
+    override fun enterRestRequest(step: SuuTestStepRestRequest): VisitResult {
         val ref = testCase.getStep(step.name)
         if (ref !is SuuTestStepRestRequest) {
             differences.addChange(Differences.Type.TEST_STEP, step.name)
-            return
+            return VisitResult.TERMINATE
         }
         handleTestStep(ref, step)
 
-        
+        restRequest = ref
+        return VisitResult.CONTINUE
+    }
 
+    override fun exitRestRequest(step: SuuTestStepRestRequest) {
     }
 
     override fun request(env: Environment, step: SuWsdlTestRequestStep) {
@@ -62,8 +66,9 @@ class DifferenceTestStepListener(
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun createAssertionListener(env: Environment, step: SuTestStep): SuAssertionListener? {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun createAssertionListener(): SuuAssertionListener {
+        return DifferenceAssertionListener(differences, restRequest!!.assertions)
     }
+
 
 }

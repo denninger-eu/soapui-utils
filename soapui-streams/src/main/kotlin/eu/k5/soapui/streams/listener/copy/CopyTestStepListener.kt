@@ -1,5 +1,6 @@
 package eu.k5.soapui.streams.listener.copy
 
+import eu.k5.soapui.streams.listener.VisitResult
 import eu.k5.soapui.streams.listener.resource.SyncListener
 import eu.k5.soapui.streams.model.test.*
 import eu.k5.soapui.visitor.listener.*
@@ -9,12 +10,23 @@ class CopyTestStepListener(
 ) : SuuTestStepListener {
 
 
-    override fun restRequest(refStep: SuuTestStepRestRequest) {
+    private var targetStep: SuuTestStepRestRequest? = null
+
+    override fun enterRestRequest(refStep: SuuTestStepRestRequest): VisitResult {
         val targetStep = target.createStep(refStep.name, SuuTestStepRestRequest::class.java)
         handleStep(refStep, targetStep)
 
+        this.targetStep = targetStep
 
+        return VisitResult.CONTINUE
+    }
 
+    override fun exitRestRequest(step: SuuTestStepRestRequest) {
+        targetStep = null
+    }
+
+    override fun createAssertionListener(): SuuAssertionListener {
+        return CopyAssertionListener(targetStep!!.assertions)
     }
 
     private fun handleStep(reference: SuuTestStep, target: SuuTestStep) {
@@ -59,12 +71,10 @@ class CopyTestStepListener(
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
+
     override fun gotoStep(env: Environment, step: SuWsdlGotoTestStep) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun createAssertionListener(env: Environment, step: SuTestStep): SuAssertionListener? {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
 
 }

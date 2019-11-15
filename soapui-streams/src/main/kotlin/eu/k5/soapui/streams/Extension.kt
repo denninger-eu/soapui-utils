@@ -8,6 +8,7 @@ import eu.k5.soapui.streams.model.rest.SuuRestMethod
 import eu.k5.soapui.streams.model.rest.SuuRestService
 import eu.k5.soapui.visitor.listener.Environment
 import eu.k5.soapui.streams.model.SuListener
+import eu.k5.soapui.streams.model.assertion.*
 import eu.k5.soapui.streams.model.test.*
 
 fun SuProject.apply(listener: SuListener): SuProject {
@@ -80,12 +81,45 @@ fun SuuTestCase.apply(listener: SuuTestSuiteListener) {
     for (step in this.steps) {
         if (step is SuuTestStepPropertyTransfers) {
             testStepListener.transfer(step)
-        } else if (step is SuuTestStepDelay){
+        } else if (step is SuuTestStepDelay) {
             testStepListener.delay(step)
-        } else if (step is SuuTestStepRestRequest){
-            testStepListener.restRequest(step)
+        } else if (step is SuuTestStepRestRequest) {
+            val result = testStepListener.enterRestRequest(step)
+            if (result != VisitResult.TERMINATE){
+                handleAssertions (step.assertions, step, testStepListener)
+                testStepListener.exitRestRequest(step)
+            }
         }
     }
 
     listener.exitTestCase(this)
+}
+
+private fun handleAssertions(
+    assertions: SuuAssertions,
+    step: SuuTestStep,
+    testStepListener: SuuTestStepListener
+) {
+    if (assertions.isEmpty()) {
+        return
+    }
+    val assertionListener = testStepListener.createAssertionListener()
+    for (assertion in assertions.assertions) {
+        if (assertion is SuuAssertionValidStatus) {
+            assertionListener.validStatus(assertion)
+        } else if (assertion is SuuAssertionInvalidStatus) {
+            assertionListener.invalidStatus(assertion)
+        } else if (assertion is SuuAssertionContains) {
+            assertionListener.contains(assertion)
+        } else if (assertion is SuuAssertionNotContains) {
+            assertionListener.notContains(assertion)
+        } else if (assertion is SuuAssertionScript) {
+            assertionListener.script(assertion)
+        } else if (assertion is SuuAssertionDuration) {
+            assertionListener.duration(assertion)
+        } else {
+            TODO(assertion.javaClass.toString())
+        }
+    }
+    assertionListener.exitAssertions(assertions)
 }

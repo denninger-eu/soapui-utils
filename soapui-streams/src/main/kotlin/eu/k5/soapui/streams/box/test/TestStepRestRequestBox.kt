@@ -9,12 +9,12 @@ class TestStepRestRequestBox(
     private val yaml: TestStepRestRequestBox.RestRequestYaml = box.load(
         TestStepBox.YAML_LOAD,
         RestRequestYaml::class.java
-    )
+    ) ?: RestRequestYaml()
 
 ) : TestStepBox(yaml), SuuTestStepRestRequest {
 
     private val assertionsYaml: AssertionsBox.AssertionsYaml =
-        box.load(YAML_LOAD, AssertionsBox.AssertionsYaml::class.java, "assertions")
+        box.load(YAML_LOAD, AssertionsBox.AssertionsYaml::class.java, "assertions") ?: AssertionsBox.AssertionsYaml()
 
 
     override val assertions: AssertionsBox = AssertionsBox(assertionsYaml) { storeAssertions() }

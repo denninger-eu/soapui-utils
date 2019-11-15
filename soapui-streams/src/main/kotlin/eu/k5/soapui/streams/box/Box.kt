@@ -191,17 +191,17 @@ class Box(
         return yaml.load("")
     }
 
-    fun <T> load(yaml: Yaml, type: Class<T>): T {
+    fun <T> load(yaml: Yaml, type: Class<T>): T? {
         return load(yaml, type, "main")
     }
 
-    fun <T> load(yaml: Yaml, type: Class<T>, section: String): T {
+    fun <T> load(yaml: Yaml, type: Class<T>, section: String): T? {
 
         val section = extractSection(section)
         if (section != null) {
             return type.cast(yaml.load(section))
         }
-        return yaml.load("")
+        return null
     }
 
     fun write(yaml: Yaml, instance: Any, section: String): Box {
@@ -245,7 +245,7 @@ class Box(
     companion object {
 
         private val NUMBER = Pattern.compile("(?<number>[0-9]{1,5}).*")
-        private val SECTION_PATTERN = Pattern.compile("### (?<section>[a-zA-Z0-9]{1,8})")
+        private val SECTION_PATTERN = Pattern.compile("### (?<section>[a-zA-Z0-9]{1,16})")
 
         val options: DumperOptions
             get() {

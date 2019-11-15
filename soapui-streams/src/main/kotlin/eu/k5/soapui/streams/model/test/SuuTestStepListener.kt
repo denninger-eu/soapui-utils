@@ -1,5 +1,7 @@
 package eu.k5.soapui.streams.model.test
 
+import eu.k5.soapui.streams.listener.VisitResult
+import eu.k5.soapui.streams.model.assertion.SuuAssertions
 import eu.k5.soapui.visitor.listener.*
 
 
@@ -10,7 +12,9 @@ interface SuuTestStepListener {
 
     fun request(env: Environment, step: SuWsdlTestRequestStep)
 
-    fun restRequest(step: SuuTestStepRestRequest)
+    fun enterRestRequest(step: SuuTestStepRestRequest): VisitResult
+    fun exitRestRequest(step: SuuTestStepRestRequest)
+
 
     fun delay(step: SuuTestStepDelay)
 
@@ -20,11 +24,20 @@ interface SuuTestStepListener {
 
     }
 
-    fun createAssertionListener(env: Environment, step: SuTestStep): SuAssertionListener?
+    fun createAssertionListener(): SuuAssertionListener
 
     companion object {
         val NO_OP = object : SuuTestStepListener {
-            override fun restRequest(step: SuuTestStepRestRequest) {
+            override fun exitRestRequest(step: SuuTestStepRestRequest) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun createAssertionListener(): SuuAssertionListener {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+
+            override fun enterRestRequest(step: SuuTestStepRestRequest): VisitResult {
                 TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
 
@@ -43,9 +56,6 @@ interface SuuTestStepListener {
             override fun gotoStep(env: Environment, step: SuWsdlGotoTestStep) {
             }
 
-            override fun createAssertionListener(env: Environment, step: SuTestStep): SuAssertionListener? {
-                return SuAssertionListener.NO_OP
-            }
 
         }
     }
