@@ -7,10 +7,14 @@ import eu.k5.soapui.streams.direct.model.rest.RestRequestDirect
 import eu.k5.soapui.streams.model.assertion.SuuAssertions
 import eu.k5.soapui.streams.model.rest.SuuRestRequest
 import eu.k5.soapui.streams.model.test.SuuTestStepRestRequest
+import java.util.*
 
 class TestStepRestRequestDirect(
     private val restRequestStep: RestTestRequestStep
-) : AbstractTestStepDirect(restRequestStep), SuuTestStepRestRequest {
+) : AbstractTestStepDirect(
+    restRequestStep,
+    Arrays.asList("Endpoint", "Username", "Password", "Domain", "Request", "ResponseAsXml", "Response", "RawRequest")
+), SuuTestStepRestRequest {
 
 
     init {

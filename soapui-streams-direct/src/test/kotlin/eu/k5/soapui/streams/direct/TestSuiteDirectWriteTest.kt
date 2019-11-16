@@ -14,6 +14,7 @@ class TestSuiteDirectWriteTest : AbstractDirectTest() {
         val box = loadFromBox("testsuite")
 
         val project = DirectLoader().newProject().apply(SyncListener(box)) as ProjectDirect
+        ProjectDirectTest.storeAndReopen("withsync", project)
         SuuAssert().assertEquals(project, box)
 
         val storedProject = ProjectDirectTest.storeAndReopen("withsync", project)

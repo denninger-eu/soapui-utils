@@ -7,8 +7,7 @@ import com.eviware.soapui.impl.wsdl.teststeps.WsdlDelayTestStep
 import com.eviware.soapui.model.testsuite.TestStep
 import eu.k5.soapui.streams.direct.model.PropertiesDirect
 import eu.k5.soapui.streams.model.SuuProperties
-import eu.k5.soapui.streams.model.test.SuuTestCase
-import eu.k5.soapui.streams.model.test.SuuTestStep
+import eu.k5.soapui.streams.model.test.*
 
 class TestCaseDirect(
     private val testCase: WsdlTestCase
@@ -35,9 +34,22 @@ class TestCaseDirect(
 
 
     override val properties: SuuProperties
-        get() = PropertiesDirect(testCase)
+        get() = PropertiesDirect(testCase) { testCase.addProperty(it) }
 
-    override fun <T : SuuTestStep> createStep(name: String, java: Class<T>): T {
+    override fun <T : SuuTestStep> createStep(name: String, type: Class<T>): T {
+        if (type == SuuTestStepPropertyTransfers::class.java) {
+            return TestStepPropertyTransfersDirect(
+                testCase.addTestStep(
+                    "transfer",
+                    name
+                ) as PropertyTransfersTestStep
+            ) as T
+        } else if (type == SuuTestStepDelay::class.java) {
+            return TestStepDelayDirect(testCase.addTestStep("delay", name) as WsdlDelayTestStep) as T
+        } else if (type == SuuTestStepRestRequest::class.java) {
+            return TestStepRestRequestDirect(testCase.addTestStep("restrequest", name) as RestTestRequestStep) as T
+        }
+
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

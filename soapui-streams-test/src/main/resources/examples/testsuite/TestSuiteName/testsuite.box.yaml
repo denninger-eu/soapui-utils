@@ -1,0 +1,5 @@
+!testSuite
+name: TestSuiteName
+properties:
+- name: TestSuitePropertyName
+  value: TestSuitePropertyValue

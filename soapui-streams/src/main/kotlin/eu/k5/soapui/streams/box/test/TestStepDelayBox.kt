@@ -12,7 +12,7 @@ class TestStepDelayBox(
     override var delay: Int
         get() = yaml.delay ?: 1000
         set(value) {
-            if (yaml.delay == value) {
+            if (yaml.delay != value) {
                 yaml.delay = value
                 store()
             }

@@ -25,9 +25,8 @@ class TestSuiteDirect(
         }
 
 
-
     override val properties: SuuProperties
-        get() = PropertiesDirect(testSuite)
+        get() = PropertiesDirect(testSuite) { testSuite.addProperty(it) }
 
 
     override val testCases: List<TestCaseDirect>
@@ -37,9 +36,6 @@ class TestSuiteDirect(
             )
         }
 
-    override fun createTestCase(name: String): SuuTestCase {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
+    override fun createTestCase(name: String): SuuTestCase = TestCaseDirect(testSuite.addNewTestCase(name))
 
 }

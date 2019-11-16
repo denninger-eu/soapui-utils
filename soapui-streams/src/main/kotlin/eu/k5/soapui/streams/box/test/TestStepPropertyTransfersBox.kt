@@ -1,7 +1,6 @@
 package eu.k5.soapui.streams.box.test
 
 import eu.k5.soapui.streams.box.Box
-import eu.k5.soapui.streams.box.YamlContext
 import eu.k5.soapui.streams.model.test.SuuPropertyTransfer
 import eu.k5.soapui.streams.model.test.SuuTestStepPropertyTransfers
 
@@ -47,9 +46,9 @@ class TestStepPropertyTransfersBox(
                     store()
                 }
             }
-        override val source: SuuPropertyTransfer.PropertyReference
+        override val source: SuuPropertyTransfer.Transfer
             get() = PropertyReferenceBox(yaml.source!!, store)
-        override val target: SuuPropertyTransfer.PropertyReference
+        override val target: SuuPropertyTransfer.Transfer
             get() = PropertyReferenceBox(yaml.target!!, store)
 
     }
@@ -58,7 +57,7 @@ class TestStepPropertyTransfersBox(
     class PropertyReferenceBox(
         private val yaml: PropertyReferenceYaml,
         private val store: () -> Unit
-    ) : SuuPropertyTransfer.PropertyReference {
+    ) : SuuPropertyTransfer.Transfer {
 
 
         override var expression: String?

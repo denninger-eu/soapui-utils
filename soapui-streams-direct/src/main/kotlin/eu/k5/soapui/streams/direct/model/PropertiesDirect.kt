@@ -4,15 +4,16 @@ import com.eviware.soapui.model.TestPropertyHolder
 import com.eviware.soapui.model.testsuite.TestProperty
 import eu.k5.soapui.streams.model.SuuProperties
 import eu.k5.soapui.streams.model.SuuProperty
-import eu.k5.soapui.streams.model.rest.SuuRestParameter
 
 class PropertiesDirect(
-    private val propertyHolder: TestPropertyHolder
+    private val propertyHolder: TestPropertyHolder,
+    private val filter: List<String> = ArrayList(),
+    private val addProperty: (String) -> TestProperty
 ) : SuuProperties {
 
 
     override val properties: List<SuuProperty>
-        get() = propertyHolder.propertyList.map { PropertyDirect(it) }
+        get() = propertyHolder.propertyList.filter { !filter.contains(it.name) }.map { PropertyDirect(it) }
 
 
     override fun remove(name: String) {
@@ -20,7 +21,11 @@ class PropertiesDirect(
     }
 
     override fun addOrUpdate(name: String, value: String?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        var property = byName(name)
+        if (property == null) {
+            property = PropertyDirect(addProperty(name))
+        }
+        property.value = value
     }
 
     class PropertyDirect(

@@ -28,7 +28,7 @@ class ProjectDirect(
         }
 
     override val properties: SuuProperties
-        get() = PropertiesDirect(wsdlProject)
+        get() = PropertiesDirect(wsdlProject) { wsdlProject.addProperty(it) }
 
 
     override val restServices: List<SuuRestService>

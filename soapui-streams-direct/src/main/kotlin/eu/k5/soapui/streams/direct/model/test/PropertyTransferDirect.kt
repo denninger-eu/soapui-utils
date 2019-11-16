@@ -28,10 +28,11 @@ class PropertyTransferDirect(
 
     class SourceReference(
         private val propertyTransfer: PropertyTransfer
-    ) : SuuPropertyTransfer.PropertyReference {
+    ) : SuuPropertyTransfer.Transfer {
         override var propertyName: String?
             get() = propertyTransfer.sourcePropertyName
             set(value) {
+                //val name = propertyTransfer.sourceStep.properties[value]!!.name
                 propertyTransfer.sourcePropertyName = value
             }
         override var stepName: String?
@@ -55,7 +56,7 @@ class PropertyTransferDirect(
 
     class TargetReference(
         private val propertyTransfer: PropertyTransfer
-    ) : SuuPropertyTransfer.PropertyReference {
+    ) : SuuPropertyTransfer.Transfer {
         override var expression: String?
             get() = propertyTransfer.targetPath
             set(value) {

@@ -6,20 +6,11 @@ interface SuuPropertyTransfer {
 
     var enabled: Boolean
 
-    val source: PropertyReference
-    val target: PropertyReference
-/*
-    var sourcePath: String?
-    var sourceType: String?
-    var sourceLanguage: Language
+    val source: Transfer
 
-    var targetPath: String?
-    var targetType: String?
-    var targetLanguage: Language
-*/
+    val target: Transfer
 
-
-    interface PropertyReference {
+    interface Transfer {
         var expression: String?
 
         var propertyName: String?

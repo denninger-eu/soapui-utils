@@ -1,0 +1,5 @@
+!testCase
+name: TestCaseName
+properties:
+- name: TestCasePropertyName
+  value: TestCasePropertyValue

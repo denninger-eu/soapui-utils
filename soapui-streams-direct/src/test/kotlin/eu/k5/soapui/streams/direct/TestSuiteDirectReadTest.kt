@@ -70,7 +70,7 @@ class TestSuiteDirectReadTest : AbstractDirectTest() {
         assertTrue(delayStep.enabled)
         assertEquals("DelayStepName", delayStep.name)
         assertEquals("DelayStepDescription", delayStep.description)
-        assertEquals(1000, delayStep.delay)
+        assertEquals(2000, delayStep.delay)
 
         val delayStepDisabled = testCase.getStep("DelayStepDisabled")
         assertFalse(delayStepDisabled!!.enabled)

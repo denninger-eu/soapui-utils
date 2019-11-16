@@ -1,0 +1,65 @@
+!restRequestStep
+description: ''
+name: restRequestStep
+properties:
+- name: Endpoint
+- name: Username
+- name: Password
+- name: Domain
+- name: Request
+  value: content
+- name: ResponseAsXml
+- name: Response
+- name: RawRequest
+### assertions
+!assertions
+assertions:
+- !invalidStatus
+  name: invalidCodes
+  statusCodes: '400'
+- !validStatus
+  name: validCodes
+  statusCodes: '200'
+- !script
+  name: script
+  script: scriptValue
+- !duration
+  name: sla
+  time: '200'
+- !contains
+  caseSensitive: false
+  content: contentValue
+  name: contains
+  regexp: true
+- !notContains
+  caseSensitive: true
+  content: notContainsContent
+  name: notContains
+  regexp: false
+- !jsonPathMatch
+  expectedValue: jsonPathExpectedResultValue
+  expression: jsonPathExpressionValue
+  name: jsonPath
+- !jsonPathCount
+  expectedValue: jsonPathCountExpectedResultValue
+  expression: jsonPathCountExpressionValue
+  name: jsonPathCount
+- !jsonPathRegEx
+  expectedValue: jsonPathRegExExpectedResultValue
+  expression: jsonPathRegExExpressionValue
+  name: jsonPathRegEx
+  regularExpression: jsonPathRegExRegExpValue
+- !xpath
+  allowWildcards: false
+  expectedValue: xpathExpectedResult
+  expression: xpathValue
+  ignoreComments: false
+  ignoreNamespaceDifferences: false
+  name: xpath
+- !xquery
+  allowWildcards: true
+  expectedValue: xqueryExpectedResult
+  expression: xqueryExpressionValue
+  ignoreComments: true
+  ignoreNamespaceDifferences: true
+  name: xquery

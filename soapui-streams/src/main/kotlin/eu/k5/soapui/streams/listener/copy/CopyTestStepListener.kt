@@ -51,13 +51,13 @@ class CopyTestStepListener(
             target.enabled = refTransfer.enabled
             target.source.language = refTransfer.source.language
             target.source.expression = refTransfer.source.expression
-            target.source.propertyName = refTransfer.source.propertyName
             target.source.stepName = refTransfer.source.stepName
+            target.source.propertyName = refTransfer.source.propertyName
 
             target.target.language = refTransfer.target.language
             target.target.expression = refTransfer.target.expression
-            target.target.propertyName = refTransfer.target.propertyName
             target.target.stepName = refTransfer.target.stepName
+            target.target.propertyName = refTransfer.target.propertyName
         }
     }
 

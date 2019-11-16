@@ -1,0 +1,24 @@
+!propertyTransfers
+description: PropertyTransferDescription
+name: PropertyTransferName
+transfers:
+- name: transferName
+  source:
+    expression: sourceTransferExpression
+    language: XPATH
+    propertyName: ProjectPropertyName
+    stepName: '#Project#'
+  target:
+    expression: targetTransferExpression
+    language: JSONPATH
+    propertyName: TestSuitePropertyName
+    stepName: '#TestSuite#'
+- enabled: false
+  name: transferNameDisabled
+  source:
+    expression: ''
+    language: XPATH
+  target:
+    expression: ''
+    language: XPATH
+    stepName: restRequestStep

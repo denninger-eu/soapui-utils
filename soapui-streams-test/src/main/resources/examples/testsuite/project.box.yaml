@@ -1,2 +1,8 @@
-name: "projectName"
-description: "projectDescription"
+!project
+description: ProjectDescription
+name: TestSuiteProject
+properties:
+- name: ProjectPropertyName
+  value: ProjectPropertyValue
+- name: Property2
+  value: Value2

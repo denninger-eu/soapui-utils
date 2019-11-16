@@ -1,13 +1,14 @@
 package eu.k5.soapui.streams.direct.model.test
 
 import com.eviware.soapui.impl.wsdl.teststeps.WsdlTestStep
-import com.eviware.soapui.model.testsuite.TestStep
 import eu.k5.soapui.streams.direct.model.PropertiesDirect
 import eu.k5.soapui.streams.model.SuuProperties
 import eu.k5.soapui.streams.model.test.SuuTestStep
+import java.lang.UnsupportedOperationException
 
 abstract class AbstractTestStepDirect(
-    val testStep: WsdlTestStep
+    val testStep: WsdlTestStep,
+    val propertyFilter: List<String>
 ) : SuuTestStep {
 
     override var enabled: Boolean
@@ -19,7 +20,7 @@ abstract class AbstractTestStepDirect(
     override var name: String
         get() = testStep.name
         set(value) {
-            testStep.name = name
+            testStep.name = value
         }
 
     override var description: String?
@@ -30,7 +31,7 @@ abstract class AbstractTestStepDirect(
 
 
     override val properties: SuuProperties
-        get() = PropertiesDirect(testStep)
+        get() = PropertiesDirect(testStep, propertyFilter) { throw UnsupportedOperationException(it) }
 
 
 }
