@@ -10,19 +10,12 @@ interface SuuTestStepListener {
     fun transfer(step: SuuTestStepPropertyTransfers)
 
 
-    fun request(env: Environment, step: SuWsdlTestRequestStep)
-
     fun enterRestRequest(step: SuuTestStepRestRequest): VisitResult
     fun exitRestRequest(step: SuuTestStepRestRequest)
 
 
     fun delay(step: SuuTestStepDelay)
 
-    fun gotoStep(env: Environment, step: SuWsdlGotoTestStep)
-
-    fun unsupported(env: Environment, step: SuTestStep) {
-
-    }
 
     fun createAssertionListener(): SuuAssertionListener
 
@@ -47,13 +40,6 @@ interface SuuTestStepListener {
 
             override fun delay(step: SuuTestStepDelay) {
                 TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
-
-            override fun request(env: Environment, step: SuWsdlTestRequestStep) {
-            }
-
-
-            override fun gotoStep(env: Environment, step: SuWsdlGotoTestStep) {
             }
 
 

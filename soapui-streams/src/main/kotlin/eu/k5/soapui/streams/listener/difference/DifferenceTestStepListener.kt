@@ -57,14 +57,6 @@ class DifferenceTestStepListener(
     override fun exitRestRequest(step: SuuTestStepRestRequest) {
     }
 
-    override fun request(env: Environment, step: SuWsdlTestRequestStep) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-
-    override fun gotoStep(env: Environment, step: SuWsdlGotoTestStep) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
 
     override fun createAssertionListener(): SuuAssertionListener {
         return DifferenceAssertionListener(differences, restRequest!!.assertions)

@@ -27,6 +27,6 @@ class TestStepRestRequestDirect(
 
 
     override val assertions: SuuAssertions
-        get() = AssertionsDirect(restRequestStep.assertionList)
+        get() = AssertionsDirect(restRequestStep.assertionList) { restRequestStep.addAssertion(it) }
 
 }

@@ -41,6 +41,10 @@ class TestCaseBox(
         return type.cast(createStep(box, name, type))
     }
 
+    override fun createRestRequestStep(name: String): SuuTestStepRestRequest {
+        return createStep(name, SuuTestStepRestRequest::class.java)
+    }
+
     class TestCaseYaml {
         var name: String? = null
         var enabled: Boolean? = null

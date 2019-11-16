@@ -19,7 +19,7 @@ class AssertionContainsDirect(
     override var regexp: Boolean
         get() = containsAssertion.isUseRegEx
         set(value) {
-            if (containsAssertion.isUseRegEx) {
+            if (containsAssertion.isUseRegEx != value) {
                 containsAssertion.isUseRegEx = value
             }
         }

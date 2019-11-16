@@ -6,7 +6,6 @@ import eu.k5.soapui.visitor.listener.Environment
 import eu.k5.soapui.streams.model.SuListener
 import eu.k5.soapui.streams.model.SuuProperties
 import eu.k5.soapui.streams.model.test.SuuTestSuiteListener
-import eu.k5.soapui.visitor.listener.SuWsdlInterfaceListener
 
 class DifferenceListener(
     private val referenceProject: SuProject
@@ -29,9 +28,6 @@ class DifferenceListener(
 
     }
 
-    override fun createWsdlInterfaceListener(): SuWsdlInterfaceListener? {
-        return SuWsdlInterfaceListener.NO_OP
-    }
 
     override fun createResourceListener(): SuuRestServiceListener {
         return RestServiceDifferenceListener(referenceProject, differences)

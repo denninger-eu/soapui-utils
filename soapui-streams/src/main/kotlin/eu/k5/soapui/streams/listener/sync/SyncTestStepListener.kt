@@ -30,13 +30,5 @@ class SyncTestStepListener(
     override fun delay(step: SuuTestStepDelay) {
     }
 
-    override fun request(env: Environment, step: SuWsdlTestRequestStep) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun gotoStep(env: Environment, step: SuWsdlGotoTestStep) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
 
 }

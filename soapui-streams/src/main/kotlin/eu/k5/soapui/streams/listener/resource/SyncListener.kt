@@ -7,9 +7,7 @@ import eu.k5.soapui.streams.model.SuProject
 import eu.k5.soapui.visitor.listener.Environment
 import eu.k5.soapui.streams.model.SuListener
 import eu.k5.soapui.streams.model.SuuProperties
-import eu.k5.soapui.streams.model.rest.SuuRestParameters
 import eu.k5.soapui.streams.model.test.SuuTestSuiteListener
-import eu.k5.soapui.visitor.listener.SuWsdlInterfaceListener
 import kotlin.collections.ArrayList
 
 class SyncListener(
@@ -57,9 +55,7 @@ class SyncListener(
         }
     }
 
-    override fun createWsdlInterfaceListener(): SuWsdlInterfaceListener? {
-        return SuWsdlInterfaceListener.NO_OP
-    }
+
 
     override fun createResourceListener(): SuuRestServiceListener {
         return RestServiceSyncListener(

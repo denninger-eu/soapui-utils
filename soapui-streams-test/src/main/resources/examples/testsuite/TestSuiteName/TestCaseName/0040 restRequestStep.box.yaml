@@ -1,16 +1,6 @@
 !restRequestStep
 description: ''
 name: restRequestStep
-properties:
-- name: Endpoint
-- name: Username
-- name: Password
-- name: Domain
-- name: Request
-  value: content
-- name: ResponseAsXml
-- name: Response
-- name: RawRequest
 ### assertions
 !assertions
 assertions:

@@ -6,9 +6,6 @@ import eu.k5.soapui.visitor.listener.*
 
 interface SuuTestSuiteListener {
 
-    fun unsupportedTestSuite(env: Environment, suite: SuTestSuite) {
-
-    }
 
     fun enter(suite: SuuTestSuite): VisitResult
     fun exit(suite: SuuTestSuite)
@@ -17,9 +14,7 @@ interface SuuTestSuiteListener {
     fun exitTestCase(testCase: SuuTestCase)
 
 
-    fun unsupportedTestCase(env: Environment, testCase: SuTestCase) {
 
-    }
 
 
     fun createTestStepListener(): SuuTestStepListener

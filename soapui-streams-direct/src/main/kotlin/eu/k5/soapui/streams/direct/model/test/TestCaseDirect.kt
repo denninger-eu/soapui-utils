@@ -1,9 +1,12 @@
 package eu.k5.soapui.streams.direct.model.test
 
+import com.eviware.soapui.config.impl.TestStepConfigImpl
+import com.eviware.soapui.impl.rest.RestService
 import com.eviware.soapui.impl.wsdl.testcase.WsdlTestCase
 import com.eviware.soapui.impl.wsdl.teststeps.PropertyTransfersTestStep
 import com.eviware.soapui.impl.wsdl.teststeps.RestTestRequestStep
 import com.eviware.soapui.impl.wsdl.teststeps.WsdlDelayTestStep
+import com.eviware.soapui.impl.wsdl.teststeps.registry.RestRequestStepFactory
 import com.eviware.soapui.model.testsuite.TestStep
 import eu.k5.soapui.streams.direct.model.PropertiesDirect
 import eu.k5.soapui.streams.model.SuuProperties
@@ -49,9 +52,26 @@ class TestCaseDirect(
         } else if (type == SuuTestStepRestRequest::class.java) {
             return TestStepRestRequestDirect(testCase.addTestStep("restrequest", name) as RestTestRequestStep) as T
         }
-
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
+
+    override fun createRestRequestStep(name: String): SuuTestStepRestRequest {
+        val filterIsInstance = testCase.project.interfaceList.filterIsInstance(RestService::class.java)
+        val restService = filterIsInstance[0]
+
+        val resource = restService.resourceList[0]
+        val method = resource.restMethodList[0]
+        val request = method.requestList[0]
+
+
+        val config = RestRequestStepFactory.createConfig(request, name)
+        val testStep = testCase.addTestStep(config)
+
+        return TestStepRestRequestDirect(testStep as RestTestRequestStep)
+
+
+    }
+
 
     companion object {
         private val stepFactories = HashMap<Class<out Any>, (TestStep) -> SuuTestStep>()

@@ -16,4 +16,6 @@ interface SuuTestCase {
 
     fun <T : SuuTestStep> createStep(name: String, java: Class<T>): T
 
+    fun createRestRequestStep(name: String): SuuTestStepRestRequest
+
 }

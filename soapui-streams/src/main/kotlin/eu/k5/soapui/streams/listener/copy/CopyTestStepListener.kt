@@ -13,11 +13,11 @@ class CopyTestStepListener(
     private var targetStep: SuuTestStepRestRequest? = null
 
     override fun enterRestRequest(refStep: SuuTestStepRestRequest): VisitResult {
-        val targetStep = target.createStep(refStep.name, SuuTestStepRestRequest::class.java)
+
+
+        val targetStep = target.createRestRequestStep(refStep.name)
         handleStep(refStep, targetStep)
-
         this.targetStep = targetStep
-
         return VisitResult.CONTINUE
     }
 
@@ -65,15 +65,6 @@ class CopyTestStepListener(
         val targetStep = target.createStep(step.name, SuuTestStepDelay::class.java)
         handleStep(step, targetStep)
         targetStep.delay = step.delay
-    }
-
-    override fun request(env: Environment, step: SuWsdlTestRequestStep) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-
-    override fun gotoStep(env: Environment, step: SuWsdlGotoTestStep) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
 
