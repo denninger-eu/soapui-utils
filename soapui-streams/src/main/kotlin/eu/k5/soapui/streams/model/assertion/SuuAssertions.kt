@@ -19,4 +19,13 @@ interface SuuAssertions {
     fun createDuration(name: String): SuuAssertionDuration
     fun createScript(name: String): SuuAssertionScript
 
+
+    fun createJsonPathExists(name: String): SuuAssertionJsonPathExists
+    fun createJsonPathMatch(name: String): SuuAssertionJsonPathMatch
+    fun createJsonPathCount(name: String): SuuAssertionJsonPathCount
+    fun createJsonPathRegEx(name: String): SuuAssertionJsonPathRegEx
+
+    fun createXPath(name: String): SuuAssertionXPath
+    fun createXQuery(name: String): SuuAssertionXQuery
+
 }

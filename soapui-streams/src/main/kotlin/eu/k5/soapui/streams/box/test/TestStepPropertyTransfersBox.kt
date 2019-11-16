@@ -1,6 +1,7 @@
 package eu.k5.soapui.streams.box.test
 
 import eu.k5.soapui.streams.box.Box
+import eu.k5.soapui.streams.box.YamlContext
 import eu.k5.soapui.streams.model.test.SuuPropertyTransfer
 import eu.k5.soapui.streams.model.test.SuuTestStepPropertyTransfers
 
@@ -121,7 +122,7 @@ class TestStepPropertyTransfersBox(
 
 
     override fun store() {
-        box.write(YAML_DUMPER, yaml)
+        box.write(yaml)
     }
 
     companion object {

@@ -1,20 +1,22 @@
 package eu.k5.soapui.streams.box.test
 
 import eu.k5.soapui.streams.box.Box
+import eu.k5.soapui.streams.box.YamlContext
 import eu.k5.soapui.streams.model.rest.SuuRestRequest
 import eu.k5.soapui.streams.model.test.SuuTestStepRestRequest
 
 class TestStepRestRequestBox(
     private val box: Box,
     private val yaml: TestStepRestRequestBox.RestRequestYaml = box.load(
-        TestStepBox.YAML_LOAD,
+        YamlContext.YAML_LOAD,
         RestRequestYaml::class.java
     ) ?: RestRequestYaml()
 
 ) : TestStepBox(yaml), SuuTestStepRestRequest {
 
     private val assertionsYaml: AssertionsBox.AssertionsYaml =
-        box.load(YAML_LOAD, AssertionsBox.AssertionsYaml::class.java, "assertions") ?: AssertionsBox.AssertionsYaml()
+        box.load(YamlContext.YAML_LOAD, AssertionsBox.AssertionsYaml::class.java, "assertions")
+            ?: AssertionsBox.AssertionsYaml()
 
 
     override val assertions: AssertionsBox = AssertionsBox(assertionsYaml) { storeAssertions() }
@@ -25,11 +27,11 @@ class TestStepRestRequestBox(
 
 
     override fun store() {
-        box.write(YAML_DUMPER, yaml)
+        box.write(yaml)
     }
 
     fun storeAssertions() {
-        box.write(YAML_DUMPER, assertionsYaml, "assertions")
+        box.write(assertionsYaml, "assertions")
     }
 
     class RestRequestYaml : TestStepYaml() {

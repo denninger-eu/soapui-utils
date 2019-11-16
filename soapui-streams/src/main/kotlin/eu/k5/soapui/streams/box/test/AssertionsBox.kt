@@ -203,6 +203,154 @@ class AssertionsBox(
             }
     }
 
+    abstract class AssertionJsonPathYaml<T : AssertionBox> : AssertionYaml<T>() {
+        var expression: String? = null
+        var expectedValue: String? = null
+    }
+
+    open class AssertionJsonPathBox<T : AssertionBox>(
+        private val yaml: AssertionJsonPathYaml<T>,
+        private val store: () -> Unit
+    ) : AssertionBox(yaml, store), SuuAssertionJsonPath {
+
+        override var expression: String?
+            get() = yaml.expression
+            set(value) {
+                if (yaml.expression != value) {
+                    yaml.expression = value
+                    store()
+                }
+            }
+        override var expectedContent: String?
+            get() = yaml.expectedValue
+            set(value) {
+                if (yaml.expectedValue != value) {
+                    yaml.expectedValue = value
+                    store()
+                }
+            }
+    }
+
+    class AssertionJsonPathExistsYaml : AssertionJsonPathYaml<AssertionJsonPathExistsBox>() {
+        override fun asBox(store: () -> Unit): AssertionJsonPathExistsBox = AssertionJsonPathExistsBox(this, store)
+    }
+
+    class AssertionJsonPathExistsBox(
+        yaml: AssertionJsonPathExistsYaml, store: () -> Unit
+    ) : AssertionJsonPathBox<AssertionJsonPathExistsBox>(yaml, store), SuuAssertionJsonPathExists
+
+
+    class AssertionJsonPathCountYaml : AssertionJsonPathYaml<AssertionJsonPathCountBox>() {
+        override fun asBox(store: () -> Unit): AssertionJsonPathCountBox = AssertionJsonPathCountBox(this, store)
+    }
+
+    class AssertionJsonPathCountBox(
+        yaml: AssertionJsonPathCountYaml, store: () -> Unit
+    ) : AssertionJsonPathBox<AssertionJsonPathCountBox>(yaml, store), SuuAssertionJsonPathCount
+
+
+    class AssertionJsonPathMatchYaml : AssertionJsonPathYaml<AssertionJsonPathMatchBox>() {
+        override fun asBox(store: () -> Unit): AssertionJsonPathMatchBox = AssertionJsonPathMatchBox(this, store)
+    }
+
+    class AssertionJsonPathMatchBox(
+        yaml: AssertionJsonPathMatchYaml, store: () -> Unit
+    ) : AssertionJsonPathBox<AssertionJsonPathMatchBox>(yaml, store), SuuAssertionJsonPathMatch
+
+
+    class AssertionJsonPathRegExYaml : AssertionJsonPathYaml<AssertionJsonPathRegExBox>() {
+        var regularExpression: String? = null
+        override fun asBox(store: () -> Unit): AssertionJsonPathRegExBox = AssertionJsonPathRegExBox(this, store)
+    }
+
+    class AssertionJsonPathRegExBox(
+        private val yaml: AssertionJsonPathRegExYaml,
+        private val store: () -> Unit
+    ) : AssertionJsonPathBox<AssertionJsonPathRegExBox>(yaml, store), SuuAssertionJsonPathRegEx {
+        override var regularExpression: String?
+            get() = yaml.regularExpression
+            set(value) {
+                if (yaml.regularExpression != value) {
+                    yaml.regularExpression = value
+                    store();
+                }
+            }
+    }
+
+
+    abstract class AssertionXmlContains<T : AssertionBox> : AssertionYaml<T>() {
+        var expression: String? = null
+        var expectedValue: String? = null
+        var allowWildcards: Boolean? = null
+        var ignoreNamespaceDifferences: Boolean? = null
+        var ignoreComments: Boolean? = null
+    }
+
+    open class AssertionXmlContainsBox<T : AssertionBox>(
+        private val yaml: AssertionXmlContains<T>,
+        private val store: () -> Unit
+    ) : AssertionBox(yaml, store), SuuAssertionXmlContains {
+
+        override var expression: String?
+            get() = yaml.expression
+            set(value) {
+                if (yaml.expression != value) {
+                    yaml.expression = value
+                    store()
+                }
+            }
+        override var expectedContent: String?
+            get() = yaml.expectedValue
+            set(value) {
+                if (yaml.expectedValue != value) {
+                    yaml.expectedValue = value
+                    store()
+                }
+            }
+
+        override var allowWildcards: Boolean
+            get() = yaml.allowWildcards ?: false
+            set(value) {
+                if (yaml.allowWildcards != value) {
+                    yaml.allowWildcards = value
+                    store()
+                }
+            }
+        override var ignoreNamespaceDifferences: Boolean
+            get() = yaml.ignoreNamespaceDifferences ?: false
+            set(value) {
+                if (yaml.ignoreNamespaceDifferences != value) {
+                    yaml.ignoreNamespaceDifferences = value
+                    store()
+                }
+            }
+        override var ignoreComments: Boolean
+            get() = yaml.ignoreComments ?: false
+            set(value) {
+                if (yaml.ignoreComments != value) {
+                    yaml.ignoreComments = value
+                    store()
+                }
+            }
+
+    }
+
+    class AssertionXPathYaml : AssertionXmlContains<AssertionXPathBox>() {
+        override fun asBox(store: () -> Unit): AssertionXPathBox = AssertionXPathBox(this, store)
+    }
+
+    class AssertionXPathBox(
+        yaml: AssertionXPathYaml, store: () -> Unit
+    ) : AssertionXmlContainsBox<AssertionXPathBox>(yaml, store), SuuAssertionXPath
+
+    class AssertionXQueryYaml : AssertionXmlContains<AssertionXQueryBox>() {
+        override fun asBox(store: () -> Unit): AssertionXQueryBox = AssertionXQueryBox(this, store)
+    }
+
+    class AssertionXQueryBox(
+        yaml: AssertionXQueryYaml, store: () -> Unit
+    ) : AssertionXmlContainsBox<AssertionXQueryBox>(yaml, store), SuuAssertionXQuery
+
 
     private inline fun <reified T : AssertionBox> create(name: String, newInstance: AssertionYaml<T>): T {
         newInstance.name = name
@@ -233,6 +381,31 @@ class AssertionsBox(
     override fun createScript(name: String): SuuAssertionScript {
         return create(name, AssertionScriptYaml())
     }
+
+    override fun createJsonPathExists(name: String): SuuAssertionJsonPathExists {
+        return create(name, AssertionJsonPathExistsYaml())
+    }
+
+    override fun createJsonPathMatch(name: String): SuuAssertionJsonPathMatch {
+        return create(name, AssertionJsonPathMatchYaml())
+    }
+
+    override fun createJsonPathCount(name: String): SuuAssertionJsonPathCount {
+        return create(name, AssertionJsonPathCountYaml())
+    }
+
+    override fun createJsonPathRegEx(name: String): SuuAssertionJsonPathRegEx {
+        return create(name, AssertionJsonPathRegExYaml())
+    }
+
+    override fun createXPath(name: String): SuuAssertionXPath {
+        return create(name, AssertionXPathYaml())
+    }
+
+    override fun createXQuery(name: String): SuuAssertionXQuery {
+        return create(name, AssertionXQueryYaml())
+    }
+
 
     companion object {
 

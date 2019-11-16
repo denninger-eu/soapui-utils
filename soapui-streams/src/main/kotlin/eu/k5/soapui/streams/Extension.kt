@@ -117,6 +117,20 @@ private fun handleAssertions(
             assertionListener.script(assertion)
         } else if (assertion is SuuAssertionDuration) {
             assertionListener.duration(assertion)
+        } else if (assertion is SuuAssertionJsonPathMatch) {
+            assertionListener.jsonPathMatch(assertion)
+        } else if (assertion is SuuAssertionJsonPathExists) {
+            assertionListener.jsonPathExits(assertion)
+        } else if (assertion is SuuAssertionJsonPathRegEx) {
+            assertionListener.jsonPathRegEx(assertion)
+        } else if (assertion is SuuAssertionJsonPathCount) {
+            assertionListener.jsonPathCount(assertion)
+
+        } else if (assertion is SuuAssertionXPath) {
+            assertionListener.xpath(assertion)
+        } else if (assertion is SuuAssertionXQuery) {
+            assertionListener.xquery(assertion)
+
         } else {
             TODO(assertion.javaClass.toString())
         }

@@ -43,7 +43,8 @@ class Box(
     }
 
     private fun <T> load(section: String, type: Class<T>): T {
-        val yaml = Yaml(Constructor(type))
+
+        val yaml = YamlContext.YAML_LOAD
 
 
         val section = extractSection(section)
@@ -57,15 +58,12 @@ class Box(
         return extractSection(section)
     }
 
-    fun write(yaml: Yaml, instance: Any): Box {
-        return write(yaml, instance, "main")
+    fun write(instance: Any): Box {
+        return write(instance, "main")
     }
 
     fun <T> write(type: Class<T>, instance: T): Box {
-
-        val constructor = Constructor(type)
-        constructor.addTypeDescription(TypeDescription(type))
-        val binder = Yaml(options)
+        val binder = YamlContext.YAML_DUMPER
         val yaml = binder.dump(instance)
         writeSection("main", yaml)
         return this
@@ -204,8 +202,8 @@ class Box(
         return null
     }
 
-    fun write(yaml: Yaml, instance: Any, section: String): Box {
-        val dump = yaml.dump(instance)
+    fun write(instance: Any, section: String): Box {
+        val dump = YamlContext.YAML_DUMPER.dump(instance)
         writeSection(section, dump)
         return this
     }

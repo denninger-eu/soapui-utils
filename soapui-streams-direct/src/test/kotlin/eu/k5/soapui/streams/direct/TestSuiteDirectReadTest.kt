@@ -113,7 +113,47 @@ class TestSuiteDirectReadTest : AbstractDirectTest() {
         assertFalse(notContains.regexp)
 
 
+        val jsonPathMatch = restRequest.assertions.getAssertion("jsonPath") as SuuAssertionJsonPathMatch
+        assertTrue(jsonPathMatch.enabled)
+        assertEquals("jsonPathExpressionValue", jsonPathMatch.expression)
+        assertEquals("jsonPathExpectedResultValue", jsonPathMatch.expectedContent)
+
+        val jsonPathCount = restRequest.assertions.getAssertion("jsonPathCount") as SuuAssertionJsonPathCount
+        assertTrue(jsonPathCount.enabled)
+        assertEquals("jsonPathCountExpressionValue", jsonPathCount.expression)
+        assertEquals("jsonPathCountExpectedResultValue", jsonPathCount.expectedContent)
+
+        val jsonPathRegEx = restRequest.assertions.getAssertion("jsonPathRegEx") as SuuAssertionJsonPathRegEx
+        assertTrue(jsonPathRegEx.enabled)
+        assertEquals("jsonPathRegExExpressionValue", jsonPathRegEx.expression)
+        assertEquals("jsonPathRegExRegExpValue", jsonPathRegEx.regularExpression)
+        assertEquals("jsonPathRegExExpectedResultValue", jsonPathRegEx.expectedContent)
+
+
+        val xpath = restRequest.assertions.getAssertion("xpath") as SuuAssertionXPath
+        assertTrue(xpath.enabled)
+        assertEquals("xpathValue", xpath.expression)
+        assertEquals("xpathExpectedResult", xpath.expectedContent)
+        assertFalse(xpath.allowWildcards)
+        assertFalse(xpath.ignoreComments)
+        assertFalse(xpath.ignoreNamespaceDifferences)
+
+        val xquery = restRequest.assertions.getAssertion("xquery") as SuuAssertionXQuery
+        assertTrue(xquery.enabled)
+        assertEquals("xqueryExpressionValue", xquery.expression)
+        assertEquals("xqueryExpectedResult", xquery.expectedContent)
+        assertTrue(xquery.allowWildcards)
+        assertTrue(xquery.ignoreComments)
+        assertTrue(xquery.ignoreNamespaceDifferences)
+
+
+/*        val jsonPathExists = restRequest.assertions.getAssertion("jsonPathExists") as SuuAssertionJsonPathExists
+        assertTrue(jsonPathExists.enabled)
+        assertEquals("jsonPathExistsExpressionValue", jsonPathExists.expression)
+        assertEquals("jsonPathExistsExpectedResultValue", jsonPathExists.expectedContent)*/
+
     }
+
 
     private fun assertTestStepPropertyTransfer(propertyTransfer: SuuTestStepPropertyTransfers) {
         assertEquals("PropertyTransferName", propertyTransfer.name)

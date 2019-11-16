@@ -11,5 +11,13 @@ interface SuuAssertionListener {
     fun script(assertion: SuuAssertionScript)
     fun duration(assertion: SuuAssertionDuration)
 
+    fun jsonPathCount(assertion: SuuAssertionJsonPathCount)
+    fun jsonPathExits(assertion: SuuAssertionJsonPathExists)
+    fun jsonPathMatch(assertion: SuuAssertionJsonPathMatch)
+    fun jsonPathRegEx(assertion: SuuAssertionJsonPathRegEx)
+
+    fun xpath(assertion: SuuAssertionXPath)
+    fun xquery(assertion: SuuAssertionXQuery)
+
     fun exitAssertions(assertions: SuuAssertions)
 }

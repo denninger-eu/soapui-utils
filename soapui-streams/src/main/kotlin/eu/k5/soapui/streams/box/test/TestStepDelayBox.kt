@@ -1,6 +1,7 @@
 package eu.k5.soapui.streams.box.test
 
 import eu.k5.soapui.streams.box.Box
+import eu.k5.soapui.streams.box.YamlContext
 import eu.k5.soapui.streams.model.test.SuuTestStepDelay
 
 class TestStepDelayBox(
@@ -18,7 +19,7 @@ class TestStepDelayBox(
         }
 
     override fun store() {
-        box.write(TestStepBox.YAML_DUMPER, yaml)
+        box.write(yaml)
     }
 
     class DelayYaml : TestStepBox.TestStepYaml() {

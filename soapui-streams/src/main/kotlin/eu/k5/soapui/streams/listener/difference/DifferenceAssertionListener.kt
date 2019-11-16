@@ -74,6 +74,60 @@ class DifferenceAssertionListener(
         differences.addChange("time", ref.time, assertion.time)
     }
 
+    private fun <T : SuuAssertionJsonPath> handleJsonPath(ref: SuuAssertion?, assertion: T): T? {
+        if (ref !is SuuAssertionJsonPath) {
+            differences.addChange(Differences.Type.ASSERTION, assertion.name)
+            return null
+        }
+        differences.addChange("enabled", ref.enabled, assertion.enabled)
+        differences.addChange("expectedContent", ref.expectedContent, assertion.expectedContent)
+        differences.addChange("expression", ref.expression, assertion.expression)
+        return ref as T?
+    }
+
+    override fun jsonPathCount(assertion: SuuAssertionJsonPathCount) {
+        handleJsonPath(assertions.getAssertion(assertion.name), assertion)
+    }
+
+    override fun jsonPathExits(assertion: SuuAssertionJsonPathExists) {
+        handleJsonPath(assertions.getAssertion(assertion.name), assertion)
+    }
+
+    override fun jsonPathMatch(assertion: SuuAssertionJsonPathMatch) {
+        handleJsonPath(assertions.getAssertion(assertion.name), assertion)
+    }
+
+    override fun jsonPathRegEx(assertion: SuuAssertionJsonPathRegEx) {
+        val ref = handleJsonPath(assertions.getAssertion(assertion.name), assertion)
+        differences.addChange("regularExpression", ref?.regularExpression, assertion.regularExpression)
+    }
+
+    private fun <T : SuuAssertionXmlContains> handleXmlContains(ref: SuuAssertion?, assertion: T): T? {
+        if (ref !is SuuAssertionXmlContains) {
+            differences.addChange(Differences.Type.ASSERTION, assertion.name)
+            return null
+        }
+        differences.addChange("enabled", ref.enabled, assertion.enabled)
+        differences.addChange("expectedContent", ref.expectedContent, assertion.expectedContent)
+        differences.addChange("expression", ref.expression, assertion.expression)
+        differences.addChange("allowWildcards", ref.allowWildcards, assertion.allowWildcards)
+        differences.addChange("ignoreComments", ref.ignoreComments, assertion.ignoreComments)
+        differences.addChange(
+            "ignoreNamespaceDifferences",
+            ref.ignoreNamespaceDifferences,
+            assertion.ignoreNamespaceDifferences
+        )
+        return ref as T?
+    }
+
+    override fun xpath(assertion: SuuAssertionXPath) {
+        handleXmlContains(assertions.getAssertion(assertion.name), assertion)
+    }
+
+    override fun xquery(assertion: SuuAssertionXQuery) {
+        handleXmlContains(assertions.getAssertion(assertion.name), assertion)
+    }
+
     override fun exitAssertions(assertions: SuuAssertions) {
 
 
