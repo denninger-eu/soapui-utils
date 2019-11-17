@@ -14,11 +14,30 @@ class CopyTestStepListener(
 
     override fun enterRestRequest(refStep: SuuTestStepRestRequest): VisitResult {
         val targetStep = target.createRestRequestStep(refStep.name)
-        handleStep(refStep, targetStep)
+        handleStep(refStep, targetStep, false)
 
+
+        targetStep.baseService.name = refStep.baseService.name
+        targetStep.baseService.description = refStep.baseService.description
+        targetStep.baseService.basePath = refStep.baseService.basePath
+
+
+        targetStep.baseMethod.name = refStep.baseMethod.name
+        targetStep.baseMethod.description = refStep.baseMethod.description
+        targetStep.baseMethod.httpMethod = refStep.baseMethod.httpMethod
+
+        CopyRestServiceListener.handleParameters(targetStep.baseMethod.parameters, refStep.baseMethod.parameters)
+
+        targetStep.request.name = refStep.request.name
+        targetStep.request.description = refStep.request.description
+        targetStep.request.content = refStep.request.content
+        for (header in refStep.request.headers) {
+            targetStep.request.addOrUpdateHeader(header)
+        }
 
 
         this.targetStep = targetStep
+
 
         return VisitResult.CONTINUE
     }
@@ -31,11 +50,13 @@ class CopyTestStepListener(
         return CopyAssertionListener(targetStep!!.assertions)
     }
 
-    private fun handleStep(reference: SuuTestStep, target: SuuTestStep) {
+    private fun handleStep(reference: SuuTestStep, target: SuuTestStep, properties: Boolean = true) {
         target.description = reference.description
         target.enabled = reference.enabled
 
-        SyncListener.handleProperties(reference.properties, target.properties)
+        if (properties) {
+            SyncListener.handleProperties(reference.properties, target.properties)
+        }
 
     }
 

@@ -6,9 +6,10 @@ import eu.k5.soapui.streams.model.rest.SuuRestService
 
 class RestServiceBox(
     private val box: Box
-) : SuuRestService {
 
+) : SuuRestService {
     private val restService: RestServiceYaml by lazy { box.load(RestServiceYaml::class.java) }
+
 
     override var name: String?
         get() = restService.name

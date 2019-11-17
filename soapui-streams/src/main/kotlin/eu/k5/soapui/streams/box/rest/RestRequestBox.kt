@@ -39,30 +39,7 @@ class RestRequestBox(
     }
 
     override fun addOrUpdateHeader(header: SuuRestRequest.Header) {
-        if (yaml.headers == null) {
-            yaml.headers = ArrayList()
-            yaml.headers?.add(mapHeader(header))
-            store()
-        } else {
-            val existing = yaml.headers?.firstOrNull { it.key == header.key }
-            if (existing != null) {
-                if (existing.values?.equals(header.value) ?: false) {
-                    // No change
-                    return
-                } else {
-                    if (existing.values == null){
-                        existing.values = ArrayList()
-                    }
-                    existing.values?.clear()
-                    existing.values?.addAll(header.value)
-                    store()
-                }
-            } else {
-                yaml.headers?.add(mapHeader(header))
-                store()
-            }
-        }
-
+        handleHeaders(yaml, header) { store() }
     }
 
     override var content
@@ -108,6 +85,32 @@ class RestRequestBox(
             newRequest.name = name
             box.write(RestRequestYaml::class.java, newRequest)
             return RestRequestBox(box)
+        }
+
+        fun handleHeaders(yaml: RestRequestYaml, header: SuuRestRequest.Header, store: () -> Unit) {
+            if (yaml.headers == null) {
+                yaml.headers = ArrayList()
+                yaml.headers?.add(mapHeader(header))
+                store()
+            } else {
+                val existing = yaml.headers?.firstOrNull { it.key == header.key }
+                if (existing != null) {
+                    if (existing.values?.equals(header.value) ?: false) {
+                        // No change
+                        return
+                    } else {
+                        if (existing.values == null) {
+                            existing.values = ArrayList()
+                        }
+                        existing.values?.clear()
+                        existing.values?.addAll(header.value)
+                        store()
+                    }
+                } else {
+                    yaml.headers?.add(mapHeader(header))
+                    store()
+                }
+            }
         }
 
     }

@@ -11,12 +11,14 @@ class DifferenceTestStepListener(
 
     private var restRequest: SuuTestStepRestRequest? = null
 
-    private fun handleTestStep(ref: SuuTestStep, step: SuuTestStep) {
+    private fun handleTestStep(ref: SuuTestStep, step: SuuTestStep, properties: Boolean = true) {
         differences.push(Differences.Type.TEST_STEP, step.name)
         differences.addChange("enabled", ref.enabled, step.enabled)
         differences.addChange("description", ref.description, step.description)
 
-        DifferenceListener.handleProperties(differences, ref.properties, step.properties)
+        if (properties) {
+            DifferenceListener.handleProperties(differences, ref.properties, step.properties)
+        }
     }
 
     override fun transfer(step: SuuTestStepPropertyTransfers) {
@@ -48,7 +50,9 @@ class DifferenceTestStepListener(
             differences.addChange(Differences.Type.TEST_STEP, step.name)
             return VisitResult.TERMINATE
         }
-        handleTestStep(ref, step)
+        handleTestStep(ref, step, false)
+
+        differences.addChange("content", ref.request.content?.trim(), step.request.content?.trim())
 
         restRequest = ref
         return VisitResult.CONTINUE

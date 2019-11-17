@@ -100,7 +100,7 @@ class RestServiceDifferenceListener(
         }
         differences.pushRequest(actualRequest.name)
         differences.addChange("description", refRequest.description, actualRequest.description)
-        differences.addChange("content", refRequest.content, actualRequest.content)
+        differences.addChange("content", refRequest.content?.trim(), actualRequest.content?.trim())
         handleParameters(refRequest.parameters, actualRequest.parameters)
 
         handleHeaders(refRequest.headers, actualRequest.headers)
