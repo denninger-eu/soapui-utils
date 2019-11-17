@@ -1,4 +1,8 @@
 !restRequest
 description: ''
 name: postRequest
+headers:
+  - key: headerKey
+    values:
+      - headerValue
 ### content

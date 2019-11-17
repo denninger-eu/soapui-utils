@@ -76,7 +76,9 @@ class CopyRestServiceListener(
         val newRequest = targetMethod!!.createRequest(suuRestRequest.name!!)
         newRequest.description = suuRestRequest.description
         newRequest.content = suuRestRequest.content
-
+        for (header in suuRestRequest.headers) {
+            newRequest.addOrUpdateHeader(header)
+        }
         handleParameters(newRequest.parameters!!, suuRestRequest.parameters!!)
     }
 

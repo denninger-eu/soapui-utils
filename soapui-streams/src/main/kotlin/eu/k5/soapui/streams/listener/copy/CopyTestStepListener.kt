@@ -13,11 +13,13 @@ class CopyTestStepListener(
     private var targetStep: SuuTestStepRestRequest? = null
 
     override fun enterRestRequest(refStep: SuuTestStepRestRequest): VisitResult {
-
-
         val targetStep = target.createRestRequestStep(refStep.name)
         handleStep(refStep, targetStep)
+
+
+
         this.targetStep = targetStep
+
         return VisitResult.CONTINUE
     }
 

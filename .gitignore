@@ -4,3 +4,4 @@ target/
 **/soapui.log
 **/soapui-errors.log
 **/dependency-reduced-pom.xml
+soapui-errors.log.1

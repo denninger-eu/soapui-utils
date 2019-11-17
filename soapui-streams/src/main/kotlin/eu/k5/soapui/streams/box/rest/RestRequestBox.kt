@@ -9,40 +9,80 @@ class RestRequestBox(
 ) : SuuRestRequest {
 
 
-    private val restRequest by lazy { box.load(RestRequestYaml::class.java) }
+    private val yaml by lazy { box.load(RestRequestYaml::class.java) }
 
     override var name
-        get() = restRequest.name ?: ""
+        get() = yaml.name ?: ""
         set(value) {
-            restRequest.name = value
+            yaml.name = value
             store()
         }
 
     override var description
-        get() = restRequest.description
+        get() = yaml.description
         set(value) {
-            restRequest.description = value
+            yaml.description = value
             store()
         }
 
 
-    override val parameters: SuuRestParameters by lazy { RestParameters(restRequest.parameters!!) { store() } }
+    override val parameters: SuuRestParameters by lazy { RestParameters(yaml.parameters!!) { store() } }
+
+    override val headers: List<SuuRestRequest.Header>
+        get() = yaml.headers?.map { mapHeader(it) } ?: ArrayList()
+
+    override fun removeHeader(key: String) {
+        val changed = yaml.headers?.removeIf { it.key == key } ?: false
+        if (changed) {
+            store()
+        }
+    }
+
+    override fun addOrUpdateHeader(header: SuuRestRequest.Header) {
+        if (yaml.headers == null) {
+            yaml.headers = ArrayList()
+            yaml.headers?.add(mapHeader(header))
+            store()
+        } else {
+            val existing = yaml.headers?.firstOrNull { it.key == header.key }
+            if (existing != null) {
+                if (existing.values?.equals(header.value) ?: false) {
+                    // No change
+                    return
+                } else {
+                    if (existing.values == null){
+                        existing.values = ArrayList()
+                    }
+                    existing.values?.clear()
+                    existing.values?.addAll(header.value)
+                    store()
+                }
+            } else {
+                yaml.headers?.add(mapHeader(header))
+                store()
+            }
+        }
+
+    }
 
     override var content
         get() = box.loadSection("content")
         set(value) = storeContent(value)
 
-/*    override val parameters: SuuRestParameters
-        get() = restRequest.parameters.getSuuParameters { store() }*/
-
     class RestRequestYaml {
         var name: String? = null
         var description: String? = null
         var parameters: MutableList<RestParameters.RestParameterYaml>? = ArrayList()
+        var headers: MutableList<HeaderYaml>? = ArrayList()
+    }
+
+    class HeaderYaml {
+        var key: String? = null
+        var values: MutableList<String>? = ArrayList()
     }
 
     private fun store() {
-        box.write(RestRequestYaml::class.java, restRequest)
+        box.write(RestRequestYaml::class.java, yaml)
     }
 
     private fun storeContent(content: String?) {
@@ -50,6 +90,16 @@ class RestRequestBox(
     }
 
     companion object {
+        fun mapHeader(header: HeaderYaml): SuuRestRequest.Header {
+            return SuuRestRequest.Header(header.key ?: "", header.values ?: ArrayList())
+        }
+
+        fun mapHeader(header: SuuRestRequest.Header): HeaderYaml {
+            val yaml = HeaderYaml()
+            yaml.key = header.key
+            yaml.values = ArrayList(header.value)
+            return yaml
+        }
 
         fun create(parent: Box, name: String): RestRequestBox {
             val box = parent.createFile(name, ".box.yaml")

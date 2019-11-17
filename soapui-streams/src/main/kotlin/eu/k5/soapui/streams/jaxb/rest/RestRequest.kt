@@ -14,6 +14,16 @@ class RestRequest(
     @XmlElement
     override var description: String? = null
 ) : SuuRestRequest {
+    override val headers: List<SuuRestRequest.Header>
+        get() = ArrayList()
+
+    override fun removeHeader(key: String) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun addOrUpdateHeader(header: SuuRestRequest.Header) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     override var content: String? = null
 

@@ -5,6 +5,7 @@ import eu.k5.soapui.streams.listener.resource.SuuRestServiceListener
 import eu.k5.soapui.streams.model.SuProject
 import eu.k5.soapui.streams.model.rest.*
 import java.util.*
+import kotlin.collections.ArrayList
 
 class RestServiceDifferenceListener(
     private val project: SuProject,
@@ -101,6 +102,9 @@ class RestServiceDifferenceListener(
         differences.addChange("description", refRequest.description, actualRequest.description)
         differences.addChange("content", refRequest.content, actualRequest.content)
         handleParameters(refRequest.parameters, actualRequest.parameters)
+
+        handleHeaders(refRequest.headers, actualRequest.headers)
+
         differences.pop()
     }
 
@@ -114,7 +118,28 @@ class RestServiceDifferenceListener(
                 differences.addAdditional(referenceParameter.name)
             }
         }
+    }
 
+    private fun handleHeaders(
+        ref: List<SuuRestRequest.Header>, actual: List<SuuRestRequest.Header>
+    ) {
+
+        val found = ArrayList<String>()
+        for (refHeader in ref) {
+            val actualHeader = actual.firstOrNull { it.key == refHeader.key }
+            if (actualHeader != null) {
+                differences.addChange("headerValue", refHeader.value, actualHeader.value)
+                found.add(refHeader.key)
+            } else {
+                differences.addAdditional(refHeader.key)
+            }
+        }
+        val missing = ArrayList(actual)
+        missing.removeIf { found.contains(it.key) }
+
+        for (missingHeader in missing) {
+            differences.addMissing(missingHeader.key)
+        }
     }
 
 }
