@@ -42,6 +42,10 @@ class Box(
         return load("main", type)
     }
 
+    override fun toString(): String {
+        return path.toAbsolutePath().toString()
+    }
+
     private fun <T> load(section: String, type: Class<T>): T {
 
         val yaml = YamlContext.YAML_LOAD

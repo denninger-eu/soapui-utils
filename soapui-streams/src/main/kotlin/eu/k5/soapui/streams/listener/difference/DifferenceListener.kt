@@ -1,8 +1,8 @@
 package eu.k5.soapui.streams.listener.difference
 
-import eu.k5.soapui.streams.listener.resource.SuuRestServiceListener
+import eu.k5.soapui.streams.model.rest.SuuRestServiceListener
 import eu.k5.soapui.streams.model.SuProject
-import eu.k5.soapui.visitor.listener.Environment
+import eu.k5.soapui.streams.Environment
 import eu.k5.soapui.streams.model.SuListener
 import eu.k5.soapui.streams.model.SuuProperties
 import eu.k5.soapui.streams.model.test.SuuTestSuiteListener
@@ -30,7 +30,7 @@ class DifferenceListener(
 
 
     override fun createResourceListener(): SuuRestServiceListener {
-        return RestServiceDifferenceListener(referenceProject, differences)
+        return DifferenceRestServiceListener(referenceProject, differences)
     }
 
     override fun createTestSuiteListener(): SuuTestSuiteListener {

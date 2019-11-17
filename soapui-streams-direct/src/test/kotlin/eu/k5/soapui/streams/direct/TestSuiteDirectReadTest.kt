@@ -3,7 +3,7 @@ package eu.k5.soapui.streams.direct
 import eu.k5.soapui.streams.apply
 import eu.k5.soapui.streams.direct.model.test.TestStepDelayDirect
 import eu.k5.soapui.streams.listener.difference.DifferenceListener
-import eu.k5.soapui.streams.listener.resource.SyncListener
+import eu.k5.soapui.streams.listener.sync.SyncListener
 import eu.k5.soapui.streams.model.assertion.*
 import eu.k5.soapui.streams.model.test.SuuPropertyTransfer
 import eu.k5.soapui.streams.model.test.SuuTestCase
@@ -25,8 +25,12 @@ class TestSuiteDirectReadTest : AbstractDirectTest() {
 
         val apply = box.apply(SyncListener(project))
 
+        box.apply(SyncListener(project))
+
         val listener = DifferenceListener(project)
         box.apply(listener)
+
+
 
         assertTrue(listener.differences.isEmpty(), listener.differences.toString())
     }

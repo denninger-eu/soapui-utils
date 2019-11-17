@@ -1,12 +1,12 @@
-package eu.k5.soapui.streams.listener.resource
+package eu.k5.soapui.streams.listener.sync
 
 import eu.k5.soapui.streams.apply
-import eu.k5.soapui.streams.listener.sync.RestServiceSyncListener
-import eu.k5.soapui.streams.listener.sync.TestSuiteSyncListener
+import eu.k5.soapui.streams.listener.copy.CopyListener
 import eu.k5.soapui.streams.model.SuProject
-import eu.k5.soapui.visitor.listener.Environment
+import eu.k5.soapui.streams.Environment
 import eu.k5.soapui.streams.model.SuListener
 import eu.k5.soapui.streams.model.SuuProperties
+import eu.k5.soapui.streams.model.rest.SuuRestServiceListener
 import eu.k5.soapui.streams.model.test.SuuTestSuiteListener
 import kotlin.collections.ArrayList
 
@@ -23,7 +23,10 @@ class SyncListener(
 
         project.name = referenceProject.name
         project.description = referenceProject.description
-        handleProperties(referenceProject.properties, project.properties)
+        handleProperties(
+            referenceProject.properties,
+            project.properties
+        )
 
     }
 
@@ -58,7 +61,7 @@ class SyncListener(
 
 
     override fun createResourceListener(): SuuRestServiceListener {
-        return RestServiceSyncListener(
+        return SyncRestServiceListener(
             environment!!,
             referenceProject,
             targetProject!!
@@ -66,7 +69,7 @@ class SyncListener(
     }
 
     override fun createTestSuiteListener(): SuuTestSuiteListener {
-        return TestSuiteSyncListener(
+        return SyncTestSuiteListener(
             environment!!,
             referenceProject,
             targetProject

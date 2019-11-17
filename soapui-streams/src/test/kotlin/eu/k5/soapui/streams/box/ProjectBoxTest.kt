@@ -1,7 +1,7 @@
 package eu.k5.soapui.streams.box
 
 import eu.k5.soapui.streams.apply
-import eu.k5.soapui.streams.listener.resource.SyncListener
+import eu.k5.soapui.streams.listener.sync.SyncListener
 import eu.k5.soapui.streams.model.rest.SuuRestMethod
 import org.junit.jupiter.api.Test
 import java.nio.file.Files

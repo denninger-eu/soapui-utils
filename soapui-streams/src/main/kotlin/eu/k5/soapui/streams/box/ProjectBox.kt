@@ -17,6 +17,10 @@ class ProjectBox(
 
     private val project: ProjectYaml by lazy { box.load(ProjectYaml::class.java) }
 
+    fun fileName(): String {
+        return box.toString()
+    }
+
     override var name: String = project.name!!
 
     override var description: String?

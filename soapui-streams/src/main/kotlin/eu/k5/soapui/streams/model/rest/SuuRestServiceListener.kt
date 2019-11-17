@@ -1,10 +1,6 @@
-package eu.k5.soapui.streams.listener.resource
+package eu.k5.soapui.streams.model.rest
 
 import eu.k5.soapui.streams.listener.VisitResult
-import eu.k5.soapui.streams.model.rest.SuuRestResource
-import eu.k5.soapui.streams.model.rest.SuuRestMethod
-import eu.k5.soapui.streams.model.rest.SuuRestRequest
-import eu.k5.soapui.streams.model.rest.SuuRestService
 
 interface SuuRestServiceListener {
 

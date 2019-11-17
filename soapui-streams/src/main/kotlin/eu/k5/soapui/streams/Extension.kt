@@ -1,12 +1,11 @@
 package eu.k5.soapui.streams
 
 import eu.k5.soapui.streams.listener.VisitResult
-import eu.k5.soapui.streams.listener.resource.SuuRestServiceListener
+import eu.k5.soapui.streams.model.rest.SuuRestServiceListener
 import eu.k5.soapui.streams.model.SuProject
 import eu.k5.soapui.streams.model.rest.SuuRestResource
 import eu.k5.soapui.streams.model.rest.SuuRestMethod
 import eu.k5.soapui.streams.model.rest.SuuRestService
-import eu.k5.soapui.visitor.listener.Environment
 import eu.k5.soapui.streams.model.SuListener
 import eu.k5.soapui.streams.model.assertion.*
 import eu.k5.soapui.streams.model.test.*

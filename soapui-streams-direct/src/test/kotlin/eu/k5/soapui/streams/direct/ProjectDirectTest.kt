@@ -5,7 +5,7 @@ import eu.k5.soapui.streams.apply
 import eu.k5.soapui.streams.box.Box
 import eu.k5.soapui.streams.box.ProjectBox
 import eu.k5.soapui.streams.direct.model.ProjectDirect
-import eu.k5.soapui.streams.listener.resource.SyncListener
+import eu.k5.soapui.streams.listener.sync.SyncListener
 import eu.k5.soapui.streams.model.rest.SuuRestMethod
 import eu.k5.soapui.streams.model.rest.SuuRestParameter
 import eu.k5.soapui.streams.model.rest.SuuRestRequest

@@ -1,9 +1,8 @@
 package eu.k5.soapui.streams.listener.sync
 
+import eu.k5.soapui.streams.Environment
 import eu.k5.soapui.streams.listener.VisitResult
-import eu.k5.soapui.streams.model.SuProject
 import eu.k5.soapui.streams.model.test.*
-import eu.k5.soapui.visitor.listener.*
 
 class SyncTestStepListener(
     private val env: Environment,

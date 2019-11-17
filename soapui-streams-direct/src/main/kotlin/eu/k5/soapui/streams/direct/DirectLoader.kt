@@ -4,7 +4,7 @@ import com.eviware.soapui.impl.wsdl.WsdlProject
 import eu.k5.soapui.streams.Loader
 import eu.k5.soapui.streams.apply
 import eu.k5.soapui.streams.direct.model.ProjectDirect
-import eu.k5.soapui.streams.listener.resource.SyncListener
+import eu.k5.soapui.streams.listener.sync.SyncListener
 import eu.k5.soapui.streams.jaxb.Project
 import eu.k5.soapui.streams.model.SuProject
 import eu.k5.soapui.streams.model.SuListener

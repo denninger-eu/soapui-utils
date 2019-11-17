@@ -3,17 +3,17 @@ package eu.k5.soapui.streams.listener.sync
 import eu.k5.soapui.streams.apply
 import eu.k5.soapui.streams.listener.VisitResult
 import eu.k5.soapui.streams.listener.copy.CopyRestServiceListener
-import eu.k5.soapui.streams.listener.resource.SuuRestServiceListener
+import eu.k5.soapui.streams.model.rest.SuuRestServiceListener
 import eu.k5.soapui.streams.model.SuProject
 import eu.k5.soapui.streams.model.rest.SuuRestMethod
 import eu.k5.soapui.streams.model.rest.SuuRestRequest
 import eu.k5.soapui.streams.model.rest.SuuRestResource
 import eu.k5.soapui.streams.model.rest.SuuRestService
-import eu.k5.soapui.visitor.listener.Environment
+import eu.k5.soapui.streams.Environment
 import java.util.*
 import kotlin.collections.ArrayList
 
-class RestServiceSyncListener(
+class SyncRestServiceListener(
     private val env: Environment,
     private val referenceProject: SuProject,
     private val targetProject: SuProject

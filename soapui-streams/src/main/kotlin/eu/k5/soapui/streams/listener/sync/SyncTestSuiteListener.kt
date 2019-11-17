@@ -5,10 +5,10 @@ import eu.k5.soapui.streams.model.SuProject
 import eu.k5.soapui.streams.model.test.SuuTestCase
 import eu.k5.soapui.streams.model.test.SuuTestSuite
 import eu.k5.soapui.streams.model.test.SuuTestSuiteListener
-import eu.k5.soapui.visitor.listener.Environment
+import eu.k5.soapui.streams.Environment
 import eu.k5.soapui.streams.model.test.SuuTestStepListener
 
-class TestSuiteSyncListener(
+class SyncTestSuiteListener(
     private val environment: Environment,
     private val referenceProject: SuProject,
     private val targetProject: SuProject?

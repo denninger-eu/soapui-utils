@@ -9,9 +9,9 @@ import com.eviware.soapui.impl.wsdl.WsdlInterface
 import com.eviware.soapui.impl.wsdl.WsdlProject
 import com.eviware.soapui.model.testsuite.TestProperty
 import eu.k5.soapui.streams.direct.model.*
-import eu.k5.soapui.streams.listener.resource.SuuRestServiceListener
+import eu.k5.soapui.streams.model.rest.SuuRestServiceListener
 import eu.k5.soapui.streams.jaxb.rest.RestParameter
-import eu.k5.soapui.visitor.listener.Environment
+import eu.k5.soapui.streams.Environment
 import eu.k5.soapui.streams.model.SuListener
 import org.slf4j.LoggerFactory
 

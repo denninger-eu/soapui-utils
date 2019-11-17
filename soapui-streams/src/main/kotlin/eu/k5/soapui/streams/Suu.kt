@@ -1,8 +1,7 @@
 package eu.k5.soapui.streams
 
-import eu.k5.soapui.streams.listener.resource.SyncListener
+import eu.k5.soapui.streams.listener.sync.SyncListener
 import eu.k5.soapui.streams.model.SuProject
-import eu.k5.soapui.visitor.listener.Environment
 
 class Suu {
 

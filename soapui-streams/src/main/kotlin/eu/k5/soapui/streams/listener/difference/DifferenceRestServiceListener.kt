@@ -1,13 +1,13 @@
 package eu.k5.soapui.streams.listener.difference
 
 import eu.k5.soapui.streams.listener.VisitResult
-import eu.k5.soapui.streams.listener.resource.SuuRestServiceListener
+import eu.k5.soapui.streams.model.rest.SuuRestServiceListener
 import eu.k5.soapui.streams.model.SuProject
 import eu.k5.soapui.streams.model.rest.*
 import java.util.*
 import kotlin.collections.ArrayList
 
-class RestServiceDifferenceListener(
+class DifferenceRestServiceListener(
     private val project: SuProject,
     private val differences: Differences
 

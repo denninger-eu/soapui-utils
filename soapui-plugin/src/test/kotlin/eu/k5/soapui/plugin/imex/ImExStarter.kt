@@ -15,7 +15,7 @@ fun main(args: Array<String>) {
     val project = loadProject()
 
 
-    val model = ImexModel(project, ImexModel.Mode.EXPORT, config = getConfig())
+    val model = ImexModel(project, config = getConfig())
     model.restService = project.restServices[0]
     model.folder = model.config.origin!!.parent.toString()
     val view = ImexView(model)
@@ -27,7 +27,7 @@ fun main(args: Array<String>) {
 
 
 private fun getConfig(): SuuConfig {
-    val configs = Paths.get("target", "configs", Instant.now().toString().replace(":", "_") )
+    val configs = Paths.get("target", "configs", Instant.now().toString().replace(":", "_"))
     if (!Files.exists(configs)) {
         Files.createDirectories(configs)
     }

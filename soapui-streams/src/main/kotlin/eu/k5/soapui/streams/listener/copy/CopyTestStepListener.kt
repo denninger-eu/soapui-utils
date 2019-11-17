@@ -1,9 +1,8 @@
 package eu.k5.soapui.streams.listener.copy
 
 import eu.k5.soapui.streams.listener.VisitResult
-import eu.k5.soapui.streams.listener.resource.SyncListener
+import eu.k5.soapui.streams.listener.sync.SyncListener
 import eu.k5.soapui.streams.model.test.*
-import eu.k5.soapui.visitor.listener.*
 
 class CopyTestStepListener(
     private val target: SuuTestCase

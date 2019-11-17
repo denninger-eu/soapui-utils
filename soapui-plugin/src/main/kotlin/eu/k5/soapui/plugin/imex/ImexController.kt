@@ -33,6 +33,7 @@ class ImexController(
     private fun resolveBox(): ProjectBox {
 
         val folder = model.folder
+        println("loading from folder: " + folder)
         val path = Paths.get(folder)
 
         if (Files.isDirectory(path)) {
@@ -49,8 +50,8 @@ class ImexController(
     }
 
     fun doExport() {
-        println("DoExport")
         val box = resolveBox()
+        println("DoExport: " + box.fileName())
 
         Suu.syncRestService(model.project, box, model.restService!!.name!!)
     }

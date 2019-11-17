@@ -1,8 +1,8 @@
 package eu.k5.soapui.streams.model
 
-import eu.k5.soapui.streams.listener.resource.SuuRestServiceListener
+import eu.k5.soapui.streams.model.rest.SuuRestServiceListener
 import eu.k5.soapui.streams.model.test.SuuTestSuiteListener
-import eu.k5.soapui.visitor.listener.Environment
+import eu.k5.soapui.streams.Environment
 
 
 interface SuListener {
