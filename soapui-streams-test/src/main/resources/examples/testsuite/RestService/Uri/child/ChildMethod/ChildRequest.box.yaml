@@ -1,8 +1,8 @@
-!restResource
+!restRequest
 description: ''
-name: Uri
+name: ChildRequest
 parameters:
 - name: resourceParameterName
   style: QUERY
   value: resourceParameterValue
-path: /uri
+### content

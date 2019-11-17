@@ -3,7 +3,12 @@ package eu.k5.soapui.streams.box.test
 import eu.k5.soapui.streams.box.Box
 import eu.k5.soapui.streams.box.PropertiesBox
 import eu.k5.soapui.streams.box.YamlContext
+import eu.k5.soapui.streams.listener.copy.CopyRestServiceListener
 import eu.k5.soapui.streams.model.SuuProperties
+import eu.k5.soapui.streams.model.rest.SuuRestMethod
+import eu.k5.soapui.streams.model.rest.SuuRestRequest
+import eu.k5.soapui.streams.model.rest.SuuRestResource
+import eu.k5.soapui.streams.model.rest.SuuRestService
 import eu.k5.soapui.streams.model.test.*
 
 class TestCaseBox(
@@ -41,8 +46,21 @@ class TestCaseBox(
         return type.cast(createStep(box, name, type))
     }
 
-    override fun createRestRequestStep(name: String): SuuTestStepRestRequest {
-        return createStep(name, SuuTestStepRestRequest::class.java)
+
+    override fun createRestRequestStep(
+        name:String,
+        restService: SuuRestService,
+        restResources: List<SuuRestResource>,
+        restMethod: SuuRestMethod
+    ): SuuTestStepRestRequest {
+        val targetStep = createStep(name, SuuTestStepRestRequest::class.java) as TestStepRestRequestBox
+
+        targetStep.setBaseRestService(restService)
+        targetStep.setBaseResources(restResources)
+        targetStep.setBaseMethod(restMethod)
+
+        targetStep.name = name
+        return targetStep
     }
 
     class TestCaseYaml {

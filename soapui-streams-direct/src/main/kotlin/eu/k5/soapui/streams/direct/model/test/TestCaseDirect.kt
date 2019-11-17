@@ -1,6 +1,8 @@
 package eu.k5.soapui.streams.direct.model.test
 
-import com.eviware.soapui.config.impl.TestStepConfigImpl
+import com.eviware.soapui.impl.rest.RestMethod
+import com.eviware.soapui.impl.rest.RestRequest
+import com.eviware.soapui.impl.rest.RestResource
 import com.eviware.soapui.impl.rest.RestService
 import com.eviware.soapui.impl.wsdl.testcase.WsdlTestCase
 import com.eviware.soapui.impl.wsdl.teststeps.PropertyTransfersTestStep
@@ -10,6 +12,10 @@ import com.eviware.soapui.impl.wsdl.teststeps.registry.RestRequestStepFactory
 import com.eviware.soapui.model.testsuite.TestStep
 import eu.k5.soapui.streams.direct.model.PropertiesDirect
 import eu.k5.soapui.streams.model.SuuProperties
+import eu.k5.soapui.streams.model.rest.SuuRestMethod
+import eu.k5.soapui.streams.model.rest.SuuRestRequest
+import eu.k5.soapui.streams.model.rest.SuuRestResource
+import eu.k5.soapui.streams.model.rest.SuuRestService
 import eu.k5.soapui.streams.model.test.*
 
 class TestCaseDirect(
@@ -55,21 +61,66 @@ class TestCaseDirect(
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun createRestRequestStep(name: String): SuuTestStepRestRequest {
-        val filterIsInstance = testCase.project.interfaceList.filterIsInstance(RestService::class.java)
-        val restService = filterIsInstance[0]
+    private fun findRestServiceOrCreate(restService: SuuRestService): RestService {
+        val existingServices = testCase.project.interfaceList.filterIsInstance(RestService::class.java)
+        val existing = existingServices.firstOrNull { it.name == restService.name }
+        if (existing != null) {
+            return existing
+        }
+        TODO("create restservice")
+    }
 
-        val resource = restService.resourceList[0]
-        val method = resource.restMethodList[0]
-        val request = method.requestList[0]
+    override fun createRestRequestStep(
+        name: String,
+        restService: SuuRestService,
+        restResources: List<SuuRestResource>,
+        restMethod: SuuRestMethod
+    ): SuuTestStepRestRequest {
+
+        val existingRestService = findRestServiceOrCreate(restService)
+        val existingRestResource = findRestResourceOrCreate(existingRestService, restResources)
+        val existingMethod = findRestMethodOrCreate(existingRestResource, restMethod)
 
 
-        val config = RestRequestStepFactory.createConfig(request, name)
+        val config = RestRequestStepFactory().createNewTestStep(existingMethod, name)
         val testStep = testCase.addTestStep(config)
 
         return TestStepRestRequestDirect(testStep as RestTestRequestStep)
 
 
+    }
+
+/*    private fun findRestRequestOrCreate(restMethod: RestMethod, restRequest: SuuRestRequest): RestRequest {
+        val existingRequest = restMethod.requestList.firstOrNull { it.name == restRequest.name }
+        if (existingRequest != null) {
+            return existingRequest
+        }
+        TODO("create")
+
+    }*/
+
+    private fun findRestMethodOrCreate(restResource: RestResource, restMethod: SuuRestMethod): RestMethod {
+        val existingRestMethod = restResource.restMethodList.firstOrNull { it.name == restMethod.name }
+        if (existingRestMethod != null) {
+            return existingRestMethod
+        }
+        TODO("create")
+    }
+
+    private fun findRestResourceOrCreate(restService: RestService, restResources: List<SuuRestResource>): RestResource {
+        var existingResource = restService.resourceList.firstOrNull { it.name == restResources[0].name }
+        if (restResources.size > 1) {
+            for (restResource in restResources.subList(1, restResources.size)) {
+                existingResource = existingResource?.childResourceList?.firstOrNull { it.name == restResource.name }
+                if (existingResource == null){
+                    TODO("create")
+                }
+            }
+        }
+        if (existingResource != null) {
+            return existingResource
+        }
+        TODO("implement create")
     }
 
 

@@ -1,6 +1,33 @@
 !restRequestStep
+baseMethod: !restMethod
+  description: ''
+  httpMethod: POST
+  name: PostMethod
+  parameters:
+  - location: METHOD
+    name: methodParameterKey
+    style: QUERY
+    value: methodParameterValue
+baseResources:
+- description: ''
+  name: Uri
+  parameters:
+  - location: RESOURCE
+    name: resourceParameterName
+    style: QUERY
+    value: resourceParameterValue
+  path: /uri
+baseService: !restService
+  basePath: ''
+  description: ''
+  name: RestService
 description: ''
 name: restRequestStep
+request: !restRequest
+  description: ''
+  name: restRequestStep
+### content
+content
 ### assertions
 !assertions
 assertions:

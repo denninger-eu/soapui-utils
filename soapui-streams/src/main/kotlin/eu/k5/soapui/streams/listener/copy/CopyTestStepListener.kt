@@ -13,20 +13,16 @@ class CopyTestStepListener(
     private var targetStep: SuuTestStepRestRequest? = null
 
     override fun enterRestRequest(refStep: SuuTestStepRestRequest): VisitResult {
-        val targetStep = target.createRestRequestStep(refStep.name)
+
+
+        val targetStep = target.createRestRequestStep(
+            refStep.name,
+            refStep.baseService,
+            refStep.baseResources,
+            refStep.baseMethod
+        )
         handleStep(refStep, targetStep, false)
 
-
-        targetStep.baseService.name = refStep.baseService.name
-        targetStep.baseService.description = refStep.baseService.description
-        targetStep.baseService.basePath = refStep.baseService.basePath
-
-
-        targetStep.baseMethod.name = refStep.baseMethod.name
-        targetStep.baseMethod.description = refStep.baseMethod.description
-        targetStep.baseMethod.httpMethod = refStep.baseMethod.httpMethod
-
-        CopyRestServiceListener.handleParameters(targetStep.baseMethod.parameters, refStep.baseMethod.parameters)
 
         targetStep.request.name = refStep.request.name
         targetStep.request.description = refStep.request.description

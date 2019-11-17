@@ -1,6 +1,10 @@
 package eu.k5.soapui.streams.model.test
 
 import eu.k5.soapui.streams.model.SuuProperties
+import eu.k5.soapui.streams.model.rest.SuuRestMethod
+import eu.k5.soapui.streams.model.rest.SuuRestRequest
+import eu.k5.soapui.streams.model.rest.SuuRestResource
+import eu.k5.soapui.streams.model.rest.SuuRestService
 
 interface SuuTestCase {
 
@@ -16,6 +20,10 @@ interface SuuTestCase {
 
     fun <T : SuuTestStep> createStep(name: String, java: Class<T>): T
 
-    fun createRestRequestStep(name: String): SuuTestStepRestRequest
-
+    fun createRestRequestStep(
+        name: String,
+        restService: SuuRestService,
+        restResources: List<SuuRestResource>,
+        restMethod: SuuRestMethod
+    ): SuuTestStepRestRequest
 }

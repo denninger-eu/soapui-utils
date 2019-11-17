@@ -2,3 +2,7 @@
 description: ''
 httpMethod: POST
 name: PostMethod
+parameters:
+- name: methodParameterKey
+  style: QUERY
+  value: methodParameterValue

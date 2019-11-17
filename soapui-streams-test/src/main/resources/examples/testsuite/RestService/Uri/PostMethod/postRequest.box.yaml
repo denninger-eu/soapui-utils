@@ -1,8 +1,16 @@
 !restRequest
 description: ''
-name: postRequest
 headers:
-  - key: headerKey
-    values:
-      - headerValue
+- key: headerKey
+  values:
+  - headerValue
+name: postRequest
+parameters:
+- name: resourceParameterName
+  style: QUERY
+  value: resourceParameterValue
+- name: methodParameterKey
+  style: QUERY
+  value: methodParameterValue
 ### content
+postContent

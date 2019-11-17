@@ -1,0 +1,4 @@
+!restMethod
+description: ''
+httpMethod: GET
+name: ChildMethod

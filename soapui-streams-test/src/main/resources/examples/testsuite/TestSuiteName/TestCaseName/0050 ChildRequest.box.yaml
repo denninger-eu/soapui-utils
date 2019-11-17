@@ -1,0 +1,27 @@
+!restRequestStep
+baseMethod: !restMethod
+  description: ''
+  httpMethod: GET
+  name: ChildMethod
+baseResources:
+- description: ''
+  name: Uri
+  parameters:
+  - location: RESOURCE
+    name: resourceParameterName
+    style: QUERY
+    value: resourceParameterValue
+  path: /uri
+- description: ''
+  name: child
+  path: child
+baseService: !restService
+  basePath: ''
+  description: ''
+  name: RestService
+description: ''
+name: ChildRequest
+request: !restRequest
+  description: ''
+  name: ChildRequest
+### content
