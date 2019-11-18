@@ -8,6 +8,7 @@ import com.eviware.soapui.impl.wsdl.testcase.WsdlTestCase
 import com.eviware.soapui.impl.wsdl.teststeps.PropertyTransfersTestStep
 import com.eviware.soapui.impl.wsdl.teststeps.RestTestRequestStep
 import com.eviware.soapui.impl.wsdl.teststeps.WsdlDelayTestStep
+import com.eviware.soapui.impl.wsdl.teststeps.WsdlPropertiesTestStep
 import com.eviware.soapui.impl.wsdl.teststeps.registry.RestRequestStepFactory
 import com.eviware.soapui.model.testsuite.TestStep
 import eu.k5.soapui.streams.direct.model.PropertiesDirect
@@ -57,7 +58,10 @@ class TestCaseDirect(
             return TestStepDelayDirect(testCase.addTestStep("delay", name) as WsdlDelayTestStep) as T
         } else if (type == SuuTestStepRestRequest::class.java) {
             return TestStepRestRequestDirect(testCase.addTestStep("restrequest", name) as RestTestRequestStep) as T
+        } else if (type == SuuTestStepProperties::class.java) {
+            return TestStepPropertiesDirect(testCase.addTestStep("properties", name) as WsdlPropertiesTestStep) as T
         }
+
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
@@ -112,7 +116,7 @@ class TestCaseDirect(
         if (restResources.size > 1) {
             for (restResource in restResources.subList(1, restResources.size)) {
                 existingResource = existingResource?.childResourceList?.firstOrNull { it.name == restResource.name }
-                if (existingResource == null){
+                if (existingResource == null) {
                     TODO("create")
                 }
             }
@@ -131,11 +135,15 @@ class TestCaseDirect(
             stepFactories[WsdlDelayTestStep::class.java] = {
                 TestStepDelayDirect(it as WsdlDelayTestStep)
             }
-            stepFactories[PropertyTransfersTestStep::class.java] =
-                { TestStepPropertyTransfersDirect(it as PropertyTransfersTestStep) }
+            stepFactories[PropertyTransfersTestStep::class.java] = {
+                TestStepPropertyTransfersDirect(it as PropertyTransfersTestStep)
+            }
 
             stepFactories[RestTestRequestStep::class.java] = {
                 TestStepRestRequestDirect(it as RestTestRequestStep)
+            }
+            stepFactories[WsdlPropertiesTestStep::class.java] = {
+                TestStepPropertiesDirect(it as WsdlPropertiesTestStep)
             }
         }
 

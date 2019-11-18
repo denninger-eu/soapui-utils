@@ -3,10 +3,8 @@ package eu.k5.soapui.streams.box.test
 import eu.k5.soapui.streams.box.Box
 import eu.k5.soapui.streams.box.PropertiesBox
 import eu.k5.soapui.streams.box.YamlContext
-import eu.k5.soapui.streams.listener.copy.CopyRestServiceListener
 import eu.k5.soapui.streams.model.SuuProperties
 import eu.k5.soapui.streams.model.rest.SuuRestMethod
-import eu.k5.soapui.streams.model.rest.SuuRestRequest
 import eu.k5.soapui.streams.model.rest.SuuRestResource
 import eu.k5.soapui.streams.model.rest.SuuRestService
 import eu.k5.soapui.streams.model.test.*
@@ -89,6 +87,10 @@ class TestCaseBox(
             stepFactory[SuuTestStepRestRequest::class.java] = { parent: Box, name: String ->
                 TestStepRestRequestBox.create(parent, name)
             }
+
+            stepFactory[SuuTestStepProperties::class.java] = { parent: Box, name: String ->
+                TestStepPropertiesBox.create(parent, name)
+            }
         }
 
         fun <T : SuuTestStep> supported(type: Class<T>): Boolean = stepFactory.containsKey(type)
@@ -102,6 +104,8 @@ class TestCaseBox(
                 return TestStepDelayBox(box)
             } else if (load is TestStepRestRequestBox.RestRequestYaml) {
                 return TestStepRestRequestBox(box)
+            } else if (load is TestStepPropertiesBox.PropertiesYaml){
+                return TestStepPropertiesBox(box)
             }
             TODO(load.javaClass.toString())
         }

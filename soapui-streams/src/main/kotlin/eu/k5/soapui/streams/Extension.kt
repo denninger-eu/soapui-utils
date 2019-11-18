@@ -82,6 +82,8 @@ fun SuuTestCase.apply(listener: SuuTestSuiteListener) {
             testStepListener.transfer(step)
         } else if (step is SuuTestStepDelay) {
             testStepListener.delay(step)
+        } else if (step is SuuTestStepProperties){
+            testStepListener.properties(step)
         } else if (step is SuuTestStepRestRequest) {
             val result = testStepListener.enterRestRequest(step)
             if (result != VisitResult.TERMINATE){

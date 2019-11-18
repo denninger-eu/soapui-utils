@@ -29,6 +29,7 @@ class YamlContext {
             tags[TestStepPropertyTransfersBox.PropertyTransfersYaml::class.java] = "!propertyTransfers"
             tags[TestStepDelayBox.DelayYaml::class.java] = "!delay"
             tags[TestStepRestRequestBox.RestRequestYaml::class.java] = "!restRequestStep"
+            tags[TestStepPropertiesBox.PropertiesYaml::class.java] = "!propertiesStep"
 
             tags[AssertionsBox.AssertionsYaml::class.java] = "!assertions"
             tags[AssertionsBox.AssertionInvalidStatusYaml::class.java] = "!invalidStatus"

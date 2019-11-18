@@ -86,4 +86,9 @@ class CopyTestStepListener(
     }
 
 
+    override fun properties(step: SuuTestStepProperties) {
+        val targetStep = target.createStep(step.name, SuuTestStepProperties::class.java)
+        handleStep(step, targetStep)
+    }
+
 }

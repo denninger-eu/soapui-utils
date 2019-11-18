@@ -2,12 +2,14 @@ package eu.k5.soapui.streams.listener.difference
 
 import eu.k5.soapui.streams.listener.VisitResult
 import eu.k5.soapui.streams.model.test.*
-import eu.k5.soapui.visitor.listener.*
 
 class DifferenceTestStepListener(
     private val testCase: SuuTestCase,
     private val differences: Differences
 ) : SuuTestStepListener {
+    override fun properties(step: SuuTestStepProperties) {
+
+    }
 
     private var restRequest: SuuTestStepRestRequest? = null
 

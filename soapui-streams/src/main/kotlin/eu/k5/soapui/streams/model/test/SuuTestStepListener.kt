@@ -1,8 +1,6 @@
 package eu.k5.soapui.streams.model.test
 
 import eu.k5.soapui.streams.listener.VisitResult
-import eu.k5.soapui.streams.model.assertion.SuuAssertions
-import eu.k5.soapui.visitor.listener.*
 
 
 interface SuuTestStepListener {
@@ -13,6 +11,7 @@ interface SuuTestStepListener {
     fun enterRestRequest(step: SuuTestStepRestRequest): VisitResult
     fun exitRestRequest(step: SuuTestStepRestRequest)
 
+    fun properties(step: SuuTestStepProperties)
 
     fun delay(step: SuuTestStepDelay)
 
@@ -21,25 +20,25 @@ interface SuuTestStepListener {
 
     companion object {
         val NO_OP = object : SuuTestStepListener {
+            override fun properties(step: SuuTestStepProperties) {
+            }
+
             override fun exitRestRequest(step: SuuTestStepRestRequest) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
 
             override fun createAssertionListener(): SuuAssertionListener {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                return SuuAssertionListener.NO_OP
             }
 
 
             override fun enterRestRequest(step: SuuTestStepRestRequest): VisitResult {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                return VisitResult.TERMINATE
             }
 
             override fun transfer(step: SuuTestStepPropertyTransfers) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
 
             override fun delay(step: SuuTestStepDelay) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
 
 

@@ -5,10 +5,7 @@ import eu.k5.soapui.streams.direct.model.test.TestStepDelayDirect
 import eu.k5.soapui.streams.listener.difference.DifferenceListener
 import eu.k5.soapui.streams.listener.sync.SyncListener
 import eu.k5.soapui.streams.model.assertion.*
-import eu.k5.soapui.streams.model.test.SuuPropertyTransfer
-import eu.k5.soapui.streams.model.test.SuuTestCase
-import eu.k5.soapui.streams.model.test.SuuTestStepPropertyTransfers
-import eu.k5.soapui.streams.model.test.SuuTestStepRestRequest
+import eu.k5.soapui.streams.model.test.*
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -81,6 +78,15 @@ class TestSuiteDirectReadTest : AbstractDirectTest() {
 
         assertTestStepPropertyTransfer(testCase.getStep("PropertyTransferName") as SuuTestStepPropertyTransfers)
         assertTestStepRestRequest(testCase.getStep("restRequestStep") as SuuTestStepRestRequest)
+        assertTestStepProperties(testCase.getStep("PropertiesStepName") as SuuTestStepProperties)
+    }
+
+    private fun assertTestStepProperties(step: SuuTestStepProperties) {
+        assertEquals("PropertiesStepDescription", step.description)
+
+        val property = step.properties.byName("propertyName")
+        assertNotNull(property)
+        assertEquals("propertyValue", property.value)
     }
 
     private fun assertTestStepRestRequest(restRequest: SuuTestStepRestRequest) {

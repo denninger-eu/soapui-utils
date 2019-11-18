@@ -9,6 +9,10 @@ class SyncTestStepListener(
     private val reference: SuuTestCase,
     private val target: SuuTestCase
 ) : SuuTestStepListener {
+    override fun properties(step: SuuTestStepProperties) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     override fun createAssertionListener(): SuuAssertionListener {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
