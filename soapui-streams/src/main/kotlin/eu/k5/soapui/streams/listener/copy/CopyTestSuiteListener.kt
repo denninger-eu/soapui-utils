@@ -12,6 +12,10 @@ class CopyTestSuiteListener(
     private val target: SuProject
 ) : SuuTestSuiteListener {
 
+    constructor(target: SuProject, targetTestSuite: SuuTestSuite) : this(target) {
+        this.targetTestSuite = targetTestSuite
+    }
+
     private var targetTestSuite: SuuTestSuite? = null
     private var targetTestCase: SuuTestCase? = null
 

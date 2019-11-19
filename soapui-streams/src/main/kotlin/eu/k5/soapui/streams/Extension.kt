@@ -1,6 +1,7 @@
 package eu.k5.soapui.streams
 
 import eu.k5.soapui.streams.listener.VisitResult
+import eu.k5.soapui.streams.listener.sync.SyncListener
 import eu.k5.soapui.streams.model.rest.SuuRestServiceListener
 import eu.k5.soapui.streams.model.SuProject
 import eu.k5.soapui.streams.model.rest.SuuRestResource
@@ -9,6 +10,11 @@ import eu.k5.soapui.streams.model.rest.SuuRestService
 import eu.k5.soapui.streams.model.SuListener
 import eu.k5.soapui.streams.model.assertion.*
 import eu.k5.soapui.streams.model.test.*
+
+fun SuProject.syncWith(other: SuProject): SuProject {
+    this.apply(SyncListener(other))
+    return this
+}
 
 fun SuProject.apply(listener: SuListener): SuProject {
     listener.enterProject(Environment(), this)
@@ -82,12 +88,12 @@ fun SuuTestCase.apply(listener: SuuTestSuiteListener) {
             testStepListener.transfer(step)
         } else if (step is SuuTestStepDelay) {
             testStepListener.delay(step)
-        } else if (step is SuuTestStepProperties){
+        } else if (step is SuuTestStepProperties) {
             testStepListener.properties(step)
         } else if (step is SuuTestStepRestRequest) {
             val result = testStepListener.enterRestRequest(step)
-            if (result != VisitResult.TERMINATE){
-                handleAssertions (step.assertions, step, testStepListener)
+            if (result != VisitResult.TERMINATE) {
+                handleAssertions(step.assertions, step, testStepListener)
                 testStepListener.exitRestRequest(step)
             }
         }
@@ -126,12 +132,10 @@ private fun handleAssertions(
             assertionListener.jsonPathRegEx(assertion)
         } else if (assertion is SuuAssertionJsonPathCount) {
             assertionListener.jsonPathCount(assertion)
-
         } else if (assertion is SuuAssertionXPath) {
             assertionListener.xpath(assertion)
         } else if (assertion is SuuAssertionXQuery) {
             assertionListener.xquery(assertion)
-
         } else {
             TODO(assertion.javaClass.toString())
         }

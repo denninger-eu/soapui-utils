@@ -88,7 +88,7 @@ class SyncRestServiceListener(
         for (missingChildResource in missingChildResources) {
             missingChildResource.apply(copyListener)
         }
-
+        referenceResources.pop()
     }
 
 

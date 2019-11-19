@@ -1,7 +1,11 @@
 package eu.k5.soapui.streams.direct
 
+import eu.k5.soapui.streams.apply
 import eu.k5.soapui.streams.box.Box
 import eu.k5.soapui.streams.box.ProjectBox
+import eu.k5.soapui.streams.listener.difference.DifferenceListener
+import eu.k5.soapui.streams.listener.difference.Differences
+import eu.k5.soapui.streams.model.SuProject
 import java.lang.IllegalStateException
 import java.nio.file.Files
 import java.nio.file.Path
@@ -39,6 +43,12 @@ abstract class AbstractDirectTest {
         fun createTempProjectBox(name: String): ProjectBox {
             val tempPath = tempPath(name).resolve(ProjectBox.FILE_NAME)
             return ProjectBox.create(tempPath, name)
+        }
+
+        fun getDifferences(expected: SuProject, actual: SuProject): Differences {
+            val differenceListener = DifferenceListener(expected)
+            actual.apply(differenceListener)
+            return differenceListener.differences
         }
 
 

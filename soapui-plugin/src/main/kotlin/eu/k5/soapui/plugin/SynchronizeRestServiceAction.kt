@@ -19,7 +19,7 @@ class SynchronizeRestServiceAction : AbstractSoapUIAction<RestService>("Synchron
 
 
     override fun perform(restService: RestService, o: Any?) {
-        println("synchronize")
+        println("do synchronize")
 
         try {
 

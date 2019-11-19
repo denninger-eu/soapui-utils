@@ -27,11 +27,14 @@ class ImexController(
 
 
     fun doImport() {
+        val box = resolveBox()
+        println("DoExport: " + box.fileName())
 
+        Suu.syncRestService(box, model.project, model.restService!!.name!!)
     }
 
     private fun resolveBox(): ProjectBox {
-
+        println(model.folder)
         val folder = model.folder
         println("loading from folder: " + folder)
         val path = Paths.get(folder)

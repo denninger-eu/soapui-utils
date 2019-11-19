@@ -21,7 +21,7 @@ class PropertiesDirect(
     }
 
     override fun addOrUpdate(name: String, value: String?) {
-        var property = byName(name)
+        var property = byName(name) as PropertyDirect
         if (property == null) {
             property = PropertyDirect(addProperty(name))
         }

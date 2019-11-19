@@ -1,18 +1,13 @@
 package eu.k5.soapui.plugin.imex
 
 import java.awt.BorderLayout
-import java.awt.Panel
-import javax.swing.JFrame
-import java.awt.event.ActionEvent
-import java.awt.event.ActionListener
-import com.sun.java.accessibility.util.AWTEventMonitor.addActionListener
-import java.awt.Button
-import java.awt.Label
-import javax.swing.BoxLayout
-import java.awt.GridBagLayout
-import org.jdesktop.swingx.util.WindowUtils.setConstraints
-import java.awt.TextField
 import java.awt.GridBagConstraints
+import java.awt.GridBagLayout
+import java.awt.Panel
+import java.awt.event.ActionListener
+import javax.swing.*
+import javax.swing.event.DocumentEvent
+import javax.swing.event.DocumentListener
 
 
 class ImexView(
@@ -27,7 +22,7 @@ class ImexView(
     private val buttonPanel = Panel()
     private var inputPanel: Panel
 
-    private val folder: TextField
+    private val folder: JTextField
 
     init {
         mainFrame = JFrame("Synchronize Dialolg")
@@ -43,6 +38,7 @@ class ImexView(
 
 
         folder = addLabelWithInput(inputPanel, inputLayout, "Folder")
+        folder.document.addDocumentListener(DocumentChangeListener() { model.folder = folder.text })
         addButtons(buttonPanel, controller)
 
         mainFrame.pack()
@@ -53,45 +49,66 @@ class ImexView(
         mainFrame.isVisible = true
     }
 
+    class DocumentChangeListener(
+        private val action: () -> Unit
+    ) : DocumentListener {
+        override fun changedUpdate(e: DocumentEvent?) {
+            action()
+        }
+
+        override fun insertUpdate(e: DocumentEvent?) {
+            action()
+        }
+
+        override fun removeUpdate(e: DocumentEvent?) {
+            action()
+        }
+
+    }
+
 
     companion object {
 
         private fun addButtons(buttonPanel: Panel, controller: ImexController) {
             BoxLayout(buttonPanel, BoxLayout.X_AXIS)
-            val label = Label("")
+            val label = JLabel("")
             buttonPanel.add(label)
 
-            val buttonExport = Button("Export")
+            val buttonExport = JButton("Export")
             buttonExport.addActionListener { controller.doExport() }
             buttonPanel.add(buttonExport)
 
-            val buttonImport = Button("Import")
+            val buttonImport = JButton("Import")
             buttonImport.addActionListener { controller.doImport() }
             buttonPanel.add(buttonImport)
 
-
-            val cancel = Button("Cancel")
+            val cancel = JButton("Cancel")
             cancel.addActionListener { controller.cancel() }
             buttonPanel.add(cancel)
         }
 
-        private fun addLabelWithInput(inputPanel: Panel, inputLayout: GridBagLayout, labelText: String): TextField {
+        private fun addLabelWithInput(
+            inputPanel: Panel,
+            inputLayout: GridBagLayout,
+            labelText: String
+        ): JTextField {
             val constraints = GridBagConstraints()
 
             constraints.fill = GridBagConstraints.BOTH
             constraints.weightx = 0.0
 
             constraints.gridwidth = GridBagConstraints.RELATIVE
-            val label = Label(labelText)
+            val label = JLabel(labelText)
             inputLayout.setConstraints(label, constraints)
             inputPanel.add(label)
 
             constraints.weightx = 1.0
             constraints.gridwidth = GridBagConstraints.REMAINDER // next-to-last in
             // row
-            val textField = TextField()
+            val textField = JTextField()
             inputLayout.setConstraints(textField, constraints)
             inputPanel.add(textField)
+
             return textField
         }
     }

@@ -108,6 +108,10 @@ class Differences {
 
     }
 
+    fun size(): Int {
+        return differences.size
+    }
+
 
     enum class Type {
         PROJECT, REST_SERVICE, RESOURCE, METHOD, REQUEST, PROPERTY,

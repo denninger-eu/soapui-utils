@@ -1,7 +1,6 @@
 package eu.k5.soapui.streams.model.test
 
 import eu.k5.soapui.streams.listener.VisitResult
-import eu.k5.soapui.visitor.listener.*
 
 
 interface SuuTestSuiteListener {
@@ -12,9 +11,6 @@ interface SuuTestSuiteListener {
 
     fun enterTestCase(testCase: SuuTestCase): VisitResult
     fun exitTestCase(testCase: SuuTestCase)
-
-
-
 
 
     fun createTestStepListener(): SuuTestStepListener

@@ -2,10 +2,13 @@ package eu.k5.soapui.streams.direct
 
 import eu.k5.soapui.streams.apply
 import eu.k5.soapui.streams.direct.model.test.TestStepDelayDirect
+import eu.k5.soapui.streams.flatten
 import eu.k5.soapui.streams.listener.difference.DifferenceListener
 import eu.k5.soapui.streams.listener.sync.SyncListener
 import eu.k5.soapui.streams.model.assertion.*
 import eu.k5.soapui.streams.model.test.*
+import eu.k5.soapui.streams.select
+import eu.k5.soapui.streams.syncWith
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -22,15 +25,19 @@ class TestSuiteDirectReadTest : AbstractDirectTest() {
 
         val apply = box.apply(SyncListener(project))
 
+        val firstDifference = DifferenceListener(project)
+
+        assertTrue(firstDifference.differences.isEmpty(), firstDifference.differences.toString())
+
+        // double apply should not affect differences
         box.apply(SyncListener(project))
 
-        val listener = DifferenceListener(project)
-        box.apply(listener)
+        val secondDifference = DifferenceListener(project)
+        box.apply(secondDifference)
 
-
-
-        assertTrue(listener.differences.isEmpty(), listener.differences.toString())
+        assertTrue(secondDifference.differences.isEmpty(), secondDifference.differences.toString())
     }
+
 
     @Test
     fun readTestSuiteProject() {
