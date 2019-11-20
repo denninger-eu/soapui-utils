@@ -1,5 +1,6 @@
 package eu.k5.soapui.streams.box.rest
 
+import eu.k5.soapui.streams.box.Box.Companion.changed
 import eu.k5.soapui.streams.model.rest.SuuRestParameter
 import eu.k5.soapui.streams.model.rest.SuuRestParameters
 
@@ -21,14 +22,24 @@ class RestParameters(
     }
 
     override fun addOrUpdate(name: String, value: String, style: SuuRestParameter.Style) {
+        var changed = false
         var existing = params.firstOrNull { it.name == name }
         if (existing == null) {
             existing = RestParameterYaml(name = name)
             params.add(existing)
+            changed = true
         }
-        existing.value = value
-        existing.style = style
-        store()
+        if (changed(existing.value, value)) {
+            existing.value = value
+            changed = true
+        }
+        if (existing.style != style) {
+            existing.style = style
+            changed = true
+        }
+        if (changed) {
+            store()
+        }
     }
 
     class RestParameter(private val parameter: RestParameterYaml) : SuuRestParameter {

@@ -73,6 +73,11 @@ class Differences {
 
     override fun toString(): String = differences.toString()
     fun <T> addChange(name: String, reference: T, actual: T) {
+        if (reference is String? && actual is String?) {
+            if (reference.isNullOrEmpty() && actual.isNullOrEmpty()) {
+                return
+            }
+        }
         if (reference != actual) {
             addChange(name)
         }

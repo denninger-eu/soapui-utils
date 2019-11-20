@@ -68,6 +68,8 @@ class YamlContext {
                             null
                         } else if (property?.name == "enabled" && propertyValue == true) {
                             return null
+                        } else if (propertyValue is String && propertyValue.isEmpty()){
+                            return null
                         } else {
                             super.representJavaBeanProperty(javaBean, property, propertyValue, customTag)
                         }

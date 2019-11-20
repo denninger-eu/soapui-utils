@@ -15,11 +15,15 @@ interface SuuTestStepListener {
 
     fun delay(step: SuuTestStepDelay)
 
+  //  fun script(step: SuuTestStepScript)
 
     fun createAssertionListener(): SuuAssertionListener
 
     companion object {
         val NO_OP = object : SuuTestStepListener {
+/*            override fun script(step: SuuTestStepScript) {
+            }*/
+
             override fun properties(step: SuuTestStepProperties) {
             }
 

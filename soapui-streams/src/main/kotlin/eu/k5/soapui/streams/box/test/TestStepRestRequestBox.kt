@@ -144,6 +144,13 @@ class TestStepRestRequestBox(
     }
 
 
+    class BaseYaml {
+        var baseService: RestServiceBox.RestServiceYaml? = null
+        var baseResources: MutableList<RestResourceBox.RestResourceYaml>? = ArrayList()
+        var baseMethod: RestMethodBox.RestMethodYaml? = null
+    }
+
+
     class RestServiceLocalBox(
         private val yaml: RestServiceBox.RestServiceYaml,
         private val store: () -> Unit

@@ -128,7 +128,7 @@ class Box(
     }
 
     fun createFolder(folder: String, fileName: String): Box {
-        val resolve = path.parent.resolve(folder)
+        val resolve = path.parent.resolve(escapeFileName(folder))
         check(!Files.exists(resolve)) { "Already exists" }
         Files.createDirectories(resolve)
         return Box(resolve.resolve(fileName))
@@ -136,7 +136,7 @@ class Box(
 
 
     fun createFile(name: String, fileExtension: String): Box {
-        val resolved = path.parent.resolve(name + fileExtension)
+        val resolved = path.parent.resolve(escapeFileName(name) + fileExtension)
         check(!Files.exists(resolved)) { "Already exists" }
         return Box(resolved)
     }
@@ -144,7 +144,7 @@ class Box(
     fun createOrderedFile(pattern: String, name: String): Box {
         val index = findFileIndex() + 10
 
-        val fileName = String.format(pattern, index, name)
+        val fileName = String.format(pattern, index, escapeFileName(name))
         val resolved = path.parent.resolve(fileName)
         check(!Files.exists(resolved)) { "Already exists" }
         return Box(resolved)
@@ -245,7 +245,7 @@ class Box(
     }
 
     companion object {
-
+        private val ESCAPE_PATTERN = Pattern.compile("""[^-_0-9a-zA-Z{}()\]\[ ]""")
         private val NUMBER = Pattern.compile("(?<number>[0-9]{1,5}).*")
         private val SECTION_PATTERN = Pattern.compile("### (?<section>[a-zA-Z0-9]{1,16})")
 
@@ -256,6 +256,16 @@ class Box(
                 return options
             }
 
+        fun escapeFileName(fileName: String): String {
+            return ESCAPE_PATTERN.matcher(fileName).replaceAll("_")
+        }
+
+        inline fun changed(original: String?, update: String?): Boolean {
+            if (original.isNullOrEmpty() && update.isNullOrEmpty()) {
+                return false
+            }
+            return original != update
+        }
     }
 
     enum class Mode {

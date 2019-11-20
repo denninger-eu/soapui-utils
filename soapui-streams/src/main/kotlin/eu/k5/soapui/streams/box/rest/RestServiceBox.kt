@@ -1,6 +1,7 @@
 package eu.k5.soapui.streams.box.rest
 
 import eu.k5.soapui.streams.box.Box
+import eu.k5.soapui.streams.box.Box.Companion.changed
 import eu.k5.soapui.streams.model.rest.SuuRestResource
 import eu.k5.soapui.streams.model.rest.SuuRestService
 
@@ -14,22 +15,28 @@ class RestServiceBox(
     override var name: String?
         get() = restService.name
         set(value) {
-            restService.name = value
-            store()
+            if (changed(restService.name, value)) {
+                restService.name = value
+                store()
+            }
         }
 
     override var description: String?
         get() = restService.description
         set(value) {
-            restService.description = value
-            store()
+            if (changed(restService.description, value)) {
+                restService.description = value
+                store()
+            }
         }
 
     override var basePath: String?
         get() = restService.basePath
         set(value) {
-            restService.basePath = value
-            store()
+            if (changed(restService.basePath, value)) {
+                restService.basePath = value
+                store()
+            }
         }
 
     override val resources by lazy {

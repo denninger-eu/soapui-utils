@@ -1,5 +1,6 @@
 package eu.k5.soapui.streams.box.test
 
+import eu.k5.soapui.streams.box.Box.Companion.changed
 import eu.k5.soapui.streams.model.assertion.*
 
 class AssertionsBox(
@@ -29,7 +30,7 @@ class AssertionsBox(
         override var name: String
             get() = yaml.name ?: ""
             set(value) {
-                if (yaml.name == value) {
+                if (changed(yaml.name, value)) {
                     yaml.name = value
                     store()
                 }
@@ -58,7 +59,7 @@ class AssertionsBox(
         override var statusCodes: String
             get() = yaml.statusCodes ?: ""
             set(value) {
-                if (yaml.statusCodes != value) {
+                if (changed(yaml.statusCodes, value)) {
                     yaml.statusCodes = value
                     store()
                 }
@@ -79,7 +80,7 @@ class AssertionsBox(
         override var statusCodes: String
             get() = yaml.statusCodes ?: ""
             set(value) {
-                if (yaml.statusCodes != value) {
+                if (changed(yaml.statusCodes, value)) {
                     yaml.statusCodes = value
                     store()
                 }
@@ -101,7 +102,7 @@ class AssertionsBox(
         override var content: String?
             get() = yaml.content
             set(value) {
-                if (yaml.content != value) {
+                if (changed(yaml.content, value)) {
                     yaml.content = value
                     store()
                 }
@@ -139,7 +140,7 @@ class AssertionsBox(
         override var content: String?
             get() = yaml.content
             set(value) {
-                if (yaml.content != value) {
+                if (changed(yaml.content, value)) {
                     yaml.content = value
                     store()
                 }
@@ -175,7 +176,7 @@ class AssertionsBox(
         override var script: String?
             get() = yaml.script
             set(value) {
-                if (yaml.script != value) {
+                if (changed(yaml.script, value)) {
                     yaml.script = value
                     store()
                 }

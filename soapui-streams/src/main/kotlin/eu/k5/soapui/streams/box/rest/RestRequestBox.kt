@@ -1,6 +1,7 @@
 package eu.k5.soapui.streams.box.rest
 
 import eu.k5.soapui.streams.box.Box
+import eu.k5.soapui.streams.box.Box.Companion.changed
 import eu.k5.soapui.streams.model.rest.SuuRestParameters
 import eu.k5.soapui.streams.model.rest.SuuRestRequest
 
@@ -14,15 +15,19 @@ class RestRequestBox(
     override var name
         get() = yaml.name ?: ""
         set(value) {
-            yaml.name = value
-            store()
+            if (changed(yaml.name, value)) {
+                yaml.name = value
+                store()
+            }
         }
 
     override var description
         get() = yaml.description
         set(value) {
-            yaml.description = value
-            store()
+            if (changed(yaml.description, value)) {
+                yaml.description = value
+                store()
+            }
         }
 
 

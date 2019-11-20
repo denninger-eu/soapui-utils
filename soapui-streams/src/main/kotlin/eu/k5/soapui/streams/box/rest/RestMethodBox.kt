@@ -1,6 +1,7 @@
 package eu.k5.soapui.streams.box.rest
 
 import eu.k5.soapui.streams.box.Box
+import eu.k5.soapui.streams.box.Box.Companion.changed
 import eu.k5.soapui.streams.jaxb.rest.RestParameter
 import eu.k5.soapui.streams.model.rest.SuuRestMethod
 import eu.k5.soapui.streams.model.rest.SuuRestParameters
@@ -14,20 +15,26 @@ class RestMethodBox(
     override var name
         get() = method.name ?: ""
         set(value) {
-            method.name = value
-            store()
+            if (changed(method.name, value)) {
+                method.name = value
+                store()
+            }
         }
     override var description
         get() = method.description
         set(value) {
-            method.description = value
-            store()
+            if (changed(method.description, value)) {
+                method.description = value
+                store()
+            }
         }
     override var httpMethod
         get() = method.httpMethod
         set(value) {
-            method.httpMethod = value
-            store()
+            if (method.httpMethod != value) {
+                method.httpMethod = value
+                store()
+            }
         }
 
     override val parameters: SuuRestParameters by lazy { RestParameters(method.parameters!!) { store() } }
@@ -58,7 +65,7 @@ class RestMethodBox(
 
     companion object {
         fun create(parentBox: Box, name: String): RestMethodBox {
-            val box = parentBox.createFolder(name, RestMethodBox.FILE_NAME)
+            val box = parentBox.createFolder("_" + name, RestMethodBox.FILE_NAME)
             val method = RestMethodYaml()
             method.name = name
             box.write(RestMethodYaml::class.java, method)

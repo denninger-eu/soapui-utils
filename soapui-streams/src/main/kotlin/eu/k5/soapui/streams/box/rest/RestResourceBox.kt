@@ -1,8 +1,7 @@
 package eu.k5.soapui.streams.box.rest
 
 import eu.k5.soapui.streams.box.Box
-import eu.k5.soapui.streams.jaxb.rest.RestParameter
-import eu.k5.soapui.streams.jaxb.rest.RestResource
+import eu.k5.soapui.streams.box.Box.Companion.changed
 import eu.k5.soapui.streams.model.rest.SuuRestResource
 import eu.k5.soapui.streams.model.rest.SuuRestMethod
 import eu.k5.soapui.streams.model.rest.SuuRestParameters
@@ -11,31 +10,35 @@ class RestResourceBox(
     private val box: Box
 ) : SuuRestResource {
 
-    private val resource by lazy { box.load(RestResourceYaml::class.java) }
+    private val yaml by lazy { box.load(RestResourceYaml::class.java) }
 
     override var name: String
-        get() = resource.name ?: ""
+        get() = yaml.name ?: ""
         set(value) {
-            resource.name = name
-            store()
+            if (changed(yaml.name, value)) {
+                yaml.name = value
+                store()
+            }
         }
     override var description: String?
-        get() = resource.description
+        get() = yaml.description
         set(value) {
-            if (resource.description != value) {
-                resource.description = value
+            if (changed(yaml.description, value)) {
+                yaml.description = value
                 store()
             }
         }
     override var path: String?
-        get() = resource.path
+        get() = yaml.path
         set(value) {
-            resource.path = value
-            store()
+            if (changed(yaml.path, value)) {
+                yaml.path = value
+                store()
+            }
         }
 
 
-    override val parameters: SuuRestParameters by lazy { RestParameters(resource.parameters!!) { store() } }
+    override val parameters: SuuRestParameters by lazy { RestParameters(yaml.parameters!!) { store() } }
 
     override val methods by lazy {
         box.findSubFolderBox { it.fileName.toString() == RestMethodBox.FILE_NAME }
@@ -63,7 +66,7 @@ class RestResourceBox(
     }
 
     private fun store() {
-        box.write(RestResourceYaml::class.java, resource)
+        box.write(RestResourceYaml::class.java, yaml)
     }
 
     class RestResourceYaml {

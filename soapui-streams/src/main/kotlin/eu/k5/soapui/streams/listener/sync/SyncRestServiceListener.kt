@@ -122,10 +122,11 @@ class SyncRestServiceListener(
         val referenceRequest = referenceMethod!!.getRequest(targetRestRequest.name) ?: return
         targetRestRequest.description = referenceRequest.description
         targetRestRequest.content = referenceRequest.content
-        CopyRestServiceListener.handleParameters(
+
+      /*  CopyRestServiceListener.handleParameters(
             targetRestRequest.parameters,
             referenceRequest.parameters
-        )
+        )*/
     }
 
 }

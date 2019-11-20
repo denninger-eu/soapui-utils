@@ -49,10 +49,8 @@ class DifferenceRestServiceListener(
             differences.addAdditional(actualResource.name)
             return VisitResult.TERMINATE
         }
-        if (actualResource.description != refResource.description) {
-            differences.addChange("description")
-        }
 
+        differences.addChange("description", refResource.description, actualResource.description)
         handleParameters(refResource.parameters, actualResource.parameters)
         referenceResources.push(refResource)
         return VisitResult.CONTINUE

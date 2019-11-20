@@ -5,12 +5,5 @@ headers:
   values:
   - headerValue
 name: postRequest
-parameters:
-- name: resourceParameterName
-  style: QUERY
-  value: resourceParameterValue
-- name: methodParameterKey
-  style: QUERY
-  value: methodParameterValue
 ### content
 postContent
