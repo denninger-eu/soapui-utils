@@ -1,4 +1,4 @@
-!!eu.k5.soapui.streams.box.test.TestStepPropertiesBox$TestStepPropertiesYaml
+!propertiesStep
 description: PropertiesStepDescription
 name: PropertiesStepName
 properties:

@@ -1,5 +1,6 @@
 package eu.k5.soapui.streams.direct.model
 
+import com.eviware.soapui.impl.wsdl.support.XmlBeansPropertiesTestPropertyHolder
 import com.eviware.soapui.model.TestPropertyHolder
 import com.eviware.soapui.model.testsuite.TestProperty
 import eu.k5.soapui.streams.model.SuuProperties
@@ -7,6 +8,7 @@ import eu.k5.soapui.streams.model.SuuProperty
 
 class PropertiesDirect(
     private val propertyHolder: TestPropertyHolder,
+
     private val filter: List<String> = ArrayList(),
     private val addProperty: (String) -> TestProperty
 ) : SuuProperties {
@@ -21,7 +23,7 @@ class PropertiesDirect(
     }
 
     override fun addOrUpdate(name: String, value: String?) {
-        var property = byName(name) as PropertyDirect
+        var property = byName(name) as PropertyDirect?
         if (property == null) {
             property = PropertyDirect(addProperty(name))
         }

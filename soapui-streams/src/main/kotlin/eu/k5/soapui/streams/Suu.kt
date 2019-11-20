@@ -9,7 +9,7 @@ class Suu {
     companion object {
 
         fun sync(source: SuProject, target: SuProject) {
-
+            target.apply(SyncListener(source))
         }
 
         fun syncRestService(source: SuProject, target: SuProject, name: String) {

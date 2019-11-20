@@ -14,6 +14,6 @@ class SuuAssert {
             return
         }
 
-        throw AssertionError("Difference " + listener.differences)
+        throw AssertionError("Difference [" + listener.differences.size() + "] " + listener.differences)
     }
 }

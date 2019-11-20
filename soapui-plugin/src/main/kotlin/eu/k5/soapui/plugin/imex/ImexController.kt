@@ -55,8 +55,7 @@ class ImexController(
     fun doExport() {
         val box = resolveBox()
         println("DoExport: " + box.fileName())
-
-        Suu.syncRestService(model.project, box, model.restService!!.name!!)
+        Suu.sync(model.project, box)
     }
 
 }
