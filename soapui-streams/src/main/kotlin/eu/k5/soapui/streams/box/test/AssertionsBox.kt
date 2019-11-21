@@ -38,7 +38,7 @@ class AssertionsBox(
         override var enabled: Boolean
             get() = yaml.enabled ?: true
             set(value) {
-                if (yaml.enabled != value) {
+                if (changed(yaml.enabled, value)) {
                     yaml.enabled = value
                     store()
                 }
@@ -110,7 +110,7 @@ class AssertionsBox(
         override var regexp: Boolean
             get() = yaml.regexp ?: false
             set(value) {
-                if (yaml.regexp != value) {
+                if (changed(yaml.regexp, value, false)) {
                     yaml.regexp = value
                     store()
                 }
@@ -118,7 +118,7 @@ class AssertionsBox(
         override var caseSensitive: Boolean
             get() = yaml.caseSensitive ?: true
             set(value) {
-                if (yaml.caseSensitive != value) {
+                if (changed(yaml.caseSensitive, value, true)) {
                     yaml.caseSensitive = value
                     store()
                 }

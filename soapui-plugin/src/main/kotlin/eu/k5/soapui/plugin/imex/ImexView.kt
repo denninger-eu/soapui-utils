@@ -8,6 +8,7 @@ import java.awt.event.ActionListener
 import javax.swing.*
 import javax.swing.event.DocumentEvent
 import javax.swing.event.DocumentListener
+import javax.swing.tree.DefaultMutableTreeNode
 
 
 class ImexView(
@@ -24,10 +25,17 @@ class ImexView(
 
     private val folder: JTextField
 
+    private val diff: JTree
+    private val root: DefaultMutableTreeNode = DefaultMutableTreeNode("Root")
+
     init {
         mainFrame = JFrame("Synchronize Dialolg")
         mainLayout = BorderLayout(2, 2)
-        mainFrame.setLayout(mainLayout);
+        mainFrame.layout = mainLayout
+
+        diff = initTree(root)
+
+        mainFrame.add(diff)
 
         val inputLayout = GridBagLayout()
         inputPanel = Panel(inputLayout)
@@ -42,7 +50,9 @@ class ImexView(
         addButtons(buttonPanel, controller)
 
         mainFrame.pack()
-        mainFrame.setSize(300, 300)
+        mainFrame.setSize(500, 300)
+
+
     }
 
     fun display() {
@@ -110,6 +120,15 @@ class ImexView(
             inputPanel.add(textField)
 
             return textField
+        }
+
+        private fun initTree(root: DefaultMutableTreeNode): JTree {
+            val vegetableNode = DefaultMutableTreeNode("Vegetables")
+            val fruitNode = DefaultMutableTreeNode("Fruits")
+
+            root.add(vegetableNode)
+            root.add(fruitNode)
+            return JTree(root)
         }
     }
 }

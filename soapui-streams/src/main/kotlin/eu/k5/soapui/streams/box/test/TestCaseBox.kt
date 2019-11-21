@@ -1,6 +1,7 @@
 package eu.k5.soapui.streams.box.test
 
 import eu.k5.soapui.streams.box.Box
+import eu.k5.soapui.streams.box.Box.Companion.changed
 import eu.k5.soapui.streams.box.PropertiesBox
 import eu.k5.soapui.streams.box.YamlContext
 import eu.k5.soapui.streams.model.SuuProperties
@@ -19,7 +20,7 @@ class TestCaseBox(
     override var name: String
         get() = testCase.name ?: ""
         set(value) {
-            if (testCase.name != value) {
+            if (changed(testCase.name, value)) {
                 testCase.name = value
                 store()
             }
@@ -27,7 +28,7 @@ class TestCaseBox(
     override var enabled: Boolean
         get() = testCase.enabled ?: true
         set(value) {
-            if (testCase.enabled != value) {
+            if (changed(testCase.enabled, value)) {
                 testCase.enabled = value
                 store()
             }
@@ -46,7 +47,7 @@ class TestCaseBox(
 
 
     override fun createRestRequestStep(
-        name:String,
+        name: String,
         restService: SuuRestService,
         restResources: List<SuuRestResource>,
         restMethod: SuuRestMethod
@@ -104,7 +105,7 @@ class TestCaseBox(
                 return TestStepDelayBox(box)
             } else if (load is TestStepRestRequestBox.RestRequestYaml) {
                 return TestStepRestRequestBox(box)
-            } else if (load is TestStepPropertiesBox.PropertiesYaml){
+            } else if (load is TestStepPropertiesBox.PropertiesYaml) {
                 return TestStepPropertiesBox(box)
             }
             TODO(load.javaClass.toString())

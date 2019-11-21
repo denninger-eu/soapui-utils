@@ -1,8 +1,8 @@
 package eu.k5.soapui.streams.box.test
 
 import eu.k5.soapui.streams.box.Box
+import eu.k5.soapui.streams.box.Box.Companion.changed
 import eu.k5.soapui.streams.box.PropertiesBox
-import eu.k5.soapui.streams.box.rest.RestServiceBox
 import eu.k5.soapui.streams.model.SuuProperties
 import eu.k5.soapui.streams.model.test.SuuTestCase
 import eu.k5.soapui.streams.model.test.SuuTestSuite
@@ -12,27 +12,27 @@ class TestSuiteBox(
 ) : SuuTestSuite {
 
 
-    private val testSuite: TestSuiteYaml = box.load(TestSuiteYaml::class.java)
+    private val yaml: TestSuiteYaml = box.load(TestSuiteYaml::class.java)
 
     override var name: String
-        get() = testSuite.name ?: ""
+        get() = yaml.name ?: ""
         set(value) {
-            if (testSuite.name != value) {
-                testSuite.name = value
+            if (changed(yaml.name, value)) {
+                yaml.name = value
                 store()
             }
         }
     override var enabled: Boolean
-        get() = testSuite.enabled ?: true
+        get() = yaml.enabled ?: true
         set(value) {
-            if (testSuite.enabled != value) {
-                testSuite.enabled = value
+            if (yaml.enabled != value) {
+                yaml.enabled = value
                 store()
             }
         }
 
     override val properties: SuuProperties
-            by lazy { PropertiesBox(testSuite.properties!!) { store() } }
+            by lazy { PropertiesBox(yaml.properties!!) { store() } }
 
     override val testCases: MutableList<TestCaseBox> by lazy {
         box.findSubFolderBox { it.fileName.toString() == TestCaseBox.FILE_NAME }.map { TestCaseBox(it) }
@@ -48,7 +48,7 @@ class TestSuiteBox(
     }
 
     private fun store() {
-        box.write(TestSuiteYaml::class.java, testSuite)
+        box.write(TestSuiteYaml::class.java, yaml)
     }
 
     class TestSuiteYaml {

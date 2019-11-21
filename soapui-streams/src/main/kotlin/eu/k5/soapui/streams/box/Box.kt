@@ -266,6 +266,29 @@ class Box(
             }
             return original != update
         }
+
+        inline fun changed(original: Boolean?, update: Boolean?, default: Boolean = true): Boolean {
+            if (default) {
+                if (trueOrNull(original) && trueOrNull(update)) {
+                    return false
+                }
+                return original != update
+            } else {
+                if (falseOrNull(original) && falseOrNull(update)) {
+                    return false
+                }
+                return original != update
+            }
+        }
+
+        inline fun trueOrNull(value: Boolean?): Boolean {
+            return value == null || value
+        }
+
+
+        inline fun falseOrNull(value: Boolean?): Boolean {
+            return value == null || value
+        }
     }
 
     enum class Mode {

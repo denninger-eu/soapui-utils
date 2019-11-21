@@ -1,6 +1,7 @@
 package eu.k5.soapui.streams.box.test
 
 import eu.k5.soapui.streams.box.Box
+import eu.k5.soapui.streams.box.Box.Companion.changed
 import eu.k5.soapui.streams.box.YamlContext
 import eu.k5.soapui.streams.model.test.SuuTestStepDelay
 
