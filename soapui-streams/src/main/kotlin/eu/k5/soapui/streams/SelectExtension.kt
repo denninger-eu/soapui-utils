@@ -79,6 +79,9 @@ private class SelectTestSuiteListener(
 private class SelectTestStepListener(
     val query: SelectionQuery
 ) : SuuTestStepListener {
+    override fun script(step: SuuTestStepScript) {
+    }
+
     override fun transfer(step: SuuTestStepPropertyTransfers) {
     }
 

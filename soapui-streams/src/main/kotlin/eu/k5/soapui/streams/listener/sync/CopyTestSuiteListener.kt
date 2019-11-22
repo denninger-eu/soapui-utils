@@ -1,7 +1,6 @@
-package eu.k5.soapui.streams.listener.copy
+package eu.k5.soapui.streams.listener.sync
 
 import eu.k5.soapui.streams.listener.VisitResult
-import eu.k5.soapui.streams.listener.sync.SyncListener
 import eu.k5.soapui.streams.model.SuProject
 import eu.k5.soapui.streams.model.test.SuuTestCase
 import eu.k5.soapui.streams.model.test.SuuTestSuite

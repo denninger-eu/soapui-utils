@@ -25,7 +25,7 @@ class TestSuiteBox(
     override var enabled: Boolean
         get() = yaml.enabled ?: true
         set(value) {
-            if (yaml.enabled != value) {
+            if (changed(yaml.enabled, value)) {
                 yaml.enabled = value
                 store()
             }

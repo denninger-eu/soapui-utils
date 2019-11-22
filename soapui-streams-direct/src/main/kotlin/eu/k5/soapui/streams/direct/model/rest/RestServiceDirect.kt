@@ -9,7 +9,7 @@ class RestServiceDirect(
 ) : SuuRestService {
 
 
-    override var name: String?
+    override var name: String
         get() = restService.name
         set(value) {
             restService.name = value
@@ -21,8 +21,8 @@ class RestServiceDirect(
             restService.description = value
         }
 
-    override var basePath: String?
-        get() = restService.basePath
+    override var basePath: String
+        get() = restService.basePath ?: ""
         set(value) {
             restService.basePath = value
         }

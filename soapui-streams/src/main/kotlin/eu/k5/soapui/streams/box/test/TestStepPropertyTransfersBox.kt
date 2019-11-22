@@ -1,6 +1,7 @@
 package eu.k5.soapui.streams.box.test
 
 import eu.k5.soapui.streams.box.Box
+import eu.k5.soapui.streams.box.Box.Companion.changed
 import eu.k5.soapui.streams.model.test.SuuPropertyTransfer
 import eu.k5.soapui.streams.model.test.SuuTestStepPropertyTransfers
 
@@ -33,7 +34,7 @@ class TestStepPropertyTransfersBox(
         override var name: String
             get() = yaml.name ?: ""
             set(value) {
-                if (yaml.name != value) {
+                if (changed(yaml.name, value)) {
                     yaml.name = value
                     store()
                 }
@@ -41,7 +42,7 @@ class TestStepPropertyTransfersBox(
         override var enabled: Boolean
             get() = yaml.enabled ?: true
             set(value) {
-                if (yaml.enabled != value) {
+                if (changed(yaml.enabled, value)) {
                     yaml.enabled = value
                     store()
                 }

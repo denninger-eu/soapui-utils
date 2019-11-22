@@ -41,21 +41,19 @@ abstract class TestStepBox(
     override var enabled: Boolean
         get() = yaml.enabled ?: true
         set(value) {
-            if (Box.changed(yaml.enabled, value)) {
+            if (changed(yaml.enabled, value)) {
                 yaml.enabled = value
                 store()
             }
         }
 
-    override val properties: SuuProperties
-            by lazy { PropertiesBox(yaml.properties!!) { store() } }
+
 
 
     abstract class TestStepYaml {
         var name: String? = null
         var description: String? = null
         var enabled: Boolean? = null
-        var properties: MutableList<PropertiesBox.PropertyYaml>? = ArrayList()
 
     }
 

@@ -1,7 +1,6 @@
 package eu.k5.soapui.streams.listener.sync
 
 import eu.k5.soapui.streams.apply
-import eu.k5.soapui.streams.listener.copy.CopyListener
 import eu.k5.soapui.streams.model.SuProject
 import eu.k5.soapui.streams.Environment
 import eu.k5.soapui.streams.model.SuListener

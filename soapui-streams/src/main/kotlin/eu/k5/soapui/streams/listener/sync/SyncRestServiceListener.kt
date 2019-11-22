@@ -2,7 +2,6 @@ package eu.k5.soapui.streams.listener.sync
 
 import eu.k5.soapui.streams.apply
 import eu.k5.soapui.streams.listener.VisitResult
-import eu.k5.soapui.streams.listener.copy.CopyRestServiceListener
 import eu.k5.soapui.streams.model.rest.SuuRestServiceListener
 import eu.k5.soapui.streams.model.SuProject
 import eu.k5.soapui.streams.model.rest.SuuRestMethod
@@ -18,6 +17,9 @@ class SyncRestServiceListener(
     private val referenceProject: SuProject,
     private val targetProject: SuProject
 ) : SuuRestServiceListener {
+
+
+    private val misc = SyncMisc()
 
     private var referenceRestService: SuuRestService? = null
     private var referenceResources: Deque<SuuRestResource> =
@@ -65,7 +67,7 @@ class SyncRestServiceListener(
         targetRestResource.description = reference.description
         targetRestResource.path = reference.path
 
-        CopyRestServiceListener.handleParameters(
+        misc.handleParameters(
             targetRestResource.parameters,
             reference.parameters
         )
@@ -98,7 +100,7 @@ class SyncRestServiceListener(
         targetRestMethod.description = reference.description
         targetRestMethod.httpMethod = reference.httpMethod
 
-        CopyRestServiceListener.handleParameters(
+        misc.handleParameters(
             targetRestMethod.parameters,
             reference.parameters
         )
@@ -119,14 +121,12 @@ class SyncRestServiceListener(
 
 
     override fun handleRequest(targetRestRequest: SuuRestRequest) {
-        val referenceRequest = referenceMethod!!.getRequest(targetRestRequest.name) ?: return
-        targetRestRequest.description = referenceRequest.description
-        targetRestRequest.content = referenceRequest.content
-
-      /*  CopyRestServiceListener.handleParameters(
-            targetRestRequest.parameters,
-            referenceRequest.parameters
-        )*/
+        val referenceRequest = referenceMethod!!.getRequest(targetRestRequest.name)
+        if (referenceRequest == null) {
+            // Move to lost and found
+            return
+        }
+        SyncRestRequest().handle(targetRestRequest, referenceRequest)
     }
 
 }

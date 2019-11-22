@@ -7,7 +7,6 @@ import eu.k5.soapui.streams.model.test.SuuTestSuite
 import eu.k5.soapui.streams.model.test.SuuTestSuiteListener
 import eu.k5.soapui.streams.Environment
 import eu.k5.soapui.streams.apply
-import eu.k5.soapui.streams.listener.copy.CopyTestSuiteListener
 import eu.k5.soapui.streams.model.test.SuuTestStepListener
 
 class SyncTestSuiteListener(

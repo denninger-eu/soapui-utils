@@ -1,4 +1,4 @@
-package eu.k5.soapui.streams.listener.copy
+package eu.k5.soapui.streams.listener.sync
 
 import eu.k5.soapui.streams.model.assertion.*
 import eu.k5.soapui.streams.model.test.SuuAssertionListener

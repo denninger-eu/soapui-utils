@@ -10,6 +10,8 @@ class SyncTestStepListener(
     private val target: SuuTestCase
 ) : SuuTestStepListener {
 
+    private val misc = SyncMisc()
+
     private var referenceRestRequest: SuuTestStepRestRequest? = null
     private var targetRestRequest: SuuTestStepRestRequest? = null
 
@@ -20,13 +22,20 @@ class SyncTestStepListener(
         }
         step.description = ref.description
         step.enabled = ref.enabled
-        SyncListener.handleProperties(ref.properties, step.properties)
         syncWith(ref)
     }
 
 
     override fun properties(step: SuuTestStepProperties) {
-        handle(step) {}
+        handle(step) {
+            SyncListener.handleProperties(it.properties, step.properties)
+        }
+    }
+
+    override fun script(step: SuuTestStepScript) {
+        handle(step) {
+            step.script = it.script
+        }
     }
 
     override fun createAssertionListener(): SuuAssertionListener {
@@ -38,6 +47,12 @@ class SyncTestStepListener(
         if (ref !is SuuTestStepRestRequest) {
             return VisitResult.TERMINATE
         }
+
+        step.description = ref.description
+        
+        SyncRestRequest().handle(step.request, ref.request)
+
+
         targetRestRequest = step
         referenceRestRequest = ref
         return VisitResult.CONTINUE
@@ -49,11 +64,26 @@ class SyncTestStepListener(
     }
 
     override fun transfer(step: SuuTestStepPropertyTransfers) {
-        handle(step) {
-
+        handle(step) { ref ->
+            val found = ArrayList<String>()
+            for (transfer in step.transfers) {
+                val refTransfer = ref.getTransfer(transfer.name)
+                if (refTransfer == null) {
+                    TODO("delete")
+                }
+                misc.assignTransferProperties(transfer, refTransfer)
+                found.add(transfer.name)
+            }
+            val missing = ArrayList(ref.transfers)
+            missing.removeIf { found.contains(it.name) }
+            for (newTransfer in missing) {
+                val target = step.addTransfer(newTransfer.name)
+                misc.assignTransferProperties(target, newTransfer)
+            }
         }
 
     }
+
 
     override fun delay(step: SuuTestStepDelay) {
         handle(step) {

@@ -5,13 +5,14 @@ import eu.k5.soapui.streams.model.rest.SuuRestServiceListener
 import eu.k5.soapui.streams.model.SuProject
 import eu.k5.soapui.streams.model.rest.*
 import java.util.*
-import kotlin.collections.ArrayList
 
 class DifferenceRestServiceListener(
     private val project: SuProject,
     private val differences: Differences
 
 ) : SuuRestServiceListener {
+
+    private val misc = DifferenceMisc(differences)
 
     private var referenceRestService: SuuRestService? = null
 
@@ -51,7 +52,7 @@ class DifferenceRestServiceListener(
         }
 
         differences.addChange("description", refResource.description, actualResource.description)
-        handleParameters(refResource.parameters, actualResource.parameters)
+        misc.handleParameters(refResource.parameters, actualResource.parameters)
         referenceResources.push(refResource)
         return VisitResult.CONTINUE
     }
@@ -80,7 +81,7 @@ class DifferenceRestServiceListener(
         differences.addChange("description", refMethod.description, actualMethod.description)
         differences.addChange("httpMethod", refMethod.httpMethod, actualMethod.httpMethod)
 
-        handleParameters(refMethod.parameters, actualMethod.parameters)
+        misc.handleParameters(refMethod.parameters, actualMethod.parameters)
         this.referenceMethod = refMethod
         return VisitResult.CONTINUE
     }
@@ -90,54 +91,8 @@ class DifferenceRestServiceListener(
     }
 
     override fun handleRequest(actualRequest: SuuRestRequest) {
-
-        val refRequest = referenceMethod!!.getRequest(actualRequest.name)
-        if (refRequest == null) {
-            differences.addAdditional(actualRequest.name)
-            return
-        }
-        differences.pushRequest(actualRequest.name)
-        differences.addChange("description", refRequest.description, actualRequest.description)
-        differences.addChange("content", refRequest.content?.trim(), actualRequest.content?.trim())
-        handleParameters(refRequest.parameters, actualRequest.parameters)
-
-        handleHeaders(refRequest.headers, actualRequest.headers)
-
-        differences.pop()
+        DifferenceRestRequest(differences).handle(referenceMethod!!.getRequest(actualRequest.name), actualRequest)
     }
 
-    private fun handleParameters(refParameters: SuuRestParameters, actual: SuuRestParameters) {
-        for (referenceParameter in refParameters.parameters) {
-            val actualParameter = actual.byName(referenceParameter.name)
-            if (actualParameter != null) {
-                differences.addChange("value", referenceParameter.value, actualParameter.value)
-                differences.addChange("style", referenceParameter.style, actualParameter.style)
-            } else {
-                differences.addAdditional(referenceParameter.name)
-            }
-        }
-    }
-
-    private fun handleHeaders(
-        ref: List<SuuRestRequest.Header>, actual: List<SuuRestRequest.Header>
-    ) {
-
-        val found = ArrayList<String>()
-        for (refHeader in ref) {
-            val actualHeader = actual.firstOrNull { it.key == refHeader.key }
-            if (actualHeader != null) {
-                differences.addChange("headerValue", refHeader.value, actualHeader.value)
-                found.add(refHeader.key)
-            } else {
-                differences.addAdditional(refHeader.key)
-            }
-        }
-        val missing = ArrayList(actual)
-        missing.removeIf { found.contains(it.key) }
-
-        for (missingHeader in missing) {
-            differences.addMissing(missingHeader.key)
-        }
-    }
 
 }

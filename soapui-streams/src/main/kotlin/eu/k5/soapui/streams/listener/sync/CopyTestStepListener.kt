@@ -1,13 +1,12 @@
-package eu.k5.soapui.streams.listener.copy
+package eu.k5.soapui.streams.listener.sync
 
 import eu.k5.soapui.streams.listener.VisitResult
-import eu.k5.soapui.streams.listener.sync.SyncListener
 import eu.k5.soapui.streams.model.test.*
 
 class CopyTestStepListener(
     private val target: SuuTestCase
 ) : SuuTestStepListener {
-
+    private val misc = SyncMisc()
 
     private var targetStep: SuuTestStepRestRequest? = null
 
@@ -37,6 +36,13 @@ class CopyTestStepListener(
         return VisitResult.CONTINUE
     }
 
+    override fun script(step: SuuTestStepScript) {
+        val targetStep = target.createScriptStep(step.name)
+        handleStep(step, targetStep)
+        targetStep.script = step.script
+    }
+
+
     override fun exitRestRequest(step: SuuTestStepRestRequest) {
         targetStep = null
     }
@@ -49,9 +55,6 @@ class CopyTestStepListener(
         target.description = reference.description
         target.enabled = reference.enabled
 
-        if (properties) {
-            SyncListener.handleProperties(reference.properties, target.properties)
-        }
 
     }
 
@@ -65,17 +68,7 @@ class CopyTestStepListener(
             if (target == null) {
                 target = targetStep.addTransfer(refTransfer.name)
             }
-
-            target.enabled = refTransfer.enabled
-            target.source.language = refTransfer.source.language
-            target.source.expression = refTransfer.source.expression
-            target.source.stepName = refTransfer.source.stepName
-            target.source.propertyName = refTransfer.source.propertyName
-
-            target.target.language = refTransfer.target.language
-            target.target.expression = refTransfer.target.expression
-            target.target.stepName = refTransfer.target.stepName
-            target.target.propertyName = refTransfer.target.propertyName
+            misc.assignTransferProperties(target, refTransfer)
         }
     }
 
@@ -89,6 +82,8 @@ class CopyTestStepListener(
     override fun properties(step: SuuTestStepProperties) {
         val targetStep = target.createStep(step.name, SuuTestStepProperties::class.java)
         handleStep(step, targetStep)
+
+        SyncListener.handleProperties(step.properties, targetStep.properties)
     }
 
 }

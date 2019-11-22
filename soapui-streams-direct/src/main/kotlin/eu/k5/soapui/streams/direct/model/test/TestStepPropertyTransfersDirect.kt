@@ -8,7 +8,7 @@ import java.util.*
 
 class TestStepPropertyTransfersDirect(
     val propertyTransfer: PropertyTransfersTestStep
-) : AbstractTestStepDirect(propertyTransfer, Arrays.asList()), SuuTestStepPropertyTransfers {
+) : AbstractTestStepDirect(propertyTransfer), SuuTestStepPropertyTransfers {
 
 
     override val transfers: List<SuuPropertyTransfer>

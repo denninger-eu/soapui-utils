@@ -12,9 +12,18 @@ interface SuuTestStepRestRequest : SuuTestStep {
     val baseResources: List<SuuRestResource>
     val baseMethod: SuuRestMethod
 
+
+    var requestPath: RequestPath
+
     val request: SuuRestRequest
 
     val assertions: SuuAssertions
 
+
+    class RequestPath(
+        val restService: String,
+        val resources: List<String>,
+        val method: String
+    )
 
 }

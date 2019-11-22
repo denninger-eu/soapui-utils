@@ -166,7 +166,11 @@ class Box(
 
     fun writeSection(section: String, content: String?) {
         val sections = loadSections()
-        sections[section] = content ?: ""
+        if (content.isNullOrEmpty()) {
+            sections.remove(section)
+        } else {
+            sections[section] = content+"\n"
+        }
         writeSections(sections)
     }
 
@@ -287,7 +291,7 @@ class Box(
 
 
         inline fun falseOrNull(value: Boolean?): Boolean {
-            return value == null || value
+            return value == null || !value
         }
     }
 

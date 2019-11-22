@@ -7,6 +7,8 @@ class DifferenceTestStepListener(
     private val testCase: SuuTestCase,
     private val differences: Differences
 ) : SuuTestStepListener {
+
+
     private var restRequest: SuuTestStepRestRequest? = null
 
     private inline fun <reified T : SuuTestStep> handle(
@@ -23,15 +25,15 @@ class DifferenceTestStepListener(
         differences.push(Differences.Type.TEST_STEP, step.name)
         differences.addChange("enabled", ref.enabled, step.enabled)
         differences.addChange("description", ref.description, step.description)
-        if (properties) {
-            DifferenceListener.handleProperties(differences, ref.properties, step.properties)
-        }
         compareWith(ref)
         differences.pop()
     }
 
     override fun properties(step: SuuTestStepProperties) {
-        handle(step) { }
+        handle(step) {
+
+            DifferenceListener.handleProperties(differences, it.properties, step.properties)
+        }
     }
 
 
@@ -39,10 +41,6 @@ class DifferenceTestStepListener(
         differences.push(Differences.Type.TEST_STEP, step.name)
         differences.addChange("enabled", ref.enabled, step.enabled)
         differences.addChange("description", ref.description, step.description)
-
-        if (properties) {
-            DifferenceListener.handleProperties(differences, ref.properties, step.properties)
-        }
     }
 
 
@@ -71,10 +69,10 @@ class DifferenceTestStepListener(
         differences.addChange(target.name + ".s.language", ref.source.language, target.source.language)
         differences.addChange(target.name + ".s.propertyName", ref.source.propertyName, target.source.propertyName)
 
-        differences.addChange(target.name+".t.expression", ref.target.expression, target.target.expression)
-        differences.addChange(target.name+".t.stepName", ref.target.stepName, target.target.stepName)
-        differences.addChange(target.name+".t.language", ref.target.language, target.target.language)
-        differences.addChange(target.name+".t.propertyName", ref.target.propertyName, target.target.propertyName)
+        differences.addChange(target.name + ".t.expression", ref.target.expression, target.target.expression)
+        differences.addChange(target.name + ".t.stepName", ref.target.stepName, target.target.stepName)
+        differences.addChange(target.name + ".t.language", ref.target.language, target.target.language)
+        differences.addChange(target.name + ".t.propertyName", ref.target.propertyName, target.target.propertyName)
 
     }
 
@@ -92,7 +90,7 @@ class DifferenceTestStepListener(
         }
         handleTestStep(ref, step, false)
 
-        differences.addChange("content", ref.request.content?.trim(), step.request.content?.trim())
+        DifferenceRestRequest(differences).handle(ref.request, step.request)
 
         restRequest = ref
         return VisitResult.CONTINUE
@@ -101,6 +99,11 @@ class DifferenceTestStepListener(
     override fun exitRestRequest(step: SuuTestStepRestRequest) {
     }
 
+    override fun script(step: SuuTestStepScript) {
+        handle(step) {
+            differences.addChange("script", it.script, step.script)
+        }
+    }
 
     override fun createAssertionListener(): SuuAssertionListener {
         return DifferenceAssertionListener(differences, restRequest!!.assertions)

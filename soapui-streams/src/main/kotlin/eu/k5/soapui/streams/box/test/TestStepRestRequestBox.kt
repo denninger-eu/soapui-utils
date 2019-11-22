@@ -1,6 +1,7 @@
 package eu.k5.soapui.streams.box.test
 
 import eu.k5.soapui.streams.box.Box
+import eu.k5.soapui.streams.box.Box.Companion.changed
 import eu.k5.soapui.streams.box.YamlContext
 import eu.k5.soapui.streams.box.rest.*
 import eu.k5.soapui.streams.model.rest.*
@@ -16,6 +17,9 @@ class TestStepRestRequestBox(
     ) ?: RestRequestYaml()
 
 ) : TestStepBox(yaml), SuuTestStepRestRequest {
+    override var requestPath: SuuTestStepRestRequest.RequestPath
+        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+        set(value) {}
 
 
     private val assertionsYaml: AssertionsBox.AssertionsYaml =
@@ -156,10 +160,10 @@ class TestStepRestRequestBox(
         private val store: () -> Unit
     ) : SuuRestService {
 
-        override var name: String?
-            get() = yaml.name
+        override var name: String
+            get() = yaml.name ?: ""
             set(value) {
-                if (yaml.name != value) {
+                if (changed(yaml.name, value)) {
                     yaml.name = value
                     store()
                 }
@@ -168,17 +172,19 @@ class TestStepRestRequestBox(
         override var description: String?
             get() = yaml.description
             set(value) {
-                if (yaml.description != value) {
+                if (changed(yaml.description, value)) {
                     yaml.description = value
                     store()
                 }
             }
 
-        override var basePath: String?
-            get() = yaml.basePath
+        override var basePath: String
+            get() = yaml.basePath ?: ""
             set(value) {
-                yaml.basePath = value
-                store()
+                if (changed(yaml.basePath, value)) {
+                    yaml.basePath = value
+                    store()
+                }
             }
 
         override val resources: List<SuuRestResource> by lazy { throw UnsupportedOperationException() }

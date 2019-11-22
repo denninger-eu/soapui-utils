@@ -148,7 +148,7 @@ class AssertionsBox(
         override var regexp: Boolean
             get() = yaml.regexp ?: false
             set(value) {
-                if (yaml.regexp != value) {
+                if (changed(yaml.regexp, value, false)) {
                     yaml.regexp = value
                     store()
                 }
@@ -156,7 +156,7 @@ class AssertionsBox(
         override var caseSensitive: Boolean
             get() = yaml.caseSensitive ?: true
             set(value) {
-                if (yaml.caseSensitive != value) {
+                if (changed(yaml.caseSensitive, value, true)) {
                     yaml.caseSensitive = value
                     store()
                 }
@@ -197,7 +197,7 @@ class AssertionsBox(
         override var time: String?
             get() = yaml.time
             set(value) {
-                if (yaml.time != value) {
+                if (changed(yaml.time, value)) {
                     yaml.time = value
                     store()
                 }
@@ -217,7 +217,7 @@ class AssertionsBox(
         override var expression: String?
             get() = yaml.expression
             set(value) {
-                if (yaml.expression != value) {
+                if (changed(yaml.expression, value)) {
                     yaml.expression = value
                     store()
                 }
@@ -225,7 +225,7 @@ class AssertionsBox(
         override var expectedContent: String?
             get() = yaml.expectedValue
             set(value) {
-                if (yaml.expectedValue != value) {
+                if (changed(yaml.expectedValue, value)) {
                     yaml.expectedValue = value
                     store()
                 }
@@ -271,7 +271,7 @@ class AssertionsBox(
         override var regularExpression: String?
             get() = yaml.regularExpression
             set(value) {
-                if (yaml.regularExpression != value) {
+                if (changed(yaml.regularExpression, value)) {
                     yaml.regularExpression = value
                     store();
                 }
@@ -295,7 +295,7 @@ class AssertionsBox(
         override var expression: String?
             get() = yaml.expression
             set(value) {
-                if (yaml.expression != value) {
+                if (changed(yaml.expression, value)) {
                     yaml.expression = value
                     store()
                 }
@@ -303,7 +303,7 @@ class AssertionsBox(
         override var expectedContent: String?
             get() = yaml.expectedValue
             set(value) {
-                if (yaml.expectedValue != value) {
+                if (changed(yaml.expectedValue, value)) {
                     yaml.expectedValue = value
                     store()
                 }
@@ -312,7 +312,7 @@ class AssertionsBox(
         override var allowWildcards: Boolean
             get() = yaml.allowWildcards ?: false
             set(value) {
-                if (yaml.allowWildcards != value) {
+                if (changed(yaml.allowWildcards, value, false)) {
                     yaml.allowWildcards = value
                     store()
                 }
@@ -320,7 +320,7 @@ class AssertionsBox(
         override var ignoreNamespaceDifferences: Boolean
             get() = yaml.ignoreNamespaceDifferences ?: false
             set(value) {
-                if (yaml.ignoreNamespaceDifferences != value) {
+                if (changed(yaml.ignoreNamespaceDifferences, value, false)) {
                     yaml.ignoreNamespaceDifferences = value
                     store()
                 }
@@ -328,7 +328,7 @@ class AssertionsBox(
         override var ignoreComments: Boolean
             get() = yaml.ignoreComments ?: false
             set(value) {
-                if (yaml.ignoreComments != value) {
+                if (changed(yaml.ignoreComments, value, false)) {
                     yaml.ignoreComments = value
                     store()
                 }

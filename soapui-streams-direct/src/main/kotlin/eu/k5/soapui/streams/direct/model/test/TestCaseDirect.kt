@@ -24,6 +24,7 @@ class TestCaseDirect(
 ) : SuuTestCase {
 
 
+
     override var name: String
         get() = testCase.name
         set(value) {
@@ -62,6 +63,10 @@ class TestCaseDirect(
             return TestStepPropertiesDirect(testCase.addTestStep("properties", name) as WsdlPropertiesTestStep) as T
         }
 
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun createScriptStep(name: String): SuuTestStepScript {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

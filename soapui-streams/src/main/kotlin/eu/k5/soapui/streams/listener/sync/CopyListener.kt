@@ -1,4 +1,4 @@
-package eu.k5.soapui.streams.listener.copy
+package eu.k5.soapui.streams.listener.sync
 
 import eu.k5.soapui.streams.model.SuListener
 import eu.k5.soapui.streams.model.SuProject
@@ -16,9 +16,11 @@ class CopyListener(
     }
 
 
-    override fun createResourceListener(): SuuRestServiceListener = CopyRestServiceListener(suuProject)
+    override fun createResourceListener(): SuuRestServiceListener =
+        CopyRestServiceListener(suuProject)
 
-    override fun createTestSuiteListener(): SuuTestSuiteListener = CopyTestSuiteListener(suuProject)
+    override fun createTestSuiteListener(): SuuTestSuiteListener =
+        CopyTestSuiteListener(suuProject)
 
 
 }

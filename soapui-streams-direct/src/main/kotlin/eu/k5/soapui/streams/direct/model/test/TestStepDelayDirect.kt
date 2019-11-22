@@ -6,7 +6,7 @@ import java.util.*
 
 class TestStepDelayDirect(
     private val delayStep: WsdlDelayTestStep
-) : AbstractTestStepDirect(delayStep, Arrays.asList("delay")), SuuTestStepDelay {
+) : AbstractTestStepDirect(delayStep), SuuTestStepDelay {
 
     override var delay: Int
         get() = Integer.parseInt(delayStep.delayString)

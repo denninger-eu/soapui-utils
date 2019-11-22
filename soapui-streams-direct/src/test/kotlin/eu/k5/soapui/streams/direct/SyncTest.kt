@@ -2,10 +2,8 @@ package eu.k5.soapui.streams.direct
 
 import eu.k5.soapui.streams.flatten
 import eu.k5.soapui.streams.model.assertion.*
-import eu.k5.soapui.streams.model.test.SuuPropertyTransfer
-import eu.k5.soapui.streams.model.test.SuuTestStepDelay
-import eu.k5.soapui.streams.model.test.SuuTestStepProperties
-import eu.k5.soapui.streams.model.test.SuuTestStepPropertyTransfers
+import eu.k5.soapui.streams.model.rest.SuuRestRequest
+import eu.k5.soapui.streams.model.test.*
 import eu.k5.soapui.streams.syncWith
 import org.junit.Ignore
 import org.junit.jupiter.api.Test
@@ -150,20 +148,32 @@ class SyncTest : AbstractDirectTest() {
             it.transfers[0].source.expression = "changedSource"
             it.transfers[0].source.language = SuuPropertyTransfer.Language.JSONPATH
             it.transfers[0].source.propertyName = "changedSPropertyName"
-            it.transfers[0].source.stepName ="changesSStepName"
+            it.transfers[0].source.stepName = "changesSStepName"
 
             it.transfers[0].target.expression = "changedSource"
             it.transfers[0].target.language = SuuPropertyTransfer.Language.XPATH
             it.transfers[0].target.propertyName = "changedSPropertyName"
-            it.transfers[0].target.stepName ="changesSStepName"
+            it.transfers[0].target.stepName = "changesSStepName"
 
             9
         }
     }
 
+    @Test
+    fun assertionTestStepRestRequest() {
+        sync<SuuTestStepRestRequest>() {
+            it.description = "changedDescription"
+            it.request.content = "changedContent"
+
+            val firstHeader = it.request.headers[0]
+            it.request.addOrUpdateHeader(SuuRestRequest.Header(firstHeader.key, "changedValue"))
+            3
+        }
+    }
+
     private inline fun <reified T> sync(createAsync: (T) -> Int) {
         val referenceProject = ProjectDirectTest.testProject("TestSuiteProject")
-        val box = AbstractDirectTest.createTempProjectBox("syncAssertion").syncWith(referenceProject)
+        val box = AbstractDirectTest.createTempProjectBox("sync_" + T::class.java.simpleName).syncWith(referenceProject)
 
         val selected = box.flatten().filterIsInstance<T>().first()
         val count = createAsync(selected)

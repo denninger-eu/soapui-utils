@@ -21,9 +21,11 @@ import kotlin.collections.ArrayList
 class TestStepRestRequestDirect(
     private val restRequestStep: RestTestRequestStep
 ) : AbstractTestStepDirect(
-    restRequestStep,
-    Arrays.asList("Endpoint", "Username", "Password", "Domain", "Request", "ResponseAsXml", "Response", "RawRequest")
+    restRequestStep
 ), SuuTestStepRestRequest {
+    override var requestPath: SuuTestStepRestRequest.RequestPath
+        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+        set(value) {}
 
 
     override val baseService: SuuRestService
@@ -44,7 +46,7 @@ class TestStepRestRequestDirect(
         val method = restRequestStep.testRequest.restMethod
         val resources = ArrayList<RestResource>()
         resources.add(method.resource)
-        while(resources[0].parentResource != null){
+        while (resources[0].parentResource != null) {
             resources.add(0, resources[0].parentResource)
         }
         return resources

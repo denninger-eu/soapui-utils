@@ -9,13 +9,13 @@ import javax.xml.bind.annotation.XmlElement
 @XmlAccessorType(XmlAccessType.NONE)
 class RestService(
     @XmlAttribute
-    override var name: String? = null
+    override var name: String = ""
 ) : SuuRestService {
 
     @XmlElement
     override var description: String? = null
     @XmlElement
-    override var basePath: String? = null
+    override var basePath: String = ""
     @XmlElement(name = "resource")
     override val resources = ArrayList<RestResource>()
 

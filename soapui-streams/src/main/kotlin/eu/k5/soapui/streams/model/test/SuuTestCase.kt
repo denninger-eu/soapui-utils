@@ -26,4 +26,6 @@ interface SuuTestCase {
         restResources: List<SuuRestResource>,
         restMethod: SuuRestMethod
     ): SuuTestStepRestRequest
+
+    fun createScriptStep(name: String) : SuuTestStepScript
 }

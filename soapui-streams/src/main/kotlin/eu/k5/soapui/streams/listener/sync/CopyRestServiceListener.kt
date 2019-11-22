@@ -1,4 +1,4 @@
-package eu.k5.soapui.streams.listener.copy
+package eu.k5.soapui.streams.listener.sync
 
 import eu.k5.soapui.streams.listener.VisitResult
 import eu.k5.soapui.streams.model.rest.SuuRestServiceListener
@@ -10,6 +10,8 @@ import kotlin.collections.ArrayList
 class CopyRestServiceListener(
     private val target: SuProject?
 ) : SuuRestServiceListener {
+
+    private val misc = SyncMisc()
 
     constructor(restService: SuuRestService) : this(null) {
         targetRestService = restService
@@ -49,9 +51,11 @@ class CopyRestServiceListener(
         } else {
             targetResources.peek().createChildResource(suuResource.name!!, suuResource.path!!)
         }
-        println(suuResource.description)
         newResource.description = suuResource.description
-        handleParameters(newResource.parameters, suuResource.parameters)
+        misc.handleParameters(
+            newResource.parameters,
+            suuResource.parameters
+        )
         targetResources.push(newResource)
         return VisitResult.CONTINUE
     }
@@ -64,7 +68,10 @@ class CopyRestServiceListener(
         val newMethod = targetResources.peek().createMethod(suuRestMethod.name!!)
         newMethod.description = suuRestMethod.description
         newMethod.httpMethod = suuRestMethod.httpMethod
-        handleParameters(newMethod.parameters, suuRestMethod.parameters)
+        misc.handleParameters(
+            newMethod.parameters,
+            suuRestMethod.parameters
+        )
         targetMethod = newMethod
         return VisitResult.CONTINUE
     }
@@ -76,26 +83,14 @@ class CopyRestServiceListener(
         val newRequest = targetMethod!!.createRequest(suuRestRequest.name!!)
         newRequest.description = suuRestRequest.description
         newRequest.content = suuRestRequest.content
-        for (header in suuRestRequest.headers) {
-            newRequest.addOrUpdateHeader(header)
-        }
-        handleParameters(newRequest.parameters!!, suuRestRequest.parameters!!)
+        misc.copyHeaders(suuRestRequest, newRequest)
+        misc.handleParameters(
+            newRequest.parameters!!,
+            suuRestRequest.parameters!!
+        )
     }
 
     companion object {
-        fun handleParameters(target: SuuRestParameters, source: SuuRestParameters) {
 
-            val missing = ArrayList<String>()
-            for (targetParameter in target.allParameters) {
-                if (!source.hasParameter(targetParameter.name)) {
-                    missing.add(targetParameter.name!!)
-                }
-            }
-            missing.forEach { target.remove(it) }
-
-            for (parameter in source.allParameters) {
-                target.addOrUpdate(parameter)
-            }
-        }
     }
 }

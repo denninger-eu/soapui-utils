@@ -12,8 +12,8 @@ class RestServiceBox(
     private val restService: RestServiceYaml by lazy { box.load(RestServiceYaml::class.java) }
 
 
-    override var name: String?
-        get() = restService.name
+    override var name: String
+        get() = restService.name ?: ""
         set(value) {
             if (changed(restService.name, value)) {
                 restService.name = value
@@ -30,8 +30,8 @@ class RestServiceBox(
             }
         }
 
-    override var basePath: String?
-        get() = restService.basePath
+    override var basePath: String
+        get() = restService.basePath ?: ""
         set(value) {
             if (changed(restService.basePath, value)) {
                 restService.basePath = value

@@ -63,6 +63,9 @@ private class FlattenTestSuiteListener(
 private class FlattenTestStepListener(
     private val list: MutableList<Any>
 ) : SuuTestStepListener {
+    override fun script(step: SuuTestStepScript) {
+        list.add(step)
+    }
 
     override fun transfer(step: SuuTestStepPropertyTransfers) {
         list.add(step)

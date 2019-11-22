@@ -45,6 +45,10 @@ class TestCaseBox(
         return type.cast(createStep(box, name, type))
     }
 
+    override fun createScriptStep(name: String): SuuTestStepScript {
+        return TestStepScriptBox.create(box, name)
+    }
+
 
     override fun createRestRequestStep(
         name: String,

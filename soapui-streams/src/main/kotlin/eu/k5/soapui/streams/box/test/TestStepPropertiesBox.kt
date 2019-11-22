@@ -1,7 +1,9 @@
 package eu.k5.soapui.streams.box.test
 
 import eu.k5.soapui.streams.box.Box
+import eu.k5.soapui.streams.box.PropertiesBox
 import eu.k5.soapui.streams.box.YamlContext
+import eu.k5.soapui.streams.model.SuuProperties
 import eu.k5.soapui.streams.model.test.SuuTestStepProperties
 
 class TestStepPropertiesBox(
@@ -17,8 +19,11 @@ class TestStepPropertiesBox(
     override fun store() {
         box.write(yaml)
     }
+    override val properties: SuuProperties
+            by lazy { PropertiesBox(yaml.properties!!) { store() } }
 
     class PropertiesYaml : TestStepYaml() {
+        var properties: MutableList<PropertiesBox.PropertyYaml>? = ArrayList()
 
     }
 

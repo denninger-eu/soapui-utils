@@ -11,8 +11,7 @@ import eu.k5.soapui.streams.model.SuuProperties
 import eu.k5.soapui.streams.model.test.SuuTestStep
 
 abstract class AbstractTestStepDirect(
-    val testStep: WsdlTestStep,
-    val propertyFilter: List<String>
+    private val testStep: WsdlTestStep
 ) : SuuTestStep {
 
     override var enabled: Boolean
@@ -32,22 +31,6 @@ abstract class AbstractTestStepDirect(
         set(value) {
             testStep.description = value
         }
-
-
-    override val properties: SuuProperties
-        get() = PropertiesDirect(testStep, propertyFilter) {
-            if (testStep is WsdlTestStepWithProperties) {
-                val property = DefaultTestStepProperty(it, false, testStep)
-                addProperty(testStep, property)
-                property
-            } else if (testStep is WsdlPropertiesTestStep) {
-                val newProperty = testStep.addProperty(it)
-                newProperty
-            } else {
-                TODO()
-            }
-        }
-
 
 }
 
