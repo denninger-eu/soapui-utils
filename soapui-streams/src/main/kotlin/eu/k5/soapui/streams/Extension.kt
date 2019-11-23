@@ -96,6 +96,8 @@ fun SuuTestCase.apply(listener: SuuTestSuiteListener) {
                 handleAssertions(step.assertions, step, testStepListener)
                 testStepListener.exitRestRequest(step)
             }
+        } else if (step is SuuTestStepScript) {
+            testStepListener.script(step)
         }
     }
 

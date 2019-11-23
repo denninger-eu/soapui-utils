@@ -1,7 +1,7 @@
 package eu.k5.soapui.streams.direct
 
 import eu.k5.soapui.streams.apply
-import eu.k5.soapui.streams.box.Box
+import eu.k5.soapui.streams.box.BoxImpl
 import eu.k5.soapui.streams.box.ProjectBox
 import eu.k5.soapui.streams.listener.difference.DifferenceListener
 import eu.k5.soapui.streams.listener.difference.Differences
@@ -22,7 +22,7 @@ abstract class AbstractDirectTest {
             val path = searchRoot().resolve("soapui-streams-test").resolve("src").resolve("main").resolve(
                 "resources"
             ).resolve("examples").resolve(name).resolve("project.box.yaml")
-            return ProjectBox(Box(path))
+            return ProjectBox(BoxImpl(path))
         }
 
         private fun searchRoot(): Path {

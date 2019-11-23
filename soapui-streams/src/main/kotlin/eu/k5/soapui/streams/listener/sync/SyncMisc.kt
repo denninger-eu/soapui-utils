@@ -7,8 +7,15 @@ import eu.k5.soapui.streams.model.test.SuuPropertyTransfer
 class SyncMisc {
 
     fun copyHeaders(source: SuuRestRequest, target: SuuRestRequest) {
+        val found = ArrayList<String>()
         for (header in source.headers) {
             target.addOrUpdateHeader(header)
+            found.add(header.key)
+        }
+        val missing = ArrayList(target.headers)
+        missing.removeIf { found.contains(it.key) }
+        for (missingHeader in missing) {
+            target.removeHeader(missingHeader.key)
         }
     }
 

@@ -2,7 +2,7 @@ package eu.k5.soapui.streams.direct
 
 import eu.k5.soapui.streams.Suu
 import eu.k5.soapui.streams.apply
-import eu.k5.soapui.streams.box.Box
+import eu.k5.soapui.streams.box.BoxImpl
 import eu.k5.soapui.streams.box.ProjectBox
 import eu.k5.soapui.streams.direct.model.ProjectDirect
 import eu.k5.soapui.streams.listener.sync.SyncListener
@@ -113,7 +113,7 @@ class ProjectDirectTest {
         fun loadFromBox(name: String): ProjectBox {
             val path =
                 Paths.get("..", "soapui-streams-test", "src", "main", "resources", "examples", name, "project.box.yaml")
-            return ProjectBox(Box(path))
+            return ProjectBox(BoxImpl(path))
         }
 
         fun storeAndReopen(scope: String, projectDirect: ProjectDirect): ProjectDirect {

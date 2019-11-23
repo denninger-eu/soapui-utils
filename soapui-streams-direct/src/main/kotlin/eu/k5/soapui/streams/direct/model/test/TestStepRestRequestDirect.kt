@@ -52,9 +52,6 @@ class TestStepRestRequestDirect(
         return resources
     }
 
-    init {
-        val httpRequest = restRequestStep.httpRequest
-    }
 
     override var request: SuuRestRequest
         get() = RestRequestDirect(restRequestStep.httpRequest as RestRequest)

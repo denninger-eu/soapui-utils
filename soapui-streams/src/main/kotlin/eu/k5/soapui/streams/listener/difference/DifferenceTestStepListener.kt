@@ -101,7 +101,7 @@ class DifferenceTestStepListener(
 
     override fun script(step: SuuTestStepScript) {
         handle(step) {
-            differences.addChange("script", it.script, step.script)
+            differences.addChange("script", it.script?.trim(), step.script?.trim())
         }
     }
 

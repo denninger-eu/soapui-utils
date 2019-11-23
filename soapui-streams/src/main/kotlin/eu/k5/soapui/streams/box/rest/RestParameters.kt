@@ -1,6 +1,6 @@
 package eu.k5.soapui.streams.box.rest
 
-import eu.k5.soapui.streams.box.Box.Companion.changed
+import eu.k5.soapui.streams.box.BoxImpl.Companion.changed
 import eu.k5.soapui.streams.model.rest.SuuRestParameter
 import eu.k5.soapui.streams.model.rest.SuuRestParameters
 

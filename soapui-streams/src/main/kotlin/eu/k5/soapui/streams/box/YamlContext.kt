@@ -29,6 +29,8 @@ class YamlContext {
             tags[TestStepPropertyTransfersBox.PropertyTransfersYaml::class.java] = "!propertyTransfers"
             tags[TestStepDelayBox.DelayYaml::class.java] = "!delay"
             tags[TestStepRestRequestBox.RestRequestYaml::class.java] = "!restRequestStep"
+            tags[TestStepRestRequestBox.BaseYaml::class.java] = "!requestBase"
+            tags[TestStepScriptBox.ScriptYaml::class.java] = "!scriptStep"
             tags[TestStepPropertiesBox.PropertiesYaml::class.java] = "!propertiesStep"
 
             tags[AssertionsBox.AssertionsYaml::class.java] = "!assertions"
@@ -36,7 +38,7 @@ class YamlContext {
             tags[AssertionsBox.AssertionValidStatusYaml::class.java] = "!validStatus"
             tags[AssertionsBox.AssertionContainsYaml::class.java] = "!contains"
             tags[AssertionsBox.AssertionNotContainsYaml::class.java] = "!notContains"
-            tags[AssertionsBox.AssertionScriptYaml::class.java] = "!script"
+            tags[AssertionsBox.AssertionScriptYaml::class.java] = "!scriptAssertion"
             tags[AssertionsBox.AssertionDurationYaml::class.java] = "!duration"
 
             tags[AssertionsBox.AssertionJsonPathCountYaml::class.java] = "!jsonPathCount"
@@ -68,7 +70,7 @@ class YamlContext {
                             null
                         } else if (property?.name == "enabled" && propertyValue == true) {
                             return null
-                        } else if (propertyValue is String && propertyValue.isEmpty()){
+                        } else if (propertyValue is String && propertyValue.isEmpty()) {
                             return null
                         } else {
                             super.representJavaBeanProperty(javaBean, property, propertyValue, customTag)
@@ -79,7 +81,7 @@ class YamlContext {
                     representer.addClassTag(classEntry.key, Tag(classEntry.value))
                 }
 
-                val yaml = Yaml(representer, Box.options)
+                val yaml = Yaml(representer, BoxImpl.options)
                 for (classEntry in yamlClasses()) {
                     yaml.addTypeDescription(TypeDescription(classEntry.key))
                 }

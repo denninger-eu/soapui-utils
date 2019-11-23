@@ -88,7 +88,7 @@ class ProjectBoxTest {
     companion object {
         fun loadProject(name: String): ProjectBox {
             val path = Paths.get("src", "test", "resources", "box", name, "project.box.yaml")
-            return ProjectBox(Box(path))
+            return ProjectBox(BoxImpl(path))
         }
 
         fun tempPath(name: String): Path {

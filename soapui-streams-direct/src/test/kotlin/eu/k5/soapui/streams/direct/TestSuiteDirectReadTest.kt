@@ -86,6 +86,9 @@ class TestSuiteDirectReadTest : AbstractDirectTest() {
         assertTestStepPropertyTransfer(testCase.getStep("PropertyTransferName") as SuuTestStepPropertyTransfers)
         assertTestStepRestRequest(testCase.getStep("restRequestStep") as SuuTestStepRestRequest)
         assertTestStepProperties(testCase.getStep("PropertiesStepName") as SuuTestStepProperties)
+
+        val script = testCase.getStep("groovyScript") as SuuTestStepScript
+        assertEquals("groovyScriptValue", script.script)
     }
 
     private fun assertTestStepProperties(step: SuuTestStepProperties) {

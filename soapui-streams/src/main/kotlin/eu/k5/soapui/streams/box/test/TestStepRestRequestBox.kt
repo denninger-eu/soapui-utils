@@ -1,7 +1,8 @@
 package eu.k5.soapui.streams.box.test
 
 import eu.k5.soapui.streams.box.Box
-import eu.k5.soapui.streams.box.Box.Companion.changed
+import eu.k5.soapui.streams.box.BoxImpl
+import eu.k5.soapui.streams.box.BoxImpl.Companion.changed
 import eu.k5.soapui.streams.box.YamlContext
 import eu.k5.soapui.streams.box.rest.*
 import eu.k5.soapui.streams.model.rest.*
@@ -11,19 +12,26 @@ import kotlin.collections.ArrayList
 
 class TestStepRestRequestBox(
     private val box: Box,
-    private val yaml: TestStepRestRequestBox.RestRequestYaml = box.load(
-        YamlContext.YAML_LOAD,
+    private val yaml: RestRequestYaml = box.load(
         RestRequestYaml::class.java
-    ) ?: RestRequestYaml()
-
+    ) ?: RestRequestYaml(),
+    private val baseYaml: TestStepRestRequestBox.BaseYaml = box.load(
+        BaseYaml::class.java,
+        "base"
+    ) ?: BaseYaml()
 ) : TestStepBox(yaml), SuuTestStepRestRequest {
     override var requestPath: SuuTestStepRestRequest.RequestPath
-        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
-        set(value) {}
+        get() = yaml.requestPath ?: SuuTestStepRestRequest.RequestPath("", emptyList<String>(), "")
+        set(value) {
+            if (modified(yaml.requestPath, value)) {
+                yaml.requestPath = value
+                store()
+            }
+        }
 
 
     private val assertionsYaml: AssertionsBox.AssertionsYaml =
-        box.load(YamlContext.YAML_LOAD, AssertionsBox.AssertionsYaml::class.java, "assertions")
+        box.load(AssertionsBox.AssertionsYaml::class.java, "assertions")
             ?: AssertionsBox.AssertionsYaml()
 
 
@@ -31,26 +39,26 @@ class TestStepRestRequestBox(
 
     override val baseService: SuuRestService
         get() {
-            if (yaml.baseService == null) {
-                yaml.baseService = RestServiceBox.RestServiceYaml()
+            if (baseYaml.baseService == null) {
+                baseYaml.baseService = RestServiceBox.RestServiceYaml()
             }
-            return RestServiceLocalBox(yaml.baseService!!) { store() }
+            return RestServiceLocalBox(baseYaml.baseService!!) { store() }
         }
 
     override val baseResources: List<SuuRestResource>
         get() {
-            if (yaml.baseResources == null) {
-                yaml.baseResources = ArrayList()
+            if (baseYaml.baseResources == null) {
+                baseYaml.baseResources = ArrayList()
             }
-            return yaml.baseResources?.map { RestResourceLocalBox(it) } ?: ArrayList()
+            return baseYaml.baseResources?.map { RestResourceLocalBox(it) } ?: ArrayList()
         }
 
     override val baseMethod: SuuRestMethod
         get() {
-            if (yaml.baseMethod == null) {
-                yaml.baseMethod = RestMethodBox.RestMethodYaml()
+            if (baseYaml.baseMethod == null) {
+                baseYaml.baseMethod = RestMethodBox.RestMethodYaml()
             }
-            return RestMethodLocalBox(yaml.baseMethod!!) { store() }
+            return RestMethodLocalBox(baseYaml.baseMethod!!) { store() }
         }
 
 
@@ -63,7 +71,7 @@ class TestStepRestRequestBox(
         }
 
     fun setBaseResources(baseResources: List<SuuRestResource>) {
-        yaml.baseResources = ArrayList()
+        baseYaml.baseResources = ArrayList()
 
         for (baseResource in baseResources) {
             val newResource = RestResourceBox.RestResourceYaml()
@@ -78,14 +86,18 @@ class TestStepRestRequestBox(
                 newParameter.style = parameter.style
                 newResource.parameters?.add(newParameter)
             }
-            yaml.baseResources?.add(newResource)
+            baseYaml.baseResources?.add(newResource)
         }
-        store()
+        storeBase()
 
     }
 
     override fun store() {
         box.write(yaml)
+    }
+
+    fun storeBase() {
+        box.write(baseYaml, "base")
     }
 
     fun storeAssertions() {
@@ -97,8 +109,8 @@ class TestStepRestRequestBox(
         newRestService.name = restService.name
         newRestService.description = restService.description
         newRestService.basePath = restService.basePath
-        yaml.baseService = newRestService
-        store()
+        baseYaml.baseService = newRestService
+        storeBase()
     }
 
     fun setBaseMethod(restMethod: SuuRestMethod) {
@@ -114,8 +126,8 @@ class TestStepRestRequestBox(
             newParameter.style = parameter.style
             newRestMethod.parameters?.add(newParameter)
         }
-        yaml.baseMethod = newRestMethod
-        store()
+        baseYaml.baseMethod = newRestMethod
+        storeBase()
     }
 
 /*    fun setBaseRequest(restRequest: SuuRestRequest) {
@@ -138,13 +150,15 @@ class TestStepRestRequestBox(
         }
       //  yaml.baseRequest = newRestRequest
         store()
+
+                var baseService: RestServiceBox.RestServiceYaml? = null
+        var baseResources: MutableList<RestResourceBox.RestResourceYaml>? = ArrayList()
+        var baseMethod: RestMethodBox.RestMethodYaml? = null
     }*/
 
     class RestRequestYaml : TestStepYaml() {
-        var baseService: RestServiceBox.RestServiceYaml? = null
-        var baseResources: MutableList<RestResourceBox.RestResourceYaml>? = ArrayList()
-        var baseMethod: RestMethodBox.RestMethodYaml? = null
         var request: RestRequestBox.RestRequestYaml? = null
+        var requestPath: SuuTestStepRestRequest.RequestPath? = null
     }
 
 
@@ -333,6 +347,21 @@ class TestStepRestRequestBox(
 
         }
 
+        private fun modified(
+            existing: SuuTestStepRestRequest.RequestPath?,
+            update: SuuTestStepRestRequest.RequestPath
+        ): Boolean {
+            if (existing == null) {
+                return true
+            }
+            if (existing.restService != update.restService) {
+                return true
+            }
+            if (existing.method != update.method) {
+                return true
+            }
+            return existing.resources != update.resources
+        }
     }
 
 }

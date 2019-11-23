@@ -1,7 +1,8 @@
 package eu.k5.soapui.streams.box.test
 
 import eu.k5.soapui.streams.box.Box
-import eu.k5.soapui.streams.box.Box.Companion.changed
+import eu.k5.soapui.streams.box.BoxImpl
+import eu.k5.soapui.streams.box.BoxImpl.Companion.changed
 import eu.k5.soapui.streams.model.test.SuuPropertyTransfer
 import eu.k5.soapui.streams.model.test.SuuTestStepPropertyTransfers
 

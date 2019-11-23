@@ -1,7 +1,8 @@
 package eu.k5.soapui.streams.box.test
 
 import eu.k5.soapui.streams.box.Box
-import eu.k5.soapui.streams.box.Box.Companion.changed
+import eu.k5.soapui.streams.box.BoxImpl
+import eu.k5.soapui.streams.box.BoxImpl.Companion.changed
 import eu.k5.soapui.streams.box.PropertiesBox
 import eu.k5.soapui.streams.box.YamlContext
 import eu.k5.soapui.streams.model.SuuProperties
@@ -102,7 +103,7 @@ class TestCaseBox(
 
 
         fun mapBox(box: Box): TestStepBox {
-            val load = box.load(YamlContext.YAML_LOAD)
+            val load = box.load()
             if (load is TestStepPropertyTransfersBox.PropertyTransfersYaml) {
                 return TestStepPropertyTransfersBox(box)
             } else if (load is TestStepDelayBox.DelayYaml) {
@@ -111,6 +112,8 @@ class TestCaseBox(
                 return TestStepRestRequestBox(box)
             } else if (load is TestStepPropertiesBox.PropertiesYaml) {
                 return TestStepPropertiesBox(box)
+            } else if (load is TestStepScriptBox.ScriptYaml) {
+                return TestStepScriptBox(box)
             }
             TODO(load.javaClass.toString())
         }

@@ -1,18 +1,9 @@
 package eu.k5.soapui.streams.box.test
 
 import eu.k5.soapui.streams.box.Box
-import eu.k5.soapui.streams.box.Box.Companion.changed
-import eu.k5.soapui.streams.box.PropertiesBox
-import eu.k5.soapui.streams.box.YamlContext
-import eu.k5.soapui.streams.model.SuuProperties
+import eu.k5.soapui.streams.box.BoxImpl
+import eu.k5.soapui.streams.box.BoxImpl.Companion.changed
 import eu.k5.soapui.streams.model.test.SuuTestStep
-import org.yaml.snakeyaml.TypeDescription
-import org.yaml.snakeyaml.Yaml
-import org.yaml.snakeyaml.constructor.Constructor
-import org.yaml.snakeyaml.introspector.Property
-import org.yaml.snakeyaml.nodes.NodeTuple
-import org.yaml.snakeyaml.nodes.Tag
-import org.yaml.snakeyaml.representer.Representer
 import java.util.regex.Pattern
 
 abstract class TestStepBox(

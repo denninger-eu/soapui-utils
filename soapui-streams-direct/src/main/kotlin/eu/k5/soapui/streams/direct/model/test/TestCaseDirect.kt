@@ -5,10 +5,7 @@ import com.eviware.soapui.impl.rest.RestRequest
 import com.eviware.soapui.impl.rest.RestResource
 import com.eviware.soapui.impl.rest.RestService
 import com.eviware.soapui.impl.wsdl.testcase.WsdlTestCase
-import com.eviware.soapui.impl.wsdl.teststeps.PropertyTransfersTestStep
-import com.eviware.soapui.impl.wsdl.teststeps.RestTestRequestStep
-import com.eviware.soapui.impl.wsdl.teststeps.WsdlDelayTestStep
-import com.eviware.soapui.impl.wsdl.teststeps.WsdlPropertiesTestStep
+import com.eviware.soapui.impl.wsdl.teststeps.*
 import com.eviware.soapui.impl.wsdl.teststeps.registry.RestRequestStepFactory
 import com.eviware.soapui.model.testsuite.TestStep
 import eu.k5.soapui.streams.direct.model.PropertiesDirect
@@ -22,7 +19,6 @@ import eu.k5.soapui.streams.model.test.*
 class TestCaseDirect(
     private val testCase: WsdlTestCase
 ) : SuuTestCase {
-
 
 
     override var name: String
@@ -67,7 +63,7 @@ class TestCaseDirect(
     }
 
     override fun createScriptStep(name: String): SuuTestStepScript {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return TestStepScriptDirect(testCase.addTestStep("groovy", name) as WsdlGroovyScriptTestStep)
     }
 
     private fun findRestServiceOrCreate(restService: SuuRestService): RestService {
@@ -143,12 +139,14 @@ class TestCaseDirect(
             stepFactories[PropertyTransfersTestStep::class.java] = {
                 TestStepPropertyTransfersDirect(it as PropertyTransfersTestStep)
             }
-
             stepFactories[RestTestRequestStep::class.java] = {
                 TestStepRestRequestDirect(it as RestTestRequestStep)
             }
             stepFactories[WsdlPropertiesTestStep::class.java] = {
                 TestStepPropertiesDirect(it as WsdlPropertiesTestStep)
+            }
+            stepFactories[WsdlGroovyScriptTestStep::class.java] = {
+                TestStepScriptDirect(it as WsdlGroovyScriptTestStep)
             }
         }
 

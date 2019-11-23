@@ -171,6 +171,14 @@ class SyncTest : AbstractDirectTest() {
         }
     }
 
+    @Test
+    fun assertionTestStepRestRequest_addHeader() {
+        sync<SuuTestStepRestRequest>() {
+            it.request.addOrUpdateHeader(SuuRestRequest.Header("newHeader", "newValue"))
+            1
+        }
+    }
+
     private inline fun <reified T> sync(createAsync: (T) -> Int) {
         val referenceProject = ProjectDirectTest.testProject("TestSuiteProject")
         val box = AbstractDirectTest.createTempProjectBox("sync_" + T::class.java.simpleName).syncWith(referenceProject)

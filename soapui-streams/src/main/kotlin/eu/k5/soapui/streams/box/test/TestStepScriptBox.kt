@@ -1,10 +1,7 @@
 package eu.k5.soapui.streams.box.test
 
 import eu.k5.soapui.streams.box.Box
-import eu.k5.soapui.streams.box.rest.RestMethodBox
-import eu.k5.soapui.streams.box.rest.RestRequestBox
-import eu.k5.soapui.streams.box.rest.RestResourceBox
-import eu.k5.soapui.streams.box.rest.RestServiceBox
+import eu.k5.soapui.streams.box.BoxImpl
 import eu.k5.soapui.streams.model.test.SuuTestStepScript
 
 class TestStepScriptBox(

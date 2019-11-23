@@ -1,7 +1,5 @@
 package eu.k5.soapui.streams.box
 
-import eu.k5.soapui.streams.box.rest.RestMethodBox
-import eu.k5.soapui.streams.box.rest.RestParameters
 import eu.k5.soapui.streams.box.rest.RestServiceBox
 import eu.k5.soapui.streams.box.test.TestSuiteBox
 import eu.k5.soapui.streams.model.SuProject
@@ -77,12 +75,12 @@ class ProjectBox(
             Files.createFile(path)
             val project = ProjectYaml()
             project.name = name
-            val box = Box(path).write(ProjectYaml::class.java, project)
+            val box = BoxImpl(path).write(ProjectYaml::class.java, project)
             return ProjectBox(box)
         }
 
         fun load(path: Path): ProjectBox {
-            return ProjectBox(Box(path.resolve(FILE_NAME)))
+            return ProjectBox(BoxImpl(path.resolve(FILE_NAME)))
         }
 
         fun clone(source: Path, target: Path) {
