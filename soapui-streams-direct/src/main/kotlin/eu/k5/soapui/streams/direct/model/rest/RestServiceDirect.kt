@@ -3,6 +3,7 @@ package eu.k5.soapui.streams.direct.model.rest
 import com.eviware.soapui.impl.rest.RestService
 import eu.k5.soapui.streams.model.rest.SuuRestResource
 import eu.k5.soapui.streams.model.rest.SuuRestService
+import java.util.*
 
 class RestServiceDirect(
     private val restService: RestService
@@ -26,6 +27,19 @@ class RestServiceDirect(
         set(value) {
             restService.basePath = value
         }
+
+
+    override val endpoints: List<String>
+        get() = restService.endpoints.toList()
+
+
+    override fun addEndpoint(endpoint: String) {
+        restService.addEndpoint(endpoint)
+    }
+
+    override fun removeEndpoint(endpoint: String) {
+        restService.removeEndpoint(endpoint)
+    }
 
 
     override fun createResource(name: String, path: String): SuuRestResource {

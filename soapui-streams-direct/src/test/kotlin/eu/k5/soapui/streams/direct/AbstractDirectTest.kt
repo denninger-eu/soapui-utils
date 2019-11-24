@@ -3,6 +3,7 @@ package eu.k5.soapui.streams.direct
 import eu.k5.soapui.streams.apply
 import eu.k5.soapui.streams.box.BoxImpl
 import eu.k5.soapui.streams.box.ProjectBox
+import eu.k5.soapui.streams.direct.model.ProjectDirect
 import eu.k5.soapui.streams.listener.difference.DifferenceListener
 import eu.k5.soapui.streams.listener.difference.Differences
 import eu.k5.soapui.streams.model.SuProject
@@ -51,6 +52,9 @@ abstract class AbstractDirectTest {
             return differenceListener.differences
         }
 
+        fun testProject(name: String): ProjectDirect {
+            return ReadRestServiceDirectTest.getTestProject(name).use { DirectLoader().direct(it) }
+        }
 
         private fun tempPath(name: String): Path {
             val path = Paths.get("target", "projects")

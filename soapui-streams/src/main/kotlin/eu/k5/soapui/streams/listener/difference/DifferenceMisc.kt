@@ -9,7 +9,7 @@ class DifferenceMisc(
 ) {
 
     fun handleParameters(refParameters: SuuRestParameters, actual: SuuRestParameters) {
-        for (referenceParameter in refParameters.parameters) {
+        for (referenceParameter in refParameters.allParameters) {
             val actualParameter = actual.byName(referenceParameter.name)
             if (actualParameter != null) {
                 differences.addChange("value", referenceParameter.value, actualParameter.value)

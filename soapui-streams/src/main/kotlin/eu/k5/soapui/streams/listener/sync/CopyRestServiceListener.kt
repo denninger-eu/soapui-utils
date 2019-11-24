@@ -36,8 +36,12 @@ class CopyRestServiceListener(
         val newRestService = target!!.createRestService(restService.name!!)
         newRestService.description = restService.description
         newRestService.basePath = restService.basePath
-        targetRestService = newRestService
 
+        for (endpoint in restService.endpoints) {
+            newRestService.addEndpoint(endpoint)
+        }
+
+        targetRestService = newRestService
         return VisitResult.CONTINUE
     }
 

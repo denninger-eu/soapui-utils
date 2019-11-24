@@ -53,9 +53,8 @@ class TestStepRestRequestDirect(
     }
 
 
-    override var request: SuuRestRequest
+    override val request: SuuRestRequest
         get() = RestRequestDirect(restRequestStep.httpRequest as RestRequest)
-        set(value) {}
 
 
     override val assertions: SuuAssertions

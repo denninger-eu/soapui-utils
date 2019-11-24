@@ -6,6 +6,10 @@ interface SuuRestService {
     var basePath: String
     val resources: List<SuuRestResource>
 
+    val endpoints: List<String>
+    fun addEndpoint(endpoint: String)
+    fun removeEndpoint(endpoint: String)
+
     fun getResource(name: String): SuuRestResource? = resources.firstOrNull { it.name == name }
 
     fun createResource(name: String, path: String): SuuRestResource

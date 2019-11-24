@@ -1,15 +1,15 @@
 package eu.k5.soapui.streams.direct
 
-import eu.k5.soapui.streams.Suu
 import eu.k5.soapui.streams.apply
 import eu.k5.soapui.streams.box.BoxImpl
 import eu.k5.soapui.streams.box.ProjectBox
 import eu.k5.soapui.streams.direct.model.ProjectDirect
+import eu.k5.soapui.streams.listener.difference.DifferenceListener
 import eu.k5.soapui.streams.listener.sync.SyncListener
 import eu.k5.soapui.streams.model.rest.SuuRestMethod
 import eu.k5.soapui.streams.model.rest.SuuRestParameter
 import eu.k5.soapui.streams.model.rest.SuuRestRequest
-import eu.k5.soapui.streams.tests.SuuAssert
+import eu.k5.soapui.streams.model.rest.SuuRestService
 import org.junit.jupiter.api.Test
 import java.io.InputStream
 import java.nio.file.Files
@@ -18,10 +18,12 @@ import java.nio.file.Paths
 import java.time.Instant
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
+import kotlin.test.assertTrue
 
-class ProjectDirectTest {
+class ReadRestServiceDirectTest : AbstractDirectTest() {
 
 
+/*
     @Test
     fun syncTest() {
         val testProject = getTestProject("RestServiceComplete").use { DirectLoader().direct(it) }
@@ -32,8 +34,9 @@ class ProjectDirectTest {
         val project = ProjectBox.create(folder.resolve(ProjectBox.FILE_NAME), "name")
         Suu.syncRestService(testProject, project, testProject.restServices[0].name!!)
     }
+*/
 
-    @Test
+/*    @Test
     fun writeRestProject() {
 
 
@@ -52,9 +55,9 @@ class ProjectDirectTest {
 
         val storedProject = storeAndReopen("write", project)
 
-    }
+    }*/
 
-    @Test
+/*    @Test
     fun writeProjectWithSync() {
         val box = loadFromBox("complete")
 
@@ -63,6 +66,28 @@ class ProjectDirectTest {
 
         val storedProject = storeAndReopen("withsync", project)
         SuuAssert().assertEquals(storedProject, box)
+    }*/
+
+    @Test
+    fun writeBoxFromTestSuite() {
+        val project = testProject("RestServiceComplete")
+
+        val box = createTempProjectBox("RestServiceComplete")
+        val apply = box.apply(SyncListener(project))
+
+        val firstDifference = DifferenceListener(project)
+
+        assertTrue(firstDifference.differences.isEmpty(), firstDifference.differences.toString())
+
+        // double apply should not affect differences
+        box.apply(SyncListener(project))
+
+        val secondDifference = DifferenceListener(project)
+        box.apply(secondDifference)
+
+        assertTrue(secondDifference.differences.isEmpty(), secondDifference.differences.toString())
+
+        assertRestService(box.restServices[0])
     }
 
     @Test
@@ -70,11 +95,23 @@ class ProjectDirectTest {
 
         val project = testProject("RestServiceComplete")
 
+        assertRestService(project.restServices[0])
+    }
 
-        val resource = project.restServices[0].resources[0]
+    private fun assertRestService(restService: SuuRestService) {
+        assertEquals("RestServiceName", restService.name)
+        assertEquals("DescriptionValue", restService.description)
+        assertEquals("basePathValue", restService.basePath)
+
+        assertTrue(restService.endpoints.contains("http://example.com"))
+        assertTrue(restService.endpoints.contains("http://example.net"))
+
+
+        val resource = restService.resources[0]
 
         assertEquals("resourceName", resource.name)
-        assertEquals(2, resource.parameters.parameters.size)
+        assertEquals(2, resource.parameters.allParameters.size)
+
 
         assertMethod(resource.methods[0])
     }
@@ -85,7 +122,7 @@ class ProjectDirectTest {
 
         val parameters = restMethod.parameters
         assertNotNull(parameters)
-        assertEquals(1, parameters.parameters.size)
+        assertEquals(2, parameters.allParameters.size)
         val parameter = parameters.byName("methodParameterName")
         assertNotNull(parameter)
         assertEquals("methodParameterValue", parameter.value)
@@ -100,9 +137,12 @@ class ProjectDirectTest {
 
         val parameters = restRequest.parameters
         assertNotNull(parameters)
-        assertEquals(1, parameters.parameters.size)
+        assertEquals(4, parameters.allParameters.size)
+        assertEquals(0, parameters.parameterOwning.size)
+        assertEquals(2, parameters.parameterOverride.size)
         val parameter = parameters.byName("requestParameterName")
         assertNotNull(parameter)
+        assertTrue(parameter.isOverride())
         assertEquals("requestParameterValue", parameter.value)
         assertEquals(SuuRestParameter.Style.QUERY, parameter.style)
 
@@ -122,9 +162,6 @@ class ProjectDirectTest {
             return Files.newInputStream(file).use { DirectLoader().direct(it) }
         }
 
-        fun testProject(name: String): ProjectDirect {
-            return getTestProject(name).use { DirectLoader().direct(it) }
-        }
 
         fun getTestProject(name: String): InputStream {
             val path = Paths.get("src", "test", "resources", "testcases", "$name-soapui-project.xml")

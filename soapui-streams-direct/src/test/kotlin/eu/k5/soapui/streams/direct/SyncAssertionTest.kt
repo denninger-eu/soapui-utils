@@ -9,7 +9,7 @@ import org.junit.Ignore
 import org.junit.jupiter.api.Test
 import kotlin.test.assertTrue
 
-class SyncTest : AbstractDirectTest() {
+class SyncAssertionTest : AbstractSyncTest() {
 
     @Test
     fun assertionInvalidStatus() {
@@ -122,54 +122,7 @@ class SyncTest : AbstractDirectTest() {
         }
     }
 
-    @Test
-    fun assertionTestStepProperties() {
-        sync<SuuTestStepProperties>() {
-            it.description = "changedDescription"
-            it.properties.addOrUpdate(it.properties.properties[0].name, "changedValue")
-            2
-        }
-    }
 
-    @Test
-    fun assertionTestStepDelay() {
-        sync<SuuTestStepDelay>() {
-            it.description = "changedDescription"
-            it.delay = 666
-            2
-        }
-    }
-
-    @Test
-    fun assertionTestPropertyTransfers() {
-        sync<SuuTestStepPropertyTransfers>() {
-            it.description = "changedDescription"
-
-            it.transfers[0].source.expression = "changedSource"
-            it.transfers[0].source.language = SuuPropertyTransfer.Language.JSONPATH
-            it.transfers[0].source.propertyName = "changedSPropertyName"
-            it.transfers[0].source.stepName = "changesSStepName"
-
-            it.transfers[0].target.expression = "changedSource"
-            it.transfers[0].target.language = SuuPropertyTransfer.Language.XPATH
-            it.transfers[0].target.propertyName = "changedSPropertyName"
-            it.transfers[0].target.stepName = "changesSStepName"
-
-            9
-        }
-    }
-
-    @Test
-    fun assertionTestStepRestRequest() {
-        sync<SuuTestStepRestRequest>() {
-            it.description = "changedDescription"
-            it.request.content = "changedContent"
-
-            val firstHeader = it.request.headers[0]
-            it.request.addOrUpdateHeader(SuuRestRequest.Header(firstHeader.key, "changedValue"))
-            3
-        }
-    }
 
     @Test
     fun assertionTestStepRestRequest_addHeader() {
@@ -179,21 +132,6 @@ class SyncTest : AbstractDirectTest() {
         }
     }
 
-    private inline fun <reified T> sync(createAsync: (T) -> Int) {
-        val referenceProject = ProjectDirectTest.testProject("TestSuiteProject")
-        val box = AbstractDirectTest.createTempProjectBox("sync_" + T::class.java.simpleName).syncWith(referenceProject)
 
-        val selected = box.flatten().filterIsInstance<T>().first()
-        val count = createAsync(selected)
-
-        val beforeSync = AbstractDirectTest.getDifferences(referenceProject, box)
-        if (beforeSync.size() != count) {
-            throw IllegalArgumentException("Change did not cause $count differences, caused " + beforeSync.size() + ". " + beforeSync.toString())
-        }
-
-        box.syncWith(referenceProject)
-        val differences = AbstractDirectTest.getDifferences(referenceProject, box)
-        assertTrue(differences.isEmpty(), differences.toString())
-    }
 
 }

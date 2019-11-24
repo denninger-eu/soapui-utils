@@ -11,6 +11,16 @@ class RestService(
     @XmlAttribute
     override var name: String = ""
 ) : SuuRestService {
+    override val endpoints: List<String>
+        get() = ArrayList()
+
+    override fun addEndpoint(endpoint: String) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun removeEndpoint(endpoint: String) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     @XmlElement
     override var description: String? = null

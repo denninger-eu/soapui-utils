@@ -9,11 +9,12 @@ class RestParameters(
     private val store: () -> Unit
 ) : SuuRestParameters {
 
+
     override val allParameters: List<SuuRestParameter>
         get() = params.map { RestParameter(it) }.toList()
 
-    override val parameters: List<SuuRestParameter>
-        get() = allParameters
+    override val parameterOverride: List<SuuRestParameter>
+        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
 
 
     override fun remove(name: String) {
@@ -44,9 +45,12 @@ class RestParameters(
 
     class RestParameter(private val parameter: RestParameterYaml) : SuuRestParameter {
         override var name: String = parameter.name ?: ""
+
         override var value: String = parameter.value ?: ""
         override var style: SuuRestParameter.Style = parameter.style ?: SuuRestParameter.Style.QUERY
         override val location: SuuRestParameter.Location = parameter.location ?: SuuRestParameter.Location.RESOURCE
+
+        override fun isOverride(): Boolean = false
     }
 
 
@@ -54,7 +58,8 @@ class RestParameters(
         var name: String? = null,
         var value: String? = null,
         var style: SuuRestParameter.Style? = null,
-        var location: SuuRestParameter.Location? = null
+        var location: SuuRestParameter.Location? = null,
+        var override: Boolean? = false
     )
 
     companion object {

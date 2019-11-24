@@ -2,24 +2,21 @@ package eu.k5.soapui.streams.direct
 
 import eu.k5.soapui.streams.apply
 import eu.k5.soapui.streams.direct.model.test.TestStepDelayDirect
-import eu.k5.soapui.streams.flatten
 import eu.k5.soapui.streams.listener.difference.DifferenceListener
 import eu.k5.soapui.streams.listener.sync.SyncListener
 import eu.k5.soapui.streams.model.assertion.*
 import eu.k5.soapui.streams.model.test.*
-import eu.k5.soapui.streams.select
-import eu.k5.soapui.streams.syncWith
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
-class TestSuiteDirectReadTest : AbstractDirectTest() {
+class ReadTestSuiteDirectTest : AbstractDirectTest() {
 
     @Test
     fun writeBoxFromTestSuite() {
-        val project = ProjectDirectTest.testProject("TestSuiteProject")
+        val project = testProject("TestSuiteProject")
 
         val box = createTempProjectBox("TestSuiteProject")
 
@@ -40,8 +37,18 @@ class TestSuiteDirectReadTest : AbstractDirectTest() {
 
 
     @Test
-    fun readTestSuiteProject() {
-        val project = ProjectDirectTest.testProject("TestSuiteProject")
+    fun readRestProject() {
+        val project = testProject("TestSuiteProject")
+
+        val restService = project.getRestService("RestServiceName")
+
+
+    }
+
+    @Test
+    fun readProject() {
+        val project = testProject("TestSuiteProject")
+
 
         assertEquals(2, project.properties.properties.size)
 
@@ -65,6 +72,7 @@ class TestSuiteDirectReadTest : AbstractDirectTest() {
 
         assertTestCase(testSuite.getTestCase("TestCaseName")!!)
     }
+
 
     private fun assertTestCase(testCase: SuuTestCase) {
         assertEquals("TestCaseName", testCase.name)

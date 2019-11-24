@@ -6,8 +6,7 @@ import eu.k5.soapui.streams.listener.sync.SyncListener
 import eu.k5.soapui.streams.tests.SuuAssert
 import org.junit.jupiter.api.Test
 
-class TestSuiteDirectWriteTest : AbstractDirectTest() {
-
+class WriteRestServiceDirectTest : AbstractDirectTest() {
 
     @Test
     fun writeProjectWithSync() {

@@ -10,10 +10,10 @@ class SyncRestRequest {
         target.description = reference.description
         target.content = reference.content
 
-        /*  CopyRestServiceListener.handleParameters(
-      targetRestRequest.parameters,
-      referenceRequest.parameters
-  )*/
+        misc.handleParameters(
+            target.parameters,
+            reference.parameters
+        )
 
         misc.copyHeaders(reference, target)
     }

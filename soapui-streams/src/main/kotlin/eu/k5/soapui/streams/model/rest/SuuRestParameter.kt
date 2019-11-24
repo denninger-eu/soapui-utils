@@ -8,9 +8,13 @@ interface SuuRestParameter {
     var style: Style
     val location: Location
 
+    fun isOverride(): Boolean
+
+
     fun isOwner(): Boolean {
         return location == Location.RESOURCE || location == Location.METHOD
     }
+
 
     enum class Location {
         UNKNOWN, RESOURCE, RESOURCE_OVERRIDE, METHOD, METHOD_OVERRIDE

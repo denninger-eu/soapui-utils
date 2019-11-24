@@ -1,9 +1,7 @@
 package eu.k5.soapui.streams.box.test
 
 import eu.k5.soapui.streams.box.Box
-import eu.k5.soapui.streams.box.BoxImpl
 import eu.k5.soapui.streams.box.BoxImpl.Companion.changed
-import eu.k5.soapui.streams.box.YamlContext
 import eu.k5.soapui.streams.box.rest.*
 import eu.k5.soapui.streams.model.rest.*
 import eu.k5.soapui.streams.model.test.SuuTestStepRestRequest
@@ -78,7 +76,7 @@ class TestStepRestRequestBox(
             newResource.name = baseResource.name
             newResource.path = baseResource.path
             newResource.description = baseResource.description
-            for (parameter in baseResource.parameters.parameters) {
+            for (parameter in baseResource.parameters.allParameters) {
                 val newParameter = RestParameters.RestParameterYaml()
                 newParameter.name = parameter.name
                 newParameter.value = parameter.value
@@ -118,7 +116,7 @@ class TestStepRestRequestBox(
         newRestMethod.name = restMethod.name
         newRestMethod.description = restMethod.description
         newRestMethod.httpMethod = restMethod.httpMethod
-        for (parameter in restMethod.parameters.parameters) {
+        for (parameter in restMethod.parameters.allParameters) {
             val newParameter = RestParameters.RestParameterYaml()
             newParameter.name = parameter.name
             newParameter.value = parameter.value
@@ -173,6 +171,16 @@ class TestStepRestRequestBox(
         private val yaml: RestServiceBox.RestServiceYaml,
         private val store: () -> Unit
     ) : SuuRestService {
+        override val endpoints: List<String>
+            get() = ArrayList()
+
+        override fun addEndpoint(endpoint: String) {
+            throw UnsupportedOperationException("Not supported in local copy")
+        }
+
+        override fun removeEndpoint(endpoint: String) {
+            throw UnsupportedOperationException("Not supported in local copy")
+        }
 
         override var name: String
             get() = yaml.name ?: ""
