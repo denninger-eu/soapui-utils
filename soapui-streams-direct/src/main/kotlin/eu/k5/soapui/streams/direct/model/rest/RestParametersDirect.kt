@@ -24,7 +24,9 @@ class RestParametersDirect(
 
     }
 
-    override fun addOrUpdate(name: String, value: String, style: SuuRestParameter.Style) {
+    override fun addOrUpdate(
+        name: String, value: String, style: SuuRestParameter.Style, location: SuuRestParameter.Location
+    ) {
         val property = params.addProperty(name)
         property.value = value
         property.style = mapStyle(style)

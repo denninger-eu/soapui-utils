@@ -43,29 +43,35 @@ class TestStepRestRequestBox(
             return RestServiceLocalBox(baseYaml.baseService!!) { store() }
         }
 
-    override val baseResources: List<SuuRestResource>
+    override val baseResources: List<RestResourceLocalBox>
         get() {
             if (baseYaml.baseResources == null) {
                 baseYaml.baseResources = ArrayList()
             }
-            return baseYaml.baseResources?.map { RestResourceLocalBox(it) } ?: ArrayList()
+            val result = ArrayList<RestResourceLocalBox>()
+            var parentResource: RestResourceLocalBox? = null
+            for (baseResourceYaml in baseYaml.baseResources!!) {
+                parentResource = RestResourceLocalBox(baseResourceYaml, parentResource)
+                result.add(parentResource)
+            }
+            return result
         }
 
-    override val baseMethod: SuuRestMethod
+    override val baseMethod: RestMethodLocalBox
         get() {
             if (baseYaml.baseMethod == null) {
                 baseYaml.baseMethod = RestMethodBox.RestMethodYaml()
             }
-            return RestMethodLocalBox(baseYaml.baseMethod!!) { store() }
+            return RestMethodLocalBox(baseYaml.baseMethod!!, baseResources.last()) { store() }
         }
 
 
-    override val request: SuuRestRequest
+    override val request: RestRequestLocalBox
         get() {
             if (yaml.request == null) {
                 yaml.request = RestRequestBox.RestRequestYaml()
             }
-            return RestRequestLocalBox(box, yaml.request!!) { store() }
+            return RestRequestLocalBox(box, yaml.request!!, baseMethod) { store() }
         }
 
     fun setBaseResources(baseResources: List<SuuRestResource>) {
@@ -77,7 +83,7 @@ class TestStepRestRequestBox(
             newResource.path = baseResource.path
             newResource.description = baseResource.description
             for (parameter in baseResource.parameters.allParameters) {
-                val newParameter = RestParameters.RestParameterYaml()
+                val newParameter = RestParametersBox.RestParameterYaml()
                 newParameter.name = parameter.name
                 newParameter.value = parameter.value
                 newParameter.location = parameter.location
@@ -117,7 +123,7 @@ class TestStepRestRequestBox(
         newRestMethod.description = restMethod.description
         newRestMethod.httpMethod = restMethod.httpMethod
         for (parameter in restMethod.parameters.allParameters) {
-            val newParameter = RestParameters.RestParameterYaml()
+            val newParameter = RestParametersBox.RestParameterYaml()
             newParameter.name = parameter.name
             newParameter.value = parameter.value
             newParameter.location = parameter.location
@@ -217,7 +223,8 @@ class TestStepRestRequestBox(
     }
 
     class RestResourceLocalBox(
-        private val yaml: RestResourceBox.RestResourceYaml
+        private val yaml: RestResourceBox.RestResourceYaml,
+        private val parentResource: RestResourceLocalBox?
     ) : SuuRestResource {
         override val methods: List<SuuRestMethod> by lazy { throw UnsupportedOperationException("Not supported in TestStep") }
         override val childResources: List<SuuRestResource>
@@ -249,12 +256,17 @@ class TestStepRestRequestBox(
                 throw UnsupportedOperationException()
             }
 
-        override val parameters: SuuRestParameters
-            get() = RestParameters(yaml.parameters!!) { throw UnsupportedOperationException() }
+        override val parameters: RestParametersBox
+            get() = RestParametersBox(
+                yaml.parameters!!,
+                false,
+                parentResource?.parameters
+            ) { throw UnsupportedOperationException() }
     }
 
     class RestMethodLocalBox(
         private val yaml: RestMethodBox.RestMethodYaml,
+        private val resource: RestResourceLocalBox,
         private val store: () -> Unit
     ) : SuuRestMethod {
         override var name: String
@@ -285,8 +297,8 @@ class TestStepRestRequestBox(
                 }
             }
 
-        override val parameters: SuuRestParameters
-            get() = RestParameters(yaml.parameters!!) { store() }
+        override val parameters: RestParametersBox
+            get() = RestParametersBox(yaml.parameters!!, false, resource.parameters) { store() }
 
 
         override val requests: List<SuuRestRequest> by lazy { throw UnsupportedOperationException() }
@@ -300,6 +312,7 @@ class TestStepRestRequestBox(
     class RestRequestLocalBox(
         private val box: Box,
         private val yaml: RestRequestBox.RestRequestYaml,
+        private val method: RestMethodLocalBox,
         private val store: () -> Unit
     ) : SuuRestRequest {
         override var name: String
@@ -322,7 +335,7 @@ class TestStepRestRequestBox(
 
 
         override val parameters: SuuRestParameters
-            get() = RestParameters(yaml.parameters!!) { store() }
+            get() = RestParametersBox(yaml.parameters!!, true, method.parameters) { store() }
 
         override val headers: List<SuuRestRequest.Header>
             get() = yaml.headers?.map { RestRequestBox.mapHeader(it) } ?: ArrayList()

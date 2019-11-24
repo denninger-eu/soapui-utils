@@ -37,15 +37,6 @@ class ReadTestSuiteDirectTest : AbstractDirectTest() {
 
 
     @Test
-    fun readRestProject() {
-        val project = testProject("TestSuiteProject")
-
-        val restService = project.getRestService("RestServiceName")
-
-
-    }
-
-    @Test
     fun readProject() {
         val project = testProject("TestSuiteProject")
 
@@ -188,7 +179,7 @@ class ReadTestSuiteDirectTest : AbstractDirectTest() {
         assertEquals("PropertyTransferDescription", propertyTransfer.description)
         assertTrue(propertyTransfer.enabled)
 
-        assertEquals(2, propertyTransfer.transfers.size)
+        assertEquals(3, propertyTransfer.transfers.size)
         val transfer = propertyTransfer.transfers[0]
 
         assertEquals("transferName", transfer.name)

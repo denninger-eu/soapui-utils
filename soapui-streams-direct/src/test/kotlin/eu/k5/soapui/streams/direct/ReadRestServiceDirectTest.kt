@@ -122,7 +122,7 @@ class ReadRestServiceDirectTest : AbstractDirectTest() {
 
         val parameters = restMethod.parameters
         assertNotNull(parameters)
-        assertEquals(2, parameters.allParameters.size)
+        assertEquals(2, parameters.parameterOwning.size)
         val parameter = parameters.byName("methodParameterName")
         assertNotNull(parameter)
         assertEquals("methodParameterValue", parameter.value)

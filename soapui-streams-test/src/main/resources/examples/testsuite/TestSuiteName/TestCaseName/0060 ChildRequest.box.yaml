@@ -1,27 +1,34 @@
 !restRequestStep
+name: ChildRequest
+request: !restRequest
+  name: ChildRequest
+### base
+!requestBase
 baseMethod: !restMethod
-  description: ''
   httpMethod: GET
   name: ChildMethod
+  parameters:
+  - location: METHOD
+    name: methodParameterKey
+    override: false
+    style: QUERY
+    value: methodParameterValue
 baseResources:
-- description: ''
-  name: Uri
+- name: Uri
   parameters:
   - location: RESOURCE
     name: resourceParameterName
+    override: false
+    style: QUERY
+    value: resourceParamterValue
+  path: /uri
+- name: child
+  parameters:
+  - location: RESOURCE
+    name: childResourceParameterName
+    override: false
     style: QUERY
     value: resourceParameterValue
-  path: /uri
-- description: ''
-  name: child
   path: child
 baseService: !restService
-  basePath: ''
-  description: ''
   name: RestService
-description: ''
-name: ChildRequest
-request: !restRequest
-  description: ''
-  name: ChildRequest
-### content

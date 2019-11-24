@@ -8,13 +8,16 @@ interface SuuRestParameters {
 
     val parameterOwning: List<SuuRestParameter> get() = allParameters.filter { it.isOwner() }
 
-    val parameterOverride: List<SuuRestParameter> get() = allParameters.filter { !it.isOwner() }
+    val parameterOverride: List<SuuRestParameter> get() = allParameters.filter { it.isOverride() }
 
     fun remove(name: String)
 
-    fun addOrUpdate(name: String, value: String, style: SuuRestParameter.Style)
+    fun addOrUpdate(name: String, value: String, style: SuuRestParameter.Style, location: SuuRestParameter.Location)
 
-    fun addOrUpdate(parameter: SuuRestParameter) = addOrUpdate(parameter.name!!, parameter.value!!, parameter.style!!)
+    fun addOrUpdate(parameter: SuuRestParameter) =
+        addOrUpdate(
+            parameter.name!!, parameter.value!!, parameter.style!!, parameter.location
+        )
 
     fun hasParameter(name: String?): Boolean = allParameters.firstOrNull { it.name == name } != null
 

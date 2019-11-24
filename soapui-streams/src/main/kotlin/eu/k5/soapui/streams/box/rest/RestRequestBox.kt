@@ -1,13 +1,13 @@
 package eu.k5.soapui.streams.box.rest
 
 import eu.k5.soapui.streams.box.Box
-import eu.k5.soapui.streams.box.BoxImpl
 import eu.k5.soapui.streams.box.BoxImpl.Companion.changed
 import eu.k5.soapui.streams.model.rest.SuuRestParameters
 import eu.k5.soapui.streams.model.rest.SuuRestRequest
 
 class RestRequestBox(
-    private val box: Box
+    private val box: Box,
+    private val method: RestMethodBox
 ) : SuuRestRequest {
 
 
@@ -32,7 +32,13 @@ class RestRequestBox(
         }
 
 
-    override val parameters: SuuRestParameters by lazy { RestParameters(yaml.parameters!!) { store() } }
+    override val parameters: SuuRestParameters by lazy {
+        RestParametersBox(
+            yaml.parameters!!,
+            true,
+            method.parameters
+        ) { store() }
+    }
 
     override val headers: List<SuuRestRequest.Header>
         get() = yaml.headers?.map { mapHeader(it) } ?: ArrayList()
@@ -55,7 +61,7 @@ class RestRequestBox(
     class RestRequestYaml {
         var name: String? = null
         var description: String? = null
-        var parameters: MutableList<RestParameters.RestParameterYaml>? = ArrayList()
+        var parameters: MutableList<RestParametersBox.RestParameterYaml>? = ArrayList()
         var headers: MutableList<HeaderYaml>? = ArrayList()
     }
 
@@ -84,13 +90,13 @@ class RestRequestBox(
             return yaml
         }
 
-        fun create(parent: Box, name: String): RestRequestBox {
-            val box = parent.createFile(name, ".box.yaml")
+        fun create(parent: RestMethodBox, name: String): RestRequestBox {
+            val box = parent.box.createFile(name, ".box.yaml")
 
             val newRequest = RestRequestYaml()
             newRequest.name = name
             box.write(RestRequestYaml::class.java, newRequest)
-            return RestRequestBox(box)
+            return RestRequestBox(box, parent)
         }
 
         fun handleHeaders(yaml: RestRequestYaml, header: SuuRestRequest.Header, store: () -> Unit) {

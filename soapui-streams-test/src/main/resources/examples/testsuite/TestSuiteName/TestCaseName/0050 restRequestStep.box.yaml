@@ -1,31 +1,27 @@
 !restRequestStep
+name: restRequestStep
+request: !restRequest
+  headers:
+  - key: headerKey
+    values:
+    - headerKeyValue
+  name: restRequestStep
+### base
+!requestBase
 baseMethod: !restMethod
-  description: ''
   httpMethod: POST
   name: PostMethod
-  parameters:
-  - location: METHOD
-    name: methodParameterKey
-    style: QUERY
-    value: methodParameterValue
 baseResources:
-- description: ''
-  name: Uri
+- name: Uri
   parameters:
   - location: RESOURCE
     name: resourceParameterName
+    override: false
     style: QUERY
-    value: resourceParameterValue
+    value: resourceParamterValue
   path: /uri
 baseService: !restService
-  basePath: ''
-  description: ''
   name: RestService
-description: ''
-name: restRequestStep
-request: !restRequest
-  description: ''
-  name: restRequestStep
 ### content
 content
 ### assertions
@@ -37,7 +33,7 @@ assertions:
 - !validStatus
   name: validCodes
   statusCodes: '200'
-- !script
+- !scriptAssertion
   name: script
   script: scriptValue
 - !duration
@@ -49,10 +45,8 @@ assertions:
   name: contains
   regexp: true
 - !notContains
-  caseSensitive: true
   content: notContainsContent
   name: notContains
-  regexp: false
 - !jsonPathMatch
   expectedValue: jsonPathExpectedResultValue
   expression: jsonPathExpressionValue
@@ -67,11 +61,8 @@ assertions:
   name: jsonPathRegEx
   regularExpression: jsonPathRegExRegExpValue
 - !xpath
-  allowWildcards: false
   expectedValue: xpathExpectedResult
   expression: xpathValue
-  ignoreComments: false
-  ignoreNamespaceDifferences: false
   name: xpath
 - !xquery
   allowWildcards: true

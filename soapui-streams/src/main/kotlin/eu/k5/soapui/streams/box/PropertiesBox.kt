@@ -1,9 +1,7 @@
 package eu.k5.soapui.streams.box
 
-import eu.k5.soapui.streams.box.rest.RestParameters
 import eu.k5.soapui.streams.model.SuuProperties
 import eu.k5.soapui.streams.model.SuuProperty
-import eu.k5.soapui.streams.model.rest.SuuRestParameter
 
 class PropertiesBox(
     private val base: MutableList<PropertyYaml>,

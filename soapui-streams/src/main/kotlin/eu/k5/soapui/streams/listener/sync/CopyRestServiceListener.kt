@@ -90,7 +90,8 @@ class CopyRestServiceListener(
         misc.copyHeaders(suuRestRequest, newRequest)
         misc.handleParameters(
             newRequest.parameters!!,
-            suuRestRequest.parameters!!
+            suuRestRequest.parameters!!,
+            true
         )
     }
 

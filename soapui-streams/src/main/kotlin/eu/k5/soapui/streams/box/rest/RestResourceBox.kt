@@ -1,14 +1,14 @@
 package eu.k5.soapui.streams.box.rest
 
 import eu.k5.soapui.streams.box.Box
-import eu.k5.soapui.streams.box.BoxImpl
 import eu.k5.soapui.streams.box.BoxImpl.Companion.changed
 import eu.k5.soapui.streams.model.rest.SuuRestResource
 import eu.k5.soapui.streams.model.rest.SuuRestMethod
 import eu.k5.soapui.streams.model.rest.SuuRestParameters
 
 class RestResourceBox(
-    private val box: Box
+    val box: Box,
+    private val parentResource: RestResourceBox?
 ) : SuuRestResource {
 
     private val yaml by lazy { box.load(RestResourceYaml::class.java) }
@@ -39,29 +39,35 @@ class RestResourceBox(
         }
 
 
-    override val parameters: SuuRestParameters by lazy { RestParameters(yaml.parameters!!) { store() } }
+    override val parameters: RestParametersBox by lazy {
+        RestParametersBox(
+            yaml.parameters!!,
+            false,
+            parentResource?.parameters
+        ) { store() }
+    }
 
     override val methods by lazy {
         box.findSubFolderBox { it.fileName.toString() == RestMethodBox.FILE_NAME }
-            .map { RestMethodBox(it) }
+            .map { RestMethodBox(it, this) }
             .toMutableList()
     }
     override val childResources by lazy {
         box.findSubFolderBox { it.fileName.toString() == FILE_NAME }
-            .map { RestResourceBox(it) }
+            .map { RestResourceBox(it, this) }
             .toMutableList()
     }
 
     override fun createMethod(name: String): SuuRestMethod {
         val init = methods
-        val newRestMethod = RestMethodBox.create(box, name)
+        val newRestMethod = RestMethodBox.create(this, name)
         init.add(newRestMethod)
         return newRestMethod
     }
 
     override fun createChildResource(name: String, path: String): SuuRestResource {
         val init = childResources
-        val newRestService = create(box, name, path)
+        val newRestService = create(box, this, name, path)
         init.add(newRestService)
         return newRestService
     }
@@ -74,19 +80,20 @@ class RestResourceBox(
         var name: String? = null
         var description: String? = null
         var path: String? = null
-        var parameters: MutableList<RestParameters.RestParameterYaml>? = ArrayList()
+        var parameters: MutableList<RestParametersBox.RestParameterYaml>? = ArrayList()
     }
 
     companion object {
         const val FILE_NAME = "resource.box.yaml"
 
-        fun create(parent: Box, name: String, path: String): RestResourceBox {
+
+        fun create(parent: Box, parentResource: RestResourceBox?, name: String, path: String): RestResourceBox {
             val folder = parent.createFolder(name, FILE_NAME)
             val newResource = RestResourceYaml()
             newResource.name = name
             newResource.path = path
             folder.write(RestResourceYaml::class.java, newResource)
-            return RestResourceBox(folder)
+            return RestResourceBox(folder, parentResource)
         }
 
     }

@@ -66,13 +66,13 @@ class RestServiceBox(
 
     override val resources by lazy {
         box.findSubFolderBox { it.fileName.toString() == RestResourceBox.FILE_NAME }
-            .map { RestResourceBox(it) }
+            .map { RestResourceBox(it, null) }
             .toMutableList()
     }
 
     override fun createResource(name: String, path: String): SuuRestResource {
         val init = resources
-        val newRestService = RestResourceBox.create(box, name, path)
+        val newRestService = RestResourceBox.create(box, null,name, path)
         init.add(newRestService)
         return newRestService
     }

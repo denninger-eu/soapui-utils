@@ -32,11 +32,26 @@ class DifferenceRestServiceListener(
         differences.addChange("description", refRestService.description, actualRestService.description)
         differences.addChange("basePath", refRestService.basePath, actualRestService.basePath)
 
-
+        handleEndpoints(actualRestService, refRestService)
 
         referenceRestService = refRestService
         return VisitResult.CONTINUE
     }
+
+    private fun handleEndpoints(actual: SuuRestService, reference: SuuRestService) {
+        for (endpoint in actual.endpoints) {
+            if (!reference.endpoints.contains(endpoint)) {
+                differences.addAdditional(endpoint)
+            }
+        }
+        val missing = ArrayList(reference.endpoints)
+        missing.removeAll(actual.endpoints)
+        for (missingEndpoint in missing) {
+            differences.addMissing(missingEndpoint)
+        }
+
+    }
+
 
     override fun exit(restService: SuuRestService) {
         // Search missing

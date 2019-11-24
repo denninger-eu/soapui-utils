@@ -19,17 +19,20 @@ class SyncMisc {
         }
     }
 
-    fun handleParameters(target: SuuRestParameters, source: SuuRestParameters) {
+    fun handleParameters(target: SuuRestParameters, source: SuuRestParameters, override: Boolean = false) {
+
+        val targetParams = if (!override) target.parameterOwning else target.parameterOverride
+        val sourceParams = if (!override) source.parameterOwning else source.parameterOverride
 
         val missing = ArrayList<String>()
-        for (targetParameter in target.allParameters) {
+        for (targetParameter in targetParams) {
             if (!source.hasParameter(targetParameter.name)) {
                 missing.add(targetParameter.name!!)
             }
         }
         missing.forEach { target.remove(it) }
 
-        for (parameter in source.allParameters) {
+        for (parameter in sourceParams) {
             target.addOrUpdate(parameter)
         }
     }

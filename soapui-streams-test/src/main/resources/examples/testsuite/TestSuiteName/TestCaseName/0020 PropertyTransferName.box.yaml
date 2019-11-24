@@ -16,9 +16,16 @@ transfers:
 - enabled: false
   name: transferNameDisabled
   source:
-    expression: ''
     language: XPATH
   target:
-    expression: ''
     language: XPATH
     stepName: restRequestStep
+- name: forwardDeclaration
+  source:
+    language: XPATH
+    propertyName: propertyName
+    stepName: PropertiesStepName
+  target:
+    language: XPATH
+    propertyName: Request
+    stepName: ChildRequest
