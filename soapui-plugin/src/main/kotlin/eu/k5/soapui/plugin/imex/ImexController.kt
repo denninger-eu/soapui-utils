@@ -3,6 +3,7 @@ package eu.k5.soapui.plugin.imex
 import eu.k5.soapui.plugin.SuuConfig
 import eu.k5.soapui.streams.Suu
 import eu.k5.soapui.streams.box.ProjectBox
+import eu.k5.soapui.streams.direct.model.ProjectDirect
 import java.lang.IllegalStateException
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -29,8 +30,9 @@ class ImexController(
     fun doImport() {
         val box = resolveBox()
         println("DoExport: " + box.fileName())
+        val projectDirect = ProjectDirect(model.project)
 
-        Suu.syncRestService(box, model.project, model.restService!!.name!!)
+        Suu.sync(box, projectDirect)
     }
 
     private fun resolveBox(): ProjectBox {
@@ -55,7 +57,8 @@ class ImexController(
     fun doExport() {
         val box = resolveBox()
         println("DoExport: " + box.fileName())
-        Suu.sync(model.project, box)
+        val projectDirect = ProjectDirect(model.project)
+        Suu.sync(projectDirect, box)
     }
 
 }

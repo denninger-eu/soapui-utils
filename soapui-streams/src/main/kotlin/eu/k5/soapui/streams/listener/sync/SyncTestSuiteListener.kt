@@ -35,7 +35,6 @@ class SyncTestSuiteListener(
 
         val copyListener = CopyTestSuiteListener(targetProject!!, suite)
         for (missingTestCase in missingTestCases) {
-
             missingTestCase.apply(copyListener)
         }
     }
@@ -43,6 +42,7 @@ class SyncTestSuiteListener(
     override fun enterTestCase(targetTestCase: SuuTestCase): VisitResult {
         val ref = referenceTestSuite!!.getTestCase(targetTestCase.name)
         if (ref == null) {
+            targetTestCase.markLostAndFound()
             return VisitResult.TERMINATE
         }
         targetTestCase.enabled = ref.enabled

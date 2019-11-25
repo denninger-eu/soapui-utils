@@ -126,8 +126,20 @@ class BoxImpl(
     }
 
     override fun createFolder(folder: String, fileName: String): Box {
-        val resolve = path.parent.resolve(escapeFileName(folder))
-        check(!Files.exists(resolve)) { "Already exists" }
+        var resolve: Path? = null
+        for (index in 0..10) {
+            var resolveFolder: String =
+                if (index != 0) {
+                    folder + index
+                } else {
+                    folder
+                }
+            resolve = path.parent.resolve(escapeFileName(resolveFolder))
+            if (!Files.exists(resolve)) {
+                break
+            }
+        }
+        check(!Files.exists(resolve!!)) { "Already exists: $resolve" }
         Files.createDirectories(resolve)
         return BoxImpl(resolve.resolve(fileName))
     }

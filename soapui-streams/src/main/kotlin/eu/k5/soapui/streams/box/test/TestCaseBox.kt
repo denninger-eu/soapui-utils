@@ -1,10 +1,8 @@
 package eu.k5.soapui.streams.box.test
 
 import eu.k5.soapui.streams.box.Box
-import eu.k5.soapui.streams.box.BoxImpl
 import eu.k5.soapui.streams.box.BoxImpl.Companion.changed
 import eu.k5.soapui.streams.box.PropertiesBox
-import eu.k5.soapui.streams.box.YamlContext
 import eu.k5.soapui.streams.model.SuuProperties
 import eu.k5.soapui.streams.model.rest.SuuRestMethod
 import eu.k5.soapui.streams.model.rest.SuuRestResource
@@ -14,29 +12,37 @@ import eu.k5.soapui.streams.model.test.*
 class TestCaseBox(
     private val box: Box
 ) : SuuTestCase {
+    private val yaml = box.load(TestCaseYaml::class.java)
 
 
-    private val testCase = box.load(TestCaseYaml::class.java)
+    override fun isLostAndFound(): Boolean = yaml.lostAndFound ?: false
+
+
+    override fun markLostAndFound() {
+        yaml.lostAndFound = true
+        yaml.enabled = false
+        store()
+    }
 
     override var name: String
-        get() = testCase.name ?: ""
+        get() = yaml.name ?: ""
         set(value) {
-            if (changed(testCase.name, value)) {
-                testCase.name = value
+            if (changed(yaml.name, value)) {
+                yaml.name = value
                 store()
             }
         }
     override var enabled: Boolean
-        get() = testCase.enabled ?: true
+        get() = yaml.enabled ?: true
         set(value) {
-            if (changed(testCase.enabled, value)) {
-                testCase.enabled = value
+            if (changed(yaml.enabled, value)) {
+                yaml.enabled = value
                 store()
             }
         }
 
     override val properties: SuuProperties
-            by lazy { PropertiesBox(testCase.properties!!) { store() } }
+            by lazy { PropertiesBox(yaml.properties!!) { store() } }
 
     override val steps: List<SuuTestStep>
             by lazy { box.findOrderFiles().map { mapBox(it) } }
@@ -70,11 +76,12 @@ class TestCaseBox(
     class TestCaseYaml {
         var name: String? = null
         var enabled: Boolean? = null
+        var lostAndFound: Boolean? = null
         var properties: MutableList<PropertiesBox.PropertyYaml>? = ArrayList()
     }
 
     fun store() {
-        box.write(TestCaseBox.TestCaseYaml::class.java, testCase)
+        box.write(TestCaseBox.TestCaseYaml::class.java, yaml)
     }
 
     companion object {

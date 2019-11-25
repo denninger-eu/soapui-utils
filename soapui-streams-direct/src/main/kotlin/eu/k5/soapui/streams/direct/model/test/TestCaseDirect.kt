@@ -159,4 +159,15 @@ class TestCaseDirect(
         }
     }
 
+    override fun isLostAndFound(): Boolean {
+        val property = testCase.properties["lostAndFound"]
+            ?: return false
+        return property.value == "true"
+    }
+
+    override fun markLostAndFound() {
+        name = "LF_$name"
+        enabled = false
+        properties.addOrUpdate("lostAndFound", "true")
+    }
 }

@@ -40,6 +40,7 @@ private class FlattenTestSuiteListener(
     private val list: MutableList<Any>
 ) : SuuTestSuiteListener {
     override fun enter(suite: SuuTestSuite): VisitResult {
+        list.add(suite)
         return VisitResult.CONTINUE
     }
 
@@ -47,8 +48,8 @@ private class FlattenTestSuiteListener(
     }
 
     override fun enterTestCase(testCase: SuuTestCase): VisitResult {
+        list.add(testCase)
         return VisitResult.CONTINUE
-
     }
 
     override fun exitTestCase(testCase: SuuTestCase) {

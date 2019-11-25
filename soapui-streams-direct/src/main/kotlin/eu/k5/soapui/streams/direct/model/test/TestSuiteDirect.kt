@@ -34,7 +34,7 @@ class TestSuiteDirect(
             TestCaseDirect(
                 it
             )
-        }
+        }.filter { !it.isLostAndFound() }
 
     override fun createTestCase(name: String): SuuTestCase = TestCaseDirect(testSuite.addNewTestCase(name))
 

@@ -20,6 +20,10 @@ interface SuuTestCase {
 
     fun <T : SuuTestStep> createStep(name: String, java: Class<T>): T
 
+    fun markLostAndFound()
+
+    fun isLostAndFound(): Boolean
+
     fun createRestRequestStep(
         name: String,
         restService: SuuRestService,
@@ -27,5 +31,5 @@ interface SuuTestCase {
         restMethod: SuuRestMethod
     ): SuuTestStepRestRequest
 
-    fun createScriptStep(name: String) : SuuTestStepScript
+    fun createScriptStep(name: String): SuuTestStepScript
 }

@@ -43,6 +43,27 @@ class SyncTestStepTest : AbstractSyncTest() {
         }
     }
 
+
+    @Test
+    fun assertionTestPropertyTransfersInsert() {
+        sync<SuuTestStepPropertyTransfers>() {
+
+            val addTransfer = it.addTransfer("newTransfer")
+
+            addTransfer.source.expression = "changedSource"
+            addTransfer.source.language = SuuPropertyTransfer.Language.JSONPATH
+            addTransfer.source.propertyName = "changedSPropertyName"
+            addTransfer.source.stepName = "changesSStepName"
+
+            addTransfer.target.expression = "changedSource"
+            addTransfer.target.language = SuuPropertyTransfer.Language.XPATH
+            addTransfer.target.propertyName = "changedSPropertyName"
+            addTransfer.target.stepName = "changesSStepName"
+
+            1
+        }
+    }
+
     @Test
     fun assertionTestStepRestRequest() {
         sync<SuuTestStepRestRequest>() {

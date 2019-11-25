@@ -12,7 +12,6 @@ class TestSuiteBox(
     private val box: Box
 ) : SuuTestSuite {
 
-
     private val yaml: TestSuiteYaml = box.load(TestSuiteYaml::class.java)
 
     override var name: String
@@ -35,14 +34,17 @@ class TestSuiteBox(
     override val properties: SuuProperties
             by lazy { PropertiesBox(yaml.properties!!) { store() } }
 
-    override val testCases: MutableList<TestCaseBox> by lazy {
+
+    override val testCases: List<TestCaseBox>
+        get() = allTestCase.filter { !it.isLostAndFound() }.toList()
+
+    private val allTestCase: MutableList<TestCaseBox> by lazy {
         box.findSubFolderBox { it.fileName.toString() == TestCaseBox.FILE_NAME }.map { TestCaseBox(it) }
             .toMutableList()
     }
 
-
     override fun createTestCase(name: String): SuuTestCase {
-        val init = testCases
+        val init = allTestCase
         val newTestCase = TestCaseBox.create(box, name)
         init.add(newTestCase)
         return newTestCase
