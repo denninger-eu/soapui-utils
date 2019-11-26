@@ -69,6 +69,7 @@ class SyncTestStepListener(
             for (transfer in step.transfers) {
                 val refTransfer = ref.getTransfer(transfer.name)
                 if (refTransfer == null) {
+
                     TODO("delete")
                 }
                 misc.assignTransferProperties(transfer, refTransfer)
