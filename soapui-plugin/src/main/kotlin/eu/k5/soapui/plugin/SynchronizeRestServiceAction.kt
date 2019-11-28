@@ -23,7 +23,7 @@ class SynchronizeRestServiceAction : AbstractSoapUIAction<RestService>("Synchron
 
         try {
 
-            val model = ImexModel(ProjectDirect(restService.project), config = SuuConfig.loadDefault())
+            val model = ImexModel(restService.project, config = SuuConfig.loadDefault())
             model.restService = RestServiceDirect(restService)
 
             val view = ImexView(model)

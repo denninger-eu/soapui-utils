@@ -11,7 +11,7 @@ import eu.k5.soapui.streams.model.SuListener
 import eu.k5.soapui.streams.model.assertion.*
 import eu.k5.soapui.streams.model.test.*
 
-fun SuProject.syncWith(other: SuProject): SuProject {
+fun <T : SuProject> T.syncWith(other: SuProject): T {
     this.apply(SyncListener(other))
     return this
 }

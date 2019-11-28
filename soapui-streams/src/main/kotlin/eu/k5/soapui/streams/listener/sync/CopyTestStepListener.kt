@@ -54,7 +54,7 @@ class CopyTestStepListener(
     private fun handleStep(reference: SuuTestStep, target: SuuTestStep, properties: Boolean = true) {
         target.description = reference.description
         target.enabled = reference.enabled
-
+        target.weight = reference.weight
 
     }
 

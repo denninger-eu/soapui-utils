@@ -43,6 +43,7 @@ class CopyTestSuiteListener(
     }
 
     override fun exitTestCase(testCase: SuuTestCase) {
+        targetTestCase!!.reorderSteps()
         targetTestCase = null
     }
 

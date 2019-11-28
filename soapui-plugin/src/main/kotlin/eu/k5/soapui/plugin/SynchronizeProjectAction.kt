@@ -25,7 +25,7 @@ class SynchronizeProjectAction : AbstractSoapUIAction<WsdlProject>("Synchronize"
 
         try {
 
-            val model = ImexModel(ProjectDirect(project), config = SuuConfig.loadDefault())
+            val model = ImexModel(project, config = SuuConfig.loadDefault())
 
             val view = ImexView(model)
             view.display()

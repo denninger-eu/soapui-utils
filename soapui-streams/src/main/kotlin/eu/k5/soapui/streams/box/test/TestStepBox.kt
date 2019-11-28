@@ -10,6 +10,8 @@ abstract class TestStepBox(
     private val yaml: TestStepYaml
 ) : SuuTestStep {
 
+    abstract fun path(): String
+
     abstract fun store()
 
     override var name: String
@@ -38,14 +40,29 @@ abstract class TestStepBox(
             }
         }
 
+    override var weight: Int
+        get() =
+            if (yaml.weight != null) {
+                yaml.weight!!
+            } else {
+                extractWeightFromPath()
+            }
+        set(value) {
+            if (value != weight) {
+                yaml.weight = value
+                store()
+            }
+        }
 
-
+    fun extractWeightFromPath(): Int {
+        return Integer.parseInt(path().substring(0, 4))
+    }
 
     abstract class TestStepYaml {
         var name: String? = null
         var description: String? = null
         var enabled: Boolean? = null
-
+        var weight: Int? = null
     }
 
     companion object {

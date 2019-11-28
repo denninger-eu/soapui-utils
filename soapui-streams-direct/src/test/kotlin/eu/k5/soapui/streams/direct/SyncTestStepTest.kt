@@ -5,7 +5,18 @@ import eu.k5.soapui.streams.model.test.*
 import org.junit.jupiter.api.Test
 
 class SyncTestStepTest : AbstractSyncTest() {
-    
+
+    @Test
+    fun insertTestStep() {
+        sync<SuuTestCase> {
+
+            val scriptStep = it.createScriptStep("script")
+
+            scriptStep.weight = -10
+            0
+        }
+    }
+
     @Test
     fun assertionTestStepProperties() {
         sync<SuuTestStepProperties>() {

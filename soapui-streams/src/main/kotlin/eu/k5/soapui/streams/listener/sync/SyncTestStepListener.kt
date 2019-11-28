@@ -22,6 +22,7 @@ class SyncTestStepListener(
         }
         step.description = ref.description
         step.enabled = ref.enabled
+        step.weight = ref.weight
         syncWith(ref)
     }
 

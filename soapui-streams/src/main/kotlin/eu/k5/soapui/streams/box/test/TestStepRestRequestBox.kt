@@ -18,6 +18,11 @@ class TestStepRestRequestBox(
         "base"
     ) ?: BaseYaml()
 ) : TestStepBox(yaml), SuuTestStepRestRequest {
+
+    override fun path(): String {
+        return box.path.fileName.toString()
+    }
+
     override var requestPath: SuuTestStepRestRequest.RequestPath
         get() = yaml.requestPath ?: SuuTestStepRestRequest.RequestPath("", emptyList<String>(), "")
         set(value) {

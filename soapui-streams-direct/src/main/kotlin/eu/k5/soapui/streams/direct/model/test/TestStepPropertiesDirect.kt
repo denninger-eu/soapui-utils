@@ -9,8 +9,10 @@ import eu.k5.soapui.streams.model.SuuProperties
 import eu.k5.soapui.streams.model.test.SuuTestStepProperties
 
 class TestStepPropertiesDirect(
+    testCase: TestCaseDirect,
+
     private val step: WsdlPropertiesTestStep
-) : AbstractTestStepDirect(step), SuuTestStepProperties {
+) : AbstractTestStepDirect(testCase,step), SuuTestStepProperties {
 
 
     override val properties: SuuProperties

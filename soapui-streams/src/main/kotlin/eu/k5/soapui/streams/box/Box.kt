@@ -5,6 +5,8 @@ import java.nio.file.Path
 
 interface Box {
 
+    val path: Path
+
     fun findSubFolderBox(predicate: (Path) -> Boolean): List<Box>
 
     fun findFolderBox(predicate: (Path) -> Boolean): List<Box>

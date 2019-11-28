@@ -19,8 +19,11 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class TestStepRestRequestDirect(
+    testCase: TestCaseDirect,
+
     private val restRequestStep: RestTestRequestStep
 ) : AbstractTestStepDirect(
+    testCase,
     restRequestStep
 ), SuuTestStepRestRequest {
     override var requestPath: SuuTestStepRestRequest.RequestPath

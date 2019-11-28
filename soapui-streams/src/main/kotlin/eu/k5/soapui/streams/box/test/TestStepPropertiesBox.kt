@@ -15,7 +15,9 @@ class TestStepPropertiesBox(
 
 ) : TestStepBox(yaml), SuuTestStepProperties {
 
-
+    override fun path(): String {
+        return box.path.fileName.toString()
+    }
     override fun store() {
         box.write(yaml)
     }

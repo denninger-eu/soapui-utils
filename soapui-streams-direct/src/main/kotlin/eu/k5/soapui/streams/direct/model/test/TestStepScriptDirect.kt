@@ -5,8 +5,10 @@ import eu.k5.soapui.streams.model.test.SuuTestStep
 import eu.k5.soapui.streams.model.test.SuuTestStepScript
 
 class TestStepScriptDirect(
+    testCase: TestCaseDirect,
+
     private val wsdlGroovyScript: WsdlGroovyScriptTestStep
-) : AbstractTestStepDirect(wsdlGroovyScript),
+) : AbstractTestStepDirect(testCase, wsdlGroovyScript),
     SuuTestStepScript {
 
     override var script: String?

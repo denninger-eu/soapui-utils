@@ -9,7 +9,9 @@ class TestStepScriptBox(
     private val yaml: ScriptYaml = box.load(ScriptYaml::class.java)
 ) : TestStepBox(yaml), SuuTestStepScript {
 
-
+    override fun path(): String {
+        return box.path.fileName.toString()
+    }
     override var script: String?
         get() = box.loadSection("script")
         set(value) {

@@ -10,7 +10,7 @@ import java.nio.file.Files
 import java.nio.file.Path
 
 class ProjectBox(
-    private val box: Box
+     val box: Box
 ) : SuProject {
 
     private val project: ProjectYaml by lazy { box.load(ProjectYaml::class.java) }

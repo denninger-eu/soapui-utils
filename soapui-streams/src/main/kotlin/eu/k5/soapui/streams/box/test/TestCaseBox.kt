@@ -12,6 +12,10 @@ import eu.k5.soapui.streams.model.test.*
 class TestCaseBox(
     private val box: Box
 ) : SuuTestCase {
+    override fun reorderSteps(): Boolean {
+        return false
+    }
+
     private val yaml = box.load(TestCaseYaml::class.java)
 
 

@@ -11,7 +11,9 @@ class TestStepPropertyTransfersBox(
     private val yaml: PropertyTransfersYaml = box.load(PropertyTransfersYaml::class.java)
 
 ) : TestStepBox(yaml), SuuTestStepPropertyTransfers {
-
+    override fun path(): String {
+        return box.path.fileName.toString()
+    }
 
     override val transfers: MutableList<PropertyTransferBox>
             by lazy { yaml.transfers!!.map { PropertyTransferBox(it) { store() } }.toMutableList() }

@@ -7,6 +7,18 @@ class Differences {
     private val differences = ArrayList<Difference>()
     private val path = ArrayDeque<Location>()
 
+    private val root = DiffEntry("root", Type.ROOT, Difference.Type.NONE)
+
+    fun push(type: Type, name: String) {
+        this.path.push(
+            Location(
+                type,
+                name
+            )
+        )
+    }
+
+
     fun addChange(path: String) {
         differences.add(
             DifferenceChange(
@@ -25,12 +37,7 @@ class Differences {
         )
     }
 
-    fun pushProject(name: String) = this.path.push(
-        Location(
-            Type.PROJECT,
-            name
-        )
-    )
+    fun pushProject(name: String) = push(Type.PROJECT, name)
 
     fun pushRestService(name: String) = this.path.push(
         Location(
@@ -53,19 +60,8 @@ class Differences {
         )
     )
 
-    fun pushRequest(name: String) = this.path.push(
-        Location(
-            Type.REQUEST,
-            name
-        )
-    )
+    fun pushRequest(name: String) = push(Type.REQUEST, name)
 
-    fun push(type: Type, name: String) = this.path.push(
-        Location(
-            type,
-            name
-        )
-    )
 
     fun isEmpty(): Boolean = differences.isEmpty()
 
@@ -127,7 +123,9 @@ class Differences {
 
         TEST_STEP,
 
-        ASSERTION
+        ASSERTION,
+
+        ROOT
     }
 
     class Location(
@@ -175,6 +173,19 @@ class DifferenceMissing(
 interface Difference {
 
     enum class Type {
-        CHANGE, INSERT, DELETE
+        NONE, CHANGE, INSERT, DELETE
     }
 }
+
+
+class DiffEntry(
+    val name: String,
+    val entity: Differences.Type,
+    val type: Difference.Type
+) {
+
+    val childs: List<DiffEntry> = ArrayList()
+
+}
+
+

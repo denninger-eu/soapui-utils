@@ -8,7 +8,7 @@ abstract class AbstractSyncTest : AbstractDirectTest() {
 
     inline fun <reified T> sync(createAsync: (T) -> Int) {
         val referenceProject = testProject("TestSuiteProject")
-        val box = AbstractDirectTest.createTempProjectBox("sync_" + T::class.java.simpleName).syncWith(referenceProject)
+        val box = createTempProjectBox("sync_" + T::class.java.simpleName).syncWith(referenceProject)
 
         val selected = box.flatten().filterIsInstance<T>().first()
         val count = createAsync(selected)
@@ -20,6 +20,8 @@ abstract class AbstractSyncTest : AbstractDirectTest() {
 
         box.syncWith(referenceProject)
         val differences = AbstractDirectTest.getDifferences(referenceProject, box)
+
+
         assertTrue(differences.isEmpty(), differences.toString())
     }
 }

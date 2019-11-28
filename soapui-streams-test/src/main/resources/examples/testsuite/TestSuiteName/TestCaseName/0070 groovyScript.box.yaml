@@ -1,4 +1,5 @@
 !scriptStep
 name: groovyScript
+weight: -10
 ### script
 groovyScriptValue

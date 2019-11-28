@@ -32,4 +32,8 @@ interface SuuTestCase {
     ): SuuTestStepRestRequest
 
     fun createScriptStep(name: String): SuuTestStepScript
+
+
+    fun reorderSteps(): Boolean
+
 }

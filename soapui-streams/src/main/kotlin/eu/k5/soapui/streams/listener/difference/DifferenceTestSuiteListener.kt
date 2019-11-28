@@ -53,6 +53,9 @@ class DifferenceTestSuiteListener(
     }
 
     override fun exitTestCase(testCase: SuuTestCase) {
+
+        differences.addChange("stepsize", referenceTestCase?.steps?.size, testCase?.steps?.size)
+        differences.pop()
     }
 
     override fun createTestStepListener(): SuuTestStepListener {

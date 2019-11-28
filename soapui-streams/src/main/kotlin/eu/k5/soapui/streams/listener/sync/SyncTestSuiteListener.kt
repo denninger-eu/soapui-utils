@@ -16,7 +16,7 @@ class SyncTestSuiteListener(
 ) : SuuTestSuiteListener {
 
     private var referenceTestSuite: SuuTestSuite? = null
-    private var targetTestCase: SuuTestCase?=null
+    private var targetTestCase: SuuTestCase? = null
     private var referenceTestCase: SuuTestCase? = null
 
     override fun enter(targetSuite: SuuTestSuite): VisitResult {
@@ -52,13 +52,16 @@ class SyncTestSuiteListener(
     }
 
     override fun exitTestCase(testCase: SuuTestCase) {
+        targetTestCase!!.reorderSteps()
+
         referenceTestCase = null
         targetTestCase = null
+
 
     }
 
     override fun createTestStepListener(): SuuTestStepListener {
-        return SyncTestStepListener(Environment(),referenceTestCase!!, targetTestCase!!)
+        return SyncTestStepListener(Environment(), referenceTestCase!!, targetTestCase!!)
     }
 
 }

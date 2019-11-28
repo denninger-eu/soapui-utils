@@ -8,6 +8,9 @@ class TestStepDelayBox(
     private val box: Box,
     private val yaml: DelayYaml = box.load(DelayYaml::class.java)
 ) : TestStepBox(yaml), SuuTestStepDelay {
+    override fun path(): String {
+        return box.path.fileName.toString()
+    }
 
     override var delay: Int
         get() = yaml.delay ?: 1000

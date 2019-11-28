@@ -11,8 +11,14 @@ import eu.k5.soapui.streams.model.SuuProperties
 import eu.k5.soapui.streams.model.test.SuuTestStep
 
 abstract class AbstractTestStepDirect(
-    private val testStep: WsdlTestStep
+    val testCase: TestCaseDirect,
+    val testStep: WsdlTestStep
 ) : SuuTestStep {
+
+    override var weight: Int = testCase.getWeight(testStep)
+    set(value) {
+        testCase.setWeight(testStep, value)
+    }
 
     override var enabled: Boolean
         get() = !testStep.isDisabled
@@ -31,7 +37,8 @@ abstract class AbstractTestStepDirect(
         set(value) {
             testStep.description = value
         }
-
 }
+
+
 
 

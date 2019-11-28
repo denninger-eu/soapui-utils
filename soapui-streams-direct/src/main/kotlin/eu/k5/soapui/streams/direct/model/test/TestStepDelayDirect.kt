@@ -2,11 +2,13 @@ package eu.k5.soapui.streams.direct.model.test
 
 import com.eviware.soapui.impl.wsdl.teststeps.WsdlDelayTestStep
 import eu.k5.soapui.streams.model.test.SuuTestStepDelay
+import junit.framework.TestCase
 import java.util.*
 
 class TestStepDelayDirect(
+    testCase: TestCaseDirect,
     private val delayStep: WsdlDelayTestStep
-) : AbstractTestStepDirect(delayStep), SuuTestStepDelay {
+) : AbstractTestStepDirect(testCase, delayStep), SuuTestStepDelay {
 
     override var delay: Int
         get() = Integer.parseInt(delayStep.delayString)

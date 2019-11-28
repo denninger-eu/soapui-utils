@@ -13,7 +13,7 @@ import java.nio.file.attribute.BasicFileAttributes
 import java.util.regex.Pattern
 
 class BoxImpl(
-    private val path: Path,
+    override val path: Path,
     private val mode: Mode = Mode.WRITE
 ) : Box {
 

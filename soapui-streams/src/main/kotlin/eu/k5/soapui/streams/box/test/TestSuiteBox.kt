@@ -14,6 +14,7 @@ class TestSuiteBox(
 
     private val yaml: TestSuiteYaml = box.load(TestSuiteYaml::class.java)
 
+
     override var name: String
         get() = yaml.name ?: ""
         set(value) {
