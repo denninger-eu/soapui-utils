@@ -59,7 +59,6 @@ class AssertionsDirect(
 
     override fun createInvalidStatus(name: String): SuuAssertionInvalidStatus {
         return AssertionInvalidStatusDirect(createAssertion("Invalid HTTP Status Codes", name))
-
     }
 
     override fun createValidStatus(name: String): SuuAssertionValidStatus {
@@ -94,33 +93,23 @@ class AssertionsDirect(
     companion object {
 
         fun mapAssertion(testAssertion: TestAssertion): SuuAssertion {
-            if (testAssertion is InvalidHttpStatusCodesAssertion) {
-                return AssertionInvalidStatusDirect(testAssertion)
-            } else if (testAssertion is ValidHttpStatusCodesAssertion) {
-                return AssertionValidStatusDirect(testAssertion)
-            } else if (testAssertion is GroovyScriptAssertion) {
-                return AssertionScriptDirect(testAssertion)
-            } else if (testAssertion is ResponseSLAAssertion) {
-                return AssertionDurationDirect(testAssertion)
-            } else if (testAssertion is SimpleContainsAssertion) {
-                return AssertionContainsDirect(testAssertion)
-            } else if (testAssertion is SimpleNotContainsAssertion) {
-                return AssertionNotContainsDirect(testAssertion)
-            } else if (testAssertion is JsonPathContentAssertion) {
-                return AssertionJsonPathMatchDirect(testAssertion)
-            } else if (testAssertion is JsonPathExistenceAssertion) {
-                return AssertionJsonPathExistsDirect(testAssertion)
-            } else if (testAssertion is JsonPathCountAssertion) {
-                return AssertionJsonPathCountDirect(testAssertion)
-            } else if (testAssertion is JsonPathRegExAssertion) {
-                return AssertionJsonPathRegExDirect(testAssertion)
-            } else if (testAssertion is XQueryContainsAssertion) {
-                return AssertionXQueryDirect(testAssertion)
-            } else if (testAssertion is XPathContainsAssertion) {
-                return AssertionXPathDirect(testAssertion)
+            return when (testAssertion) {
+                is InvalidHttpStatusCodesAssertion -> AssertionInvalidStatusDirect(testAssertion)
+                is ValidHttpStatusCodesAssertion -> AssertionValidStatusDirect(testAssertion)
+                is GroovyScriptAssertion -> AssertionScriptDirect(testAssertion)
+                is ResponseSLAAssertion -> AssertionDurationDirect(testAssertion)
+                is SimpleContainsAssertion -> AssertionContainsDirect(testAssertion)
+                is SimpleNotContainsAssertion -> AssertionNotContainsDirect(testAssertion)
+                is JsonPathContentAssertion -> AssertionJsonPathMatchDirect(testAssertion)
+                is JsonPathExistenceAssertion -> AssertionJsonPathExistsDirect(testAssertion)
+                is JsonPathCountAssertion -> AssertionJsonPathCountDirect(testAssertion)
+                is JsonPathRegExAssertion -> AssertionJsonPathRegExDirect(testAssertion)
+                is XQueryContainsAssertion -> AssertionXQueryDirect(testAssertion)
+                is XPathContainsAssertion -> AssertionXPathDirect(testAssertion)
+                else -> TODO("Unsupported assertion: " + testAssertion.javaClass.toString())
             }
-            TODO("Unsupported assertion: " + testAssertion.javaClass.toString())
         }
+
 
     }
 }
