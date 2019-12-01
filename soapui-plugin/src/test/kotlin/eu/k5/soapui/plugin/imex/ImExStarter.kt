@@ -1,5 +1,6 @@
 package eu.k5.soapui.plugin.imex
 
+import com.eviware.soapui.impl.wsdl.WsdlProject
 import eu.k5.soapui.plugin.SuuConfig
 import eu.k5.soapui.streams.direct.DirectLoader
 import eu.k5.soapui.streams.model.SuProject
@@ -16,7 +17,7 @@ fun main(args: Array<String>) {
 
 
     val model = ImexModel(project, config = getConfig())
-    model.restService = project.restServices[0]
+    model.restService = null
     model.folder = model.config.origin!!.parent.toString()
     val view = ImexView(model)
 
@@ -34,7 +35,7 @@ private fun getConfig(): SuuConfig {
     return SuuConfig.load(configs.resolve("config.xml"))
 }
 
-private fun loadProject(): SuProject {
+fun loadProject(): WsdlProject {
     val path = Paths.get(
         "..",
         "soapui-streams-direct",
@@ -44,5 +45,5 @@ private fun loadProject(): SuProject {
         "testcases",
         "RestServiceComplete-soapui-project.xml"
     )
-    return Files.newInputStream(path).use { DirectLoader().direct(it) }
+    return Files.newInputStream(path).use { WsdlProject(it, null) }
 }

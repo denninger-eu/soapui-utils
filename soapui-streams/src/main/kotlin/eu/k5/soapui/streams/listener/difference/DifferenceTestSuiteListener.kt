@@ -22,10 +22,10 @@ class DifferenceTestSuiteListener(
         val ref = referenceProject.getTestSuite(suite.name)
 
         if (ref == null) {
-            differences.addMissing(Differences.Type.TEST_SUITE, suite.name)
+            differences.addMissing(Differences.EntityType.TEST_SUITE, suite.name)
             return VisitResult.TERMINATE
         }
-        differences.push(Differences.Type.TEST_SUITE, suite.name)
+        differences.push(Differences.EntityType.TEST_SUITE, suite.name)
 
         differences.addChange("enabled", ref.enabled, suite.enabled)
 
@@ -41,10 +41,10 @@ class DifferenceTestSuiteListener(
     override fun enterTestCase(testCase: SuuTestCase): VisitResult {
         val ref = referenceTestSuite!!.getTestCase(testCase.name)
         if (ref == null) {
-            differences.addMissing(Differences.Type.TEST_CASE, testCase.name)
+            differences.addMissing(Differences.EntityType.TEST_CASE, testCase.name)
             return VisitResult.TERMINATE
         }
-        differences.push(Differences.Type.TEST_CASE, testCase.name)
+        differences.push(Differences.EntityType.TEST_CASE, testCase.name)
         differences.addChange("enabled", ref.enabled, testCase.enabled)
         DifferenceListener.handleProperties(differences, ref.properties, testCase.properties)
 

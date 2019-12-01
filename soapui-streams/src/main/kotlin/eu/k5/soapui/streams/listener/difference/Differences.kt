@@ -1,73 +1,61 @@
 package eu.k5.soapui.streams.listener.difference
 
 import java.util.*
+import javax.swing.text.html.parser.Entity
 import kotlin.collections.ArrayList
 
 class Differences {
     private val differences = ArrayList<Difference>()
     private val path = ArrayDeque<Location>()
 
-    private val root = DiffEntry("root", Type.ROOT, Difference.Type.NONE)
+    val root = DiffEntry("root", EntityType.ROOT, Difference.Type.NONE)
 
-    fun push(type: Type, name: String) {
-        this.path.push(
-            Location(
-                type,
-                name
-            )
-        )
+    private var current: Deque<DiffEntry> = ArrayDeque()
+
+    init {
+        current.push(root)
     }
 
+    fun push(type: EntityType, name: String) {
+        val entry = DiffEntry(name, type, Difference.Type.NONE)
 
-    fun addChange(path: String) {
-        differences.add(
-            DifferenceChange(
-                ArrayList(this.path).map { it.toString() }.asReversed(),
-                path
-            )
-        )
+        current.peek().childs.add(entry)
+        current.push(entry)
+
+        this.path.push(Location(type, name))
     }
 
-    fun addAdditional(name: String) {
-        differences.add(
-            DifferenceAdditional(
-                ArrayList(this.path).map { it.toString() }.asReversed(),
-                name
-            )
-        )
+    fun addDifference(difference: Difference) {
+        differences.add(difference)
     }
 
-    fun pushProject(name: String) = push(Type.PROJECT, name)
+    fun addMissing(name: String) = addDifference(DifferenceMissing(path(), name))
 
-    fun pushRestService(name: String) = this.path.push(
-        Location(
-            Type.REST_SERVICE,
-            name
-        )
-    )
+    fun addChange(path: String) = addDifference(DifferenceChange(path(), path))
 
-    fun pushResource(name: String) = this.path.push(
-        Location(
-            Type.RESOURCE,
-            name
-        )
-    )
+    fun addAdditional(name: String) = addDifference(DifferenceAdditional(path(), name))
 
-    fun pushMethod(name: String) = this.path.push(
-        Location(
-            Type.METHOD,
-            name
-        )
-    )
 
-    fun pushRequest(name: String) = push(Type.REQUEST, name)
+    fun pushProject(name: String) = push(EntityType.PROJECT, name)
+
+    fun pushRestService(name: String) = push(EntityType.REST_SERVICE, name)
+
+    fun pushResource(name: String) = push(EntityType.RESOURCE, name)
+
+    fun pushMethod(name: String) = push(EntityType.METHOD, name)
+
+    fun pushRequest(name: String) = push(EntityType.REQUEST, name)
 
 
     fun isEmpty(): Boolean = differences.isEmpty()
 
-    fun pop() = path.pop()
+    fun pop() {
+        path.pop()
+        current.pop()
+    }
 
     override fun toString(): String = differences.toString()
+
     fun <T> addChange(name: String, reference: T, actual: T) {
         if (reference is String? && actual is String?) {
             if (reference.isNullOrEmpty() && actual.isNullOrEmpty()) {
@@ -79,42 +67,25 @@ class Differences {
         }
     }
 
-    fun addChange(type: Type, name: String) {
+    fun addChange(type: EntityType, name: String) {
         val location = Location(type, name)
-        differences.add(
-            DifferenceChange(
-                ArrayList(this.path).map { it.toString() }.asReversed(),
-                location.toString()
-            )
-        )
+        addDifference(DifferenceChange(path(), location.toString()))
     }
 
-    fun addMissing(type: Type, name: String) {
+    fun addMissing(type: EntityType, name: String) {
         val location = Location(type, name)
-        differences.add(
-            DifferenceMissing(
-                ArrayList(this.path).map { it.toString() }.asReversed(),
-                location.toString()
-            )
-        )
+        addDifference(DifferenceMissing(path(), location.toString()))
     }
 
-    fun addMissing(name: String) {
-        differences.add(
-            DifferenceMissing(
-                ArrayList(this.path).map { it.toString() }.asReversed(),
-                name
-            )
-        )
-
-    }
 
     fun size(): Int {
         return differences.size
     }
 
+    private fun path() = ArrayList(this.path).map { it.toString() }.asReversed()
 
-    enum class Type {
+
+    enum class EntityType {
         PROJECT, REST_SERVICE, RESOURCE, METHOD, REQUEST, PROPERTY,
 
         TEST_SUITE,
@@ -129,7 +100,7 @@ class Differences {
     }
 
     class Location(
-        val type: Type,
+        val type: EntityType,
         val name: String
     ) {
         override fun toString(): String {
@@ -180,11 +151,13 @@ interface Difference {
 
 class DiffEntry(
     val name: String,
-    val entity: Differences.Type,
+    val entity: Differences.EntityType,
     val type: Difference.Type
 ) {
 
-    val childs: List<DiffEntry> = ArrayList()
+    val childs: MutableList<DiffEntry> = ArrayList()
+
+    val differences: MutableList<DiffEntry> = ArrayList()
 
 }
 

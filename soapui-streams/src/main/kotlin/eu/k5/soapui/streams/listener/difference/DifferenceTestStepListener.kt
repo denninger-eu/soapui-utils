@@ -19,10 +19,10 @@ class DifferenceTestStepListener(
 
         val ref = testCase.getStep(step.name)
         if (ref !is T) {
-            differences.addChange(Differences.Type.TEST_STEP, step.name)
+            differences.addChange(Differences.EntityType.TEST_STEP, step.name)
             return
         }
-        differences.push(Differences.Type.TEST_STEP, step.name)
+        differences.push(Differences.EntityType.TEST_STEP, step.name)
         differences.addChange("enabled", ref.enabled, step.enabled)
         differences.addChange("description", ref.description, step.description)
         compareWith(ref)
@@ -38,7 +38,7 @@ class DifferenceTestStepListener(
 
 
     private fun handleTestStep(ref: SuuTestStep, step: SuuTestStep, properties: Boolean = true) {
-        differences.push(Differences.Type.TEST_STEP, step.name)
+        differences.push(Differences.EntityType.TEST_STEP, step.name)
         differences.addChange("enabled", ref.enabled, step.enabled)
         differences.addChange("description", ref.description, step.description)
     }
@@ -85,7 +85,7 @@ class DifferenceTestStepListener(
     override fun enterRestRequest(step: SuuTestStepRestRequest): VisitResult {
         val ref = testCase.getStep(step.name)
         if (ref !is SuuTestStepRestRequest) {
-            differences.addChange(Differences.Type.TEST_STEP, step.name)
+            differences.addChange(Differences.EntityType.TEST_STEP, step.name)
             return VisitResult.TERMINATE
         }
         handleTestStep(ref, step, false)

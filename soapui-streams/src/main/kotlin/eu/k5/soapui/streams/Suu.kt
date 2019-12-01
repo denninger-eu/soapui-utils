@@ -1,5 +1,7 @@
 package eu.k5.soapui.streams
 
+import eu.k5.soapui.streams.listener.difference.DifferenceListener
+import eu.k5.soapui.streams.listener.difference.Differences
 import eu.k5.soapui.streams.listener.sync.SyncListener
 import eu.k5.soapui.streams.model.SuProject
 
@@ -25,6 +27,14 @@ class Suu {
             restService.apply(listener.createResourceListener())
             listener.exitProject(target)
 
+
+        }
+
+        fun diff(source: SuProject, target: SuProject): Differences {
+
+            val listener = DifferenceListener(source)
+            target.apply(listener)
+            return listener.differences
 
         }
 
