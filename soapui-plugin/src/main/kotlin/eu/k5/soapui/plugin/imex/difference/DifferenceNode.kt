@@ -11,8 +11,12 @@ class DifferenceNode {
 
     var description: String? = null
 
+    var reference: String? = null
+
+    var actual: String? = null
+
     val children: MutableList<DifferenceNode> = ArrayList()
-    
+
     override fun toString(): String {
         return name ?: ""
     }

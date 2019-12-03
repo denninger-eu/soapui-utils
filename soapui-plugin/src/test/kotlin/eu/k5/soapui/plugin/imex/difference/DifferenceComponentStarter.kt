@@ -11,10 +11,12 @@ import javax.swing.SwingUtilities
 
 fun main(args: Array<String>) {
 
-    val wsdlProject = loadProject()
+    val wsdlProject = loadProject("TestSuiteProject-soapui-project.xml")
+
+    val wsdlProject2 = loadProject("TestSuiteProjectChanged-soapui-project.xml")
 
     val suProject = ProjectDirect(wsdlProject)
-    val diff = Suu.diff(suProject, suProject)
+    val diff = Suu.diff(suProject, ProjectDirect(wsdlProject2))
 
     val gui = Runnable {
         try {

@@ -35,7 +35,7 @@ private fun getConfig(): SuuConfig {
     return SuuConfig.load(configs.resolve("config.xml"))
 }
 
-fun loadProject(): WsdlProject {
+fun loadProject(name: String): WsdlProject {
     val path = Paths.get(
         "..",
         "soapui-streams-direct",
@@ -43,7 +43,9 @@ fun loadProject(): WsdlProject {
         "test",
         "resources",
         "testcases",
-        "RestServiceComplete-soapui-project.xml"
+        name
     )
     return Files.newInputStream(path).use { WsdlProject(it, null) }
 }
+
+fun loadProject(): WsdlProject = loadProject("RestServiceComplete-soapui-project.xml")

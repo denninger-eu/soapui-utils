@@ -30,17 +30,9 @@ class DifferenceTestStepListener(
     }
 
     override fun properties(step: SuuTestStepProperties) {
-        handle(step) {
-
-            DifferenceListener.handleProperties(differences, it.properties, step.properties)
+        handle(step) { ref ->
+            DifferenceListener.handleProperties(differences, ref.properties, step.properties)
         }
-    }
-
-
-    private fun handleTestStep(ref: SuuTestStep, step: SuuTestStep, properties: Boolean = true) {
-        differences.push(Differences.EntityType.TEST_STEP, step.name)
-        differences.addChange("enabled", ref.enabled, step.enabled)
-        differences.addChange("description", ref.description, step.description)
     }
 
 
@@ -88,8 +80,10 @@ class DifferenceTestStepListener(
             differences.addChange(Differences.EntityType.TEST_STEP, step.name)
             return VisitResult.TERMINATE
         }
-        handleTestStep(ref, step, false)
 
+        differences.push(Differences.EntityType.TEST_STEP, step.name)
+        differences.addChange("enabled", ref.enabled, step.enabled)
+        differences.addChange("description", ref.description, step.description)
         DifferenceRestRequest(differences).handle(ref.request, step.request)
 
         restRequest = ref
@@ -97,6 +91,7 @@ class DifferenceTestStepListener(
     }
 
     override fun exitRestRequest(step: SuuTestStepRestRequest) {
+        differences.pop()
     }
 
     override fun script(step: SuuTestStepScript) {

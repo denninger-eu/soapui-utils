@@ -1,7 +1,6 @@
 package eu.k5.soapui.streams.listener.difference
 
 import java.util.*
-import javax.swing.text.html.parser.Entity
 import kotlin.collections.ArrayList
 
 class Differences {
@@ -27,11 +26,20 @@ class Differences {
 
     fun addDifference(difference: Difference) {
         differences.add(difference)
+        current.peek().differences.add(
+            DiffEntry(
+                difference.element,
+                EntityType.ASSERTION,
+                difference.type,
+                difference.reference,
+                difference.actual
+            )
+        )
     }
 
     fun addMissing(name: String) = addDifference(DifferenceMissing(path(), name))
 
-    fun addChange(path: String) = addDifference(DifferenceChange(path(), path))
+    fun addCxange(path: String) = addDifference(DifferenceChange(path(), path))
 
     fun addAdditional(name: String) = addDifference(DifferenceAdditional(path(), name))
 
@@ -63,7 +71,10 @@ class Differences {
             }
         }
         if (reference != actual) {
-            addChange(name)
+            val difference = DifferenceChange(path(), name)
+            difference.reference = reference?.toString()
+            difference.actual = actual?.toString()
+            addDifference(difference)
         }
     }
 
@@ -113,8 +124,13 @@ class Differences {
 
 class DifferenceChange(
     val basePath: List<String>,
-    val element: String
+    override val element: String
 ) : Difference {
+
+    override val type = Difference.Type.CHANGE
+
+    override var reference: String? = null
+    override var actual: String? = null
 
     override fun toString(): String {
         return "Change $basePath.$element"
@@ -123,8 +139,14 @@ class DifferenceChange(
 
 class DifferenceAdditional(
     private val basePath: List<String>,
-    private val element: String
+    override val element: String
 ) : Difference {
+
+    override val type = Difference.Type.INSERT
+
+
+    override var reference: String? = null
+    override var actual: String? = null
 
     override fun toString(): String {
         return "Additional $basePath.$element"
@@ -133,8 +155,14 @@ class DifferenceAdditional(
 
 class DifferenceMissing(
     val basePath: List<String>,
-    val element: String
+    override val element: String
 ) : Difference {
+
+    override val type = Difference.Type.DELETE
+
+    override var reference: String? = null
+    override var actual: String? = null
+
 
     override fun toString(): String {
         return "Missing $basePath.$element"
@@ -142,6 +170,13 @@ class DifferenceMissing(
 }
 
 interface Difference {
+
+    val element: String
+
+    val type: Type
+
+    var reference: String?
+    var actual: String?
 
     enum class Type {
         NONE, CHANGE, INSERT, DELETE
@@ -152,7 +187,9 @@ interface Difference {
 class DiffEntry(
     val name: String,
     val entity: Differences.EntityType,
-    val type: Difference.Type
+    val type: Difference.Type,
+    val reference: String? = null,
+    val actual: String? = null
 ) {
 
     val childs: MutableList<DiffEntry> = ArrayList()

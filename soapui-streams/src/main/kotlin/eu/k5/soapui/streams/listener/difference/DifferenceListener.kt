@@ -15,12 +15,8 @@ class DifferenceListener(
 
     override fun enterProject(env: Environment, project: SuProject) {
         differences.pushProject("project")
-        if (project.name != referenceProject.name) {
-            differences.addChange("name")
-        }
-        if (project.description != referenceProject.description) {
-            differences.addChange("description")
-        }
+        differences.addChange("name", referenceProject.name, project.name)
+        differences.addChange("description", referenceProject.description, project.description)
         handleProperties(differences, referenceProject.properties, project.properties)
     }
 

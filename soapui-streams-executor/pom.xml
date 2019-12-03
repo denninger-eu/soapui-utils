@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>soapui-streams</artifactId>
+    <artifactId>soapui-streams-executor</artifactId>
 
     <packaging>jar</packaging>
 
@@ -37,6 +37,7 @@
 
                 </executions>
             </plugin>
+
         </plugins>
     </build>
     <!--
@@ -49,6 +50,10 @@
         </repositories>-->
     <dependencies>
 
+        <dependency>
+            <artifactId>soapui-streams</artifactId>
+            <groupId>eu.k5.soapui</groupId>
+        </dependency>
 
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -96,6 +101,11 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.yaml</groupId>
             <artifactId>snakeyaml</artifactId>

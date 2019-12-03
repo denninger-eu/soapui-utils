@@ -23,8 +23,8 @@ class DifferenceDataModel(
         }
         return when (column) {
             0 -> node.name
-            1 -> node.description
-            2 -> node.description
+            1 -> node.reference
+            2 -> node.actual
             else -> null
         }
     }
