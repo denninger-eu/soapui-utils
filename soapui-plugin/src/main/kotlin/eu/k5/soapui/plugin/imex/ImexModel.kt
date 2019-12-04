@@ -15,7 +15,7 @@ class ImexModel(
 
     var restService: SuuRestService? = null
 
-    var differences: List<String> = ArrayList()
+
 
     enum class Mode {
         IMPORT, EXPORT

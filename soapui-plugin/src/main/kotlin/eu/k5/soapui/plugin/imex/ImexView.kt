@@ -44,15 +44,12 @@ class ImexView(
         mainFrame.add(inputPanel);
         mainLayout.addLayoutComponent(inputPanel, BorderLayout.CENTER);
 
-
         folder = addLabelWithInput(inputPanel, inputLayout, "Folder")
         folder.document.addDocumentListener(DocumentChangeListener() { model.folder = folder.text })
         addButtons(buttonPanel, controller)
 
         mainFrame.pack()
         mainFrame.setSize(500, 300)
-
-
     }
 
     fun display() {
@@ -73,7 +70,6 @@ class ImexView(
         override fun removeUpdate(e: DocumentEvent?) {
             action()
         }
-
     }
 
 

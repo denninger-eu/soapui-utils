@@ -5,6 +5,7 @@ import eu.k5.soapui.streams.listener.difference.Differences
 
 class DifferenceTree {
 
+
     companion object {
         fun init(differences: Differences): DifferenceNode {
             println(differences.toString())
@@ -22,7 +23,9 @@ class DifferenceTree {
                 node.children.add(differenceNode)
             }
             for (childEntry in entry.childs) {
-                node.children.add(entry(childEntry))
+                if (childEntry.hasDifferences()) {
+                    node.children.add(entry(childEntry))
+                }
             }
             return node
         }

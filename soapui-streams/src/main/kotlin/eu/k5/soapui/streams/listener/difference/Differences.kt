@@ -196,6 +196,12 @@ class DiffEntry(
 
     val differences: MutableList<DiffEntry> = ArrayList()
 
+    fun hasDifferences(): Boolean {
+        if (differences.isNotEmpty()) {
+            return true
+        }
+        return childs.any { it.hasDifferences() }
+    }
 }
 
 
