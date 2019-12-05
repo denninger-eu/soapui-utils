@@ -18,31 +18,35 @@ class ImexView(
     private val controller = ImexController(this, model)
     private val mainFrame: JFrame
 
-    private val mainLayout: BorderLayout
+    private val mainLayout: GridBagLayout
 
-    private val buttonPanel = Panel()
-    private var inputPanel: Panel
+    private val buttonPanel = JPanel()
+    private var inputPanel: JPanel
 
     private val folder: JTextField
 
-    private val diff: JTree
+    private val diff: DiffView
+
     private val root: DefaultMutableTreeNode = DefaultMutableTreeNode("Root")
 
     init {
         mainFrame = JFrame("Synchronize Dialolg")
-        mainLayout = BorderLayout(2, 2)
+        mainLayout = GridBagLayout() // BorderLayout(2, 2)
         mainFrame.layout = mainLayout
 
-        diff = initTree(root)
+        
+        diff = DiffView(model)
 
         mainFrame.add(diff)
+        mainLayout.addLayoutComponent(diff, BorderLayout.CENTER);
+
 
         val inputLayout = GridBagLayout()
-        inputPanel = Panel(inputLayout)
+        inputPanel = JPanel()
         mainFrame.add(buttonPanel)
         mainLayout.addLayoutComponent(buttonPanel, BorderLayout.SOUTH);
-        mainFrame.add(inputPanel);
-        mainLayout.addLayoutComponent(inputPanel, BorderLayout.CENTER);
+     //   mainFrame.add(inputPanel);
+     //   mainLayout.addLayoutComponent(inputPanel, BorderLayout.CENTER);
 
         folder = addLabelWithInput(inputPanel, inputLayout, "Folder")
         folder.document.addDocumentListener(DocumentChangeListener() { model.folder = folder.text })
@@ -75,7 +79,7 @@ class ImexView(
 
     companion object {
 
-        private fun addButtons(buttonPanel: Panel, controller: ImexController) {
+        private fun addButtons(buttonPanel: JPanel, controller: ImexController) {
             BoxLayout(buttonPanel, BoxLayout.X_AXIS)
             val label = JLabel("")
             buttonPanel.add(label)
@@ -94,7 +98,7 @@ class ImexView(
         }
 
         private fun addLabelWithInput(
-            inputPanel: Panel,
+            inputPanel: JPanel,
             inputLayout: GridBagLayout,
             labelText: String
         ): JTextField {
@@ -118,13 +122,6 @@ class ImexView(
             return textField
         }
 
-        private fun initTree(root: DefaultMutableTreeNode): JTree {
-            val vegetableNode = DefaultMutableTreeNode("Vegetables")
-            val fruitNode = DefaultMutableTreeNode("Fruits")
 
-            root.add(vegetableNode)
-            root.add(fruitNode)
-            return JTree(root)
-        }
     }
 }

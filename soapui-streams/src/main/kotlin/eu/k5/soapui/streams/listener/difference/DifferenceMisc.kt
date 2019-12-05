@@ -1,7 +1,7 @@
 package eu.k5.soapui.streams.listener.difference
 
+import eu.k5.soapui.streams.model.Header
 import eu.k5.soapui.streams.model.rest.SuuRestParameters
-import eu.k5.soapui.streams.model.rest.SuuRestRequest
 
 class DifferenceMisc(
     private val differences: Differences
@@ -21,7 +21,7 @@ class DifferenceMisc(
     }
 
     fun handleHeaders(
-        reference: List<SuuRestRequest.Header>, actual: List<SuuRestRequest.Header>
+        reference: List<Header>, actual: List<Header>
     ) {
 
         val found = ArrayList<String>()

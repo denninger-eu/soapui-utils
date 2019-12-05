@@ -1,13 +1,10 @@
 package eu.k5.soapui.streams.direct
 
-import eu.k5.soapui.streams.flatten
 import eu.k5.soapui.streams.model.assertion.*
-import eu.k5.soapui.streams.model.rest.SuuRestRequest
+import eu.k5.soapui.streams.model.Header
 import eu.k5.soapui.streams.model.test.*
-import eu.k5.soapui.streams.syncWith
 import org.junit.Ignore
 import org.junit.jupiter.api.Test
-import kotlin.test.assertTrue
 
 class SyncAssertionTest : AbstractSyncTest() {
 
@@ -127,7 +124,7 @@ class SyncAssertionTest : AbstractSyncTest() {
     @Test
     fun assertionTestStepRestRequest_addHeader() {
         sync<SuuTestStepRestRequest>() {
-            it.request.addOrUpdateHeader(SuuRestRequest.Header("newHeader", "newValue"))
+            it.request.addOrUpdateHeader(Header("newHeader", "newValue"))
             1
         }
     }

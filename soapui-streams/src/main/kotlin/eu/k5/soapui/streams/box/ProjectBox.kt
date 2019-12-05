@@ -6,12 +6,16 @@ import eu.k5.soapui.streams.model.SuProject
 import eu.k5.soapui.streams.model.SuuProperties
 import eu.k5.soapui.streams.model.rest.SuuRestService
 import eu.k5.soapui.streams.model.test.SuuTestSuite
+import eu.k5.soapui.streams.model.wsdl.SuuWsdlService
 import java.nio.file.Files
 import java.nio.file.Path
 
 class ProjectBox(
-     val box: Box
+    val box: Box
 ) : SuProject {
+
+    override val wsdlServices: List<SuuWsdlService> by lazy { TODO("implement") }
+
 
     private val project: ProjectYaml by lazy { box.load(ProjectYaml::class.java) }
 

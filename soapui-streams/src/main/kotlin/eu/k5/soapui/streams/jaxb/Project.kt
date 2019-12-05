@@ -4,6 +4,7 @@ import eu.k5.soapui.streams.model.SuProject
 import eu.k5.soapui.streams.jaxb.rest.RestService
 import eu.k5.soapui.streams.model.SuuProperties
 import eu.k5.soapui.streams.model.test.SuuTestSuite
+import eu.k5.soapui.streams.model.wsdl.SuuWsdlService
 import java.io.StringWriter
 import javax.xml.bind.JAXBContext
 import javax.xml.bind.annotation.XmlAccessType
@@ -16,6 +17,8 @@ import javax.xml.bind.annotation.XmlRootElement
 data class Project(
     override var name: String = ""
 ) : SuProject {
+    override val wsdlServices: List<SuuWsdlService>
+        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
     override val properties: SuuProperties by lazy {
         TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
     }

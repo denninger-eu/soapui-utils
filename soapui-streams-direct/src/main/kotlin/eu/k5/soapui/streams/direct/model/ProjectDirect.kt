@@ -1,14 +1,17 @@
 package eu.k5.soapui.streams.direct.model
 
 import com.eviware.soapui.impl.rest.RestService
+import com.eviware.soapui.impl.wsdl.WsdlInterface
 import com.eviware.soapui.impl.wsdl.WsdlProject
 import com.eviware.soapui.impl.wsdl.WsdlTestSuite
 import eu.k5.soapui.streams.direct.model.rest.RestServiceDirect
 import eu.k5.soapui.streams.direct.model.test.TestSuiteDirect
+import eu.k5.soapui.streams.direct.model.wsdl.WsdlServiceDirect
 import eu.k5.soapui.streams.model.SuProject
 import eu.k5.soapui.streams.model.SuuProperties
 import eu.k5.soapui.streams.model.rest.SuuRestService
 import eu.k5.soapui.streams.model.test.SuuTestSuite
+import eu.k5.soapui.streams.model.wsdl.SuuWsdlService
 import java.nio.file.Path
 
 class ProjectDirect(
@@ -36,6 +39,11 @@ class ProjectDirect(
             RestServiceDirect(
                 it
             )
+        }
+
+    override val wsdlServices: List<SuuWsdlService>
+        get() = wsdlProject.interfaceList.filterIsInstance<WsdlInterface>().map {
+            WsdlServiceDirect(it)
         }
 
     override fun createRestService(name: String): SuuRestService {

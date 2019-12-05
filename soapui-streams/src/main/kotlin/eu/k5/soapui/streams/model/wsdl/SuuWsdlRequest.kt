@@ -1,16 +1,11 @@
-package eu.k5.soapui.streams.model.rest
+package eu.k5.soapui.streams.model.wsdl
 
 import eu.k5.soapui.streams.model.Header
 
-interface SuuRestRequest {
-
+interface SuuWsdlRequest {
     var name: String
-
     var description: String?
-
-    val parameters: SuuRestParameters
-
-    var content: String?
+    val content: String
 
     val headers: List<Header>
 
@@ -19,5 +14,4 @@ interface SuuRestRequest {
     fun removeHeader(key: String)
 
     fun addOrUpdateHeader(header: Header)
-
 }

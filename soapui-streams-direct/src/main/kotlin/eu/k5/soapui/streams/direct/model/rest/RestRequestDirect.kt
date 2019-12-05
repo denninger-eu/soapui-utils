@@ -1,8 +1,7 @@
 package eu.k5.soapui.streams.direct.model.rest
 
 import com.eviware.soapui.impl.rest.RestRequest
-import com.eviware.soapui.support.types.StringToStringMap
-import com.eviware.soapui.support.types.StringToStringsMap
+import eu.k5.soapui.streams.model.Header
 import eu.k5.soapui.streams.model.rest.SuuRestParameters
 import eu.k5.soapui.streams.model.rest.SuuRestRequest
 
@@ -35,7 +34,7 @@ class RestRequestDirect(
             RestParametersDirect.Owner.REQUEST
         )
 
-    override val headers: List<SuuRestRequest.Header>
+    override val headers: List<Header>
         get() = request.requestHeaders.map { mapHeader(it) }
 
 
@@ -43,7 +42,7 @@ class RestRequestDirect(
         request.requestHeaders.remove(key)
     }
 
-    override fun addOrUpdateHeader(header: SuuRestRequest.Header) {
+    override fun addOrUpdateHeader(header: Header) {
         val requestHeaders = request.requestHeaders
         var existing = requestHeaders[header.key]
         if (existing != null) {
@@ -57,8 +56,8 @@ class RestRequestDirect(
     }
 
     companion object {
-        fun mapHeader(entry: Map.Entry<String, MutableList<String>>): SuuRestRequest.Header {
-            return SuuRestRequest.Header(entry.key, ArrayList(entry.value))
+        fun mapHeader(entry: Map.Entry<String, MutableList<String>>): Header {
+            return Header(entry.key, ArrayList(entry.value))
         }
     }
 

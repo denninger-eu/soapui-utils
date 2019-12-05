@@ -1,6 +1,6 @@
 package eu.k5.soapui.streams.direct
 
-import eu.k5.soapui.streams.model.rest.SuuRestRequest
+import eu.k5.soapui.streams.model.Header
 import eu.k5.soapui.streams.model.test.*
 import org.junit.jupiter.api.Test
 
@@ -82,7 +82,7 @@ class SyncTestStepTest : AbstractSyncTest() {
             it.request.content = "changedContent"
 
             val firstHeader = it.request.headers[0]
-            it.request.addOrUpdateHeader(SuuRestRequest.Header(firstHeader.key, "changedValue"))
+            it.request.addOrUpdateHeader(Header(firstHeader.key, "changedValue"))
             3
         }
     }

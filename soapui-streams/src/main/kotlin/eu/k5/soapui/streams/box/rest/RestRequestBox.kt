@@ -2,6 +2,7 @@ package eu.k5.soapui.streams.box.rest
 
 import eu.k5.soapui.streams.box.Box
 import eu.k5.soapui.streams.box.BoxImpl.Companion.changed
+import eu.k5.soapui.streams.model.Header
 import eu.k5.soapui.streams.model.rest.SuuRestParameters
 import eu.k5.soapui.streams.model.rest.SuuRestRequest
 
@@ -40,7 +41,7 @@ class RestRequestBox(
         ) { store() }
     }
 
-    override val headers: List<SuuRestRequest.Header>
+    override val headers: List<Header>
         get() = yaml.headers?.map { mapHeader(it) } ?: ArrayList()
 
     override fun removeHeader(key: String) {
@@ -50,7 +51,7 @@ class RestRequestBox(
         }
     }
 
-    override fun addOrUpdateHeader(header: SuuRestRequest.Header) {
+    override fun addOrUpdateHeader(header: Header) {
         handleHeaders(yaml, header) { store() }
     }
 
@@ -79,11 +80,11 @@ class RestRequestBox(
     }
 
     companion object {
-        fun mapHeader(header: HeaderYaml): SuuRestRequest.Header {
-            return SuuRestRequest.Header(header.key ?: "", header.values ?: ArrayList())
+        fun mapHeader(header: HeaderYaml): Header {
+            return Header(header.key ?: "", header.values ?: ArrayList())
         }
 
-        fun mapHeader(header: SuuRestRequest.Header): HeaderYaml {
+        fun mapHeader(header: Header): HeaderYaml {
             val yaml = HeaderYaml()
             yaml.key = header.key
             yaml.values = ArrayList(header.value)
@@ -99,7 +100,7 @@ class RestRequestBox(
             return RestRequestBox(box, parent)
         }
 
-        fun handleHeaders(yaml: RestRequestYaml, header: SuuRestRequest.Header, store: () -> Unit) {
+        fun handleHeaders(yaml: RestRequestYaml, header: Header, store: () -> Unit) {
             if (yaml.headers == null) {
                 yaml.headers = ArrayList()
                 yaml.headers?.add(mapHeader(header))

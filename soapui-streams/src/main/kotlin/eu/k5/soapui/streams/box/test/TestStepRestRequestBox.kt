@@ -3,6 +3,7 @@ package eu.k5.soapui.streams.box.test
 import eu.k5.soapui.streams.box.Box
 import eu.k5.soapui.streams.box.BoxImpl.Companion.changed
 import eu.k5.soapui.streams.box.rest.*
+import eu.k5.soapui.streams.model.Header
 import eu.k5.soapui.streams.model.rest.*
 import eu.k5.soapui.streams.model.test.SuuTestStepRestRequest
 import java.lang.UnsupportedOperationException
@@ -342,7 +343,7 @@ class TestStepRestRequestBox(
         override val parameters: SuuRestParameters
             get() = RestParametersBox(yaml.parameters!!, true, method.parameters) { store() }
 
-        override val headers: List<SuuRestRequest.Header>
+        override val headers: List<Header>
             get() = yaml.headers?.map { RestRequestBox.mapHeader(it) } ?: ArrayList()
 
         override fun removeHeader(key: String) {
@@ -361,7 +362,7 @@ class TestStepRestRequestBox(
             }
 
 
-        override fun addOrUpdateHeader(header: SuuRestRequest.Header) {
+        override fun addOrUpdateHeader(header: Header) {
             RestRequestBox.handleHeaders(yaml, header) { store() }
         }
 

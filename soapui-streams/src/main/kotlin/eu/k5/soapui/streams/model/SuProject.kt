@@ -2,6 +2,7 @@ package eu.k5.soapui.streams.model
 
 import eu.k5.soapui.streams.model.rest.SuuRestService
 import eu.k5.soapui.streams.model.test.SuuTestSuite
+import eu.k5.soapui.streams.model.wsdl.SuuWsdlService
 
 interface SuProject {
     var name: String
@@ -22,4 +23,5 @@ interface SuProject {
 
     fun createTestSuite(name: String): SuuTestSuite
 
+    val wsdlServices: List<SuuWsdlService>
 }

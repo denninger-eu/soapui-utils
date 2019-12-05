@@ -1,5 +1,6 @@
 package eu.k5.soapui.streams.jaxb.rest
 
+import eu.k5.soapui.streams.model.Header
 import eu.k5.soapui.streams.model.rest.SuuRestParameters
 import eu.k5.soapui.streams.model.rest.SuuRestRequest
 import javax.xml.bind.annotation.XmlAccessType
@@ -14,14 +15,14 @@ class RestRequest(
     @XmlElement
     override var description: String? = null
 ) : SuuRestRequest {
-    override val headers: List<SuuRestRequest.Header>
+    override val headers: List<Header>
         get() = ArrayList()
 
     override fun removeHeader(key: String) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun addOrUpdateHeader(header: SuuRestRequest.Header) {
+    override fun addOrUpdateHeader(header: Header) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
