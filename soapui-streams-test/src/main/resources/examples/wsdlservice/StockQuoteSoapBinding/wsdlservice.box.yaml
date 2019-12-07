@@ -1,0 +1,3 @@
+!wsdlService
+description: ServiceDescription
+name: StockQuoteSoapBinding

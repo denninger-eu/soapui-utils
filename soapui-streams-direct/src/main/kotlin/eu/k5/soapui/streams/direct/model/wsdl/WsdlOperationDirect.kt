@@ -13,7 +13,8 @@ class WsdlOperationDirect(
     }
 
     override fun createRequest(name: String): SuuWsdlRequest {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val newRequest = operation.addNewRequest(name)
+        return WsdlRequestDirect(newRequest)
     }
 
     override val name: String

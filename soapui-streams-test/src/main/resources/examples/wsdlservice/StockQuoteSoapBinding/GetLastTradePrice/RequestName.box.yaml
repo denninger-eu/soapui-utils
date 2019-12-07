@@ -1,0 +1,5 @@
+!wsdlRequest
+description: RequestDescription
+name: RequestName
+### content
+RequestContent

@@ -1,0 +1,3 @@
+!wsdlOperation
+description: OperationDescription
+name: GetLastTradePrice

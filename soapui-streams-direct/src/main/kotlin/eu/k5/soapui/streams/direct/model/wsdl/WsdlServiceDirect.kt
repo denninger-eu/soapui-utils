@@ -2,8 +2,11 @@ package eu.k5.soapui.streams.direct.model.wsdl
 
 import com.eviware.soapui.impl.wsdl.WsdlInterface
 import com.eviware.soapui.impl.wsdl.WsdlOperation
+import com.ibm.wsdl.BindingOperationImpl
+import com.ibm.wsdl.OperationImpl
 import eu.k5.soapui.streams.model.wsdl.SuuWsdlOperation
 import eu.k5.soapui.streams.model.wsdl.SuuWsdlService
+import javax.wsdl.Operation
 
 class WsdlServiceDirect(
     private val wsdlInterface: WsdlInterface
@@ -13,8 +16,13 @@ class WsdlServiceDirect(
     }
 
     override fun createOperation(name: String): SuuWsdlOperation {
-
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val bindingOperation = BindingOperationImpl()
+        bindingOperation.name = name
+        val operation : Operation =  OperationImpl()
+        operation.name = name
+        bindingOperation.operation = operation
+        val newOperation = wsdlInterface.addNewOperation(bindingOperation)
+        return WsdlOperationDirect(newOperation)
     }
 
     override var name: String
