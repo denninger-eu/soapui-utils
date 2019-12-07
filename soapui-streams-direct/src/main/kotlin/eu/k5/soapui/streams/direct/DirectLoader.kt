@@ -2,10 +2,8 @@ package eu.k5.soapui.streams.direct
 
 import com.eviware.soapui.impl.wsdl.WsdlProject
 import eu.k5.soapui.streams.Loader
-import eu.k5.soapui.streams.apply
 import eu.k5.soapui.streams.direct.model.ProjectDirect
 import eu.k5.soapui.streams.listener.sync.SyncListener
-import eu.k5.soapui.streams.jaxb.Project
 import eu.k5.soapui.streams.model.SuProject
 import eu.k5.soapui.streams.model.SuListener
 import java.io.InputStream
@@ -25,11 +23,11 @@ class DirectLoader : Loader {
     override fun bind(inputStream: InputStream): SuProject {
         val wsdlProject = WsdlProject(inputStream, null)
 
-
-        val project = Project()
+        TODO("maybe deprecated")
+/*        val project = Project()
         val sync = SyncListener(ProjectDirect(wsdlProject))
         project.apply(sync)
-        return project
+        return project*/
 
 /*
         val parser = DirectParser(project, Environment())

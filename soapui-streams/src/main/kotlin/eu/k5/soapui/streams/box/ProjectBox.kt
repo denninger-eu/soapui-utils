@@ -2,6 +2,7 @@ package eu.k5.soapui.streams.box
 
 import eu.k5.soapui.streams.box.rest.RestServiceBox
 import eu.k5.soapui.streams.box.test.TestSuiteBox
+import eu.k5.soapui.streams.box.wsdl.WsdlServiceBox
 import eu.k5.soapui.streams.model.SuProject
 import eu.k5.soapui.streams.model.SuuProperties
 import eu.k5.soapui.streams.model.rest.SuuRestService
@@ -13,8 +14,6 @@ import java.nio.file.Path
 class ProjectBox(
     val box: Box
 ) : SuProject {
-
-    override val wsdlServices: List<SuuWsdlService> by lazy { TODO("implement") }
 
 
     private val project: ProjectYaml by lazy { box.load(ProjectYaml::class.java) }
@@ -42,6 +41,11 @@ class ProjectBox(
             .toMutableList()
     }
 
+    override val wsdlServices: MutableList<WsdlServiceBox> by lazy {
+        box.findSubFolderBox { it.fileName.toString() == WsdlServiceBox.FILE_NAME }.map { WsdlServiceBox(it) }
+            .toMutableList()
+    }
+
     override fun createRestService(name: String): SuuRestService {
         val newRestService = RestServiceBox.create(box, name)
         restServices.add(newRestService)
@@ -58,6 +62,14 @@ class ProjectBox(
         val newTestSuite = TestSuiteBox.create(box, name)
         init.add(newTestSuite)
         return newTestSuite
+    }
+
+    override fun createWsdlService(name: String): SuuWsdlService {
+        val init = wsdlServices
+
+        val newWsdlService = WsdlServiceBox.create(box, name)
+        init.add(newWsdlService)
+        return newWsdlService
     }
 
     private fun store() {

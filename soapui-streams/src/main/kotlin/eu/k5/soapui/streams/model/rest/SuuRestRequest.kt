@@ -1,8 +1,8 @@
 package eu.k5.soapui.streams.model.rest
 
-import eu.k5.soapui.streams.model.Header
+import eu.k5.soapui.streams.model.WithHeader
 
-interface SuuRestRequest {
+interface SuuRestRequest : WithHeader {
 
     var name: String
 
@@ -12,12 +12,5 @@ interface SuuRestRequest {
 
     var content: String?
 
-    val headers: List<Header>
-
-    fun getHeader(key: String) = headers.firstOrNull { it.key == key }
-
-    fun removeHeader(key: String)
-
-    fun addOrUpdateHeader(header: Header)
 
 }

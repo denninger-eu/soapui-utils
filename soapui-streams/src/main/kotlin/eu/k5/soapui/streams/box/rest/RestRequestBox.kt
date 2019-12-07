@@ -2,6 +2,7 @@ package eu.k5.soapui.streams.box.rest
 
 import eu.k5.soapui.streams.box.Box
 import eu.k5.soapui.streams.box.BoxImpl.Companion.changed
+import eu.k5.soapui.streams.box.HeaderBox
 import eu.k5.soapui.streams.model.Header
 import eu.k5.soapui.streams.model.rest.SuuRestParameters
 import eu.k5.soapui.streams.model.rest.SuuRestRequest
@@ -42,7 +43,7 @@ class RestRequestBox(
     }
 
     override val headers: List<Header>
-        get() = yaml.headers?.map { mapHeader(it) } ?: ArrayList()
+        get() = yaml.headers?.map { HeaderBox.mapHeader(it) } ?: ArrayList()
 
     override fun removeHeader(key: String) {
         val changed = yaml.headers?.removeIf { it.key == key } ?: false
@@ -52,24 +53,20 @@ class RestRequestBox(
     }
 
     override fun addOrUpdateHeader(header: Header) {
-        handleHeaders(yaml, header) { store() }
+        HeaderBox.handleHeaders(yaml, header) { store() }
     }
 
     override var content
         get() = box.loadSection("content")
         set(value) = storeContent(value)
 
-    class RestRequestYaml {
+    class RestRequestYaml : HeaderBox.WithHeaderYaml {
         var name: String? = null
         var description: String? = null
         var parameters: MutableList<RestParametersBox.RestParameterYaml>? = ArrayList()
-        var headers: MutableList<HeaderYaml>? = ArrayList()
+        override var headers: MutableList<HeaderBox.HeaderYaml>? = ArrayList()
     }
 
-    class HeaderYaml {
-        var key: String? = null
-        var values: MutableList<String>? = ArrayList()
-    }
 
     private fun store() {
         box.write(RestRequestYaml::class.java, yaml)
@@ -80,16 +77,6 @@ class RestRequestBox(
     }
 
     companion object {
-        fun mapHeader(header: HeaderYaml): Header {
-            return Header(header.key ?: "", header.values ?: ArrayList())
-        }
-
-        fun mapHeader(header: Header): HeaderYaml {
-            val yaml = HeaderYaml()
-            yaml.key = header.key
-            yaml.values = ArrayList(header.value)
-            return yaml
-        }
 
         fun create(parent: RestMethodBox, name: String): RestRequestBox {
             val box = parent.box.createFile(name, ".box.yaml")
@@ -100,31 +87,6 @@ class RestRequestBox(
             return RestRequestBox(box, parent)
         }
 
-        fun handleHeaders(yaml: RestRequestYaml, header: Header, store: () -> Unit) {
-            if (yaml.headers == null) {
-                yaml.headers = ArrayList()
-                yaml.headers?.add(mapHeader(header))
-                store()
-            } else {
-                val existing = yaml.headers?.firstOrNull { it.key == header.key }
-                if (existing != null) {
-                    if (existing.values?.equals(header.value) ?: false) {
-                        // No change
-                        return
-                    } else {
-                        if (existing.values == null) {
-                            existing.values = ArrayList()
-                        }
-                        existing.values?.clear()
-                        existing.values?.addAll(header.value)
-                        store()
-                    }
-                } else {
-                    yaml.headers?.add(mapHeader(header))
-                    store()
-                }
-            }
-        }
 
     }
 }

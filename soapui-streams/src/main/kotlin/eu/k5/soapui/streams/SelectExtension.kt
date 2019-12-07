@@ -7,6 +7,7 @@ import eu.k5.soapui.streams.model.SuProject
 import eu.k5.soapui.streams.model.assertion.*
 import eu.k5.soapui.streams.model.rest.SuuRestServiceListener
 import eu.k5.soapui.streams.model.test.*
+import eu.k5.soapui.streams.model.wsdl.SuuWsdlServiceListener
 
 fun SuProject.select(select: (Any) -> Boolean): MutableList<Any> {
     val query = SelectionQuery(select)
@@ -16,8 +17,6 @@ fun SuProject.select(select: (Any) -> Boolean): MutableList<Any> {
 
     return query.results
 }
-
-
 
 
 private class SelectionQuery(
@@ -34,6 +33,10 @@ private class SelectionQuery(
 private class SelectListener(
     private val query: SelectionQuery
 ) : SuListener {
+    override fun createWsdlServiceListener(): SuuWsdlServiceListener {
+        return SuuWsdlServiceListener.NO_OP
+    }
+
     private var project: SuProject? = null
     override fun enterProject(env: Environment, project: SuProject) {
         this.project = project
@@ -42,7 +45,7 @@ private class SelectListener(
     override fun exitProject(suuProject: SuProject) {
     }
 
-    override fun createResourceListener(): SuuRestServiceListener {
+    override fun createRestServiceListener(): SuuRestServiceListener {
         return SuuRestServiceListener.NO_OP
     }
 

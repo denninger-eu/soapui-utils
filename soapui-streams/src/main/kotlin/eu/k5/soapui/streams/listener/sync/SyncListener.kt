@@ -7,11 +7,14 @@ import eu.k5.soapui.streams.model.SuListener
 import eu.k5.soapui.streams.model.SuuProperties
 import eu.k5.soapui.streams.model.rest.SuuRestServiceListener
 import eu.k5.soapui.streams.model.test.SuuTestSuiteListener
+import eu.k5.soapui.streams.model.wsdl.SuuWsdlServiceListener
 import kotlin.collections.ArrayList
 
 class SyncListener(
     private val referenceProject: SuProject
 ) : SuListener {
+
+
     private var environment: Environment? = null
 
     private var targetProject: SuProject? = null
@@ -34,7 +37,6 @@ class SyncListener(
 
         handleMissingTestSuites(target)
 
-
     }
 
     private fun handleMissingTestSuites(target: SuProject) {
@@ -51,15 +53,14 @@ class SyncListener(
         val missingRestServices = ArrayList(referenceProject.restServices)
         target.restServices.forEach { found -> missingRestServices.removeIf { it.name == found.name } }
 
-        val copyRestServiceListener = CopyListener(target).createResourceListener()
+        val copyRestServiceListener = CopyListener(target).createRestServiceListener()
         for (missingRestService in missingRestServices) {
             missingRestService.apply(copyRestServiceListener)
         }
     }
 
 
-
-    override fun createResourceListener(): SuuRestServiceListener {
+    override fun createRestServiceListener(): SuuRestServiceListener {
         return SyncRestServiceListener(
             environment!!,
             referenceProject,
@@ -69,6 +70,14 @@ class SyncListener(
 
     override fun createTestSuiteListener(): SuuTestSuiteListener {
         return SyncTestSuiteListener(
+            environment!!,
+            referenceProject,
+            targetProject
+        )
+    }
+
+    override fun createWsdlServiceListener(): SuuWsdlServiceListener {
+        return SyncWsdlServiceListener(
             environment!!,
             referenceProject,
             targetProject

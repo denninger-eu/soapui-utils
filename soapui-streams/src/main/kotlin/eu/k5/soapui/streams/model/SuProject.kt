@@ -24,4 +24,9 @@ interface SuProject {
     fun createTestSuite(name: String): SuuTestSuite
 
     val wsdlServices: List<SuuWsdlService>
+
+    fun getWsdlService(name: String): SuuWsdlService? = wsdlServices.firstOrNull { it.name == name }
+
+    fun createWsdlService(name: String): SuuWsdlService
+
 }

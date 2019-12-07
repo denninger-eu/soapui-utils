@@ -6,11 +6,14 @@ import eu.k5.soapui.streams.Environment
 import eu.k5.soapui.streams.model.SuListener
 import eu.k5.soapui.streams.model.SuuProperties
 import eu.k5.soapui.streams.model.test.SuuTestSuiteListener
+import eu.k5.soapui.streams.model.wsdl.SuuWsdlServiceListener
 
 class DifferenceListener(
     private val referenceProject: SuProject
 
 ) : SuListener {
+
+
     val differences = Differences()
 
     override fun enterProject(env: Environment, project: SuProject) {
@@ -25,12 +28,16 @@ class DifferenceListener(
     }
 
 
-    override fun createResourceListener(): SuuRestServiceListener {
+    override fun createRestServiceListener(): SuuRestServiceListener {
         return DifferenceRestServiceListener(referenceProject, differences)
     }
 
     override fun createTestSuiteListener(): SuuTestSuiteListener {
         return DifferenceTestSuiteListener(differences, referenceProject)
+    }
+
+    override fun createWsdlServiceListener(): SuuWsdlServiceListener {
+        return DifferenceWsdlServiceListener(differences, referenceProject)
     }
 
     companion object {

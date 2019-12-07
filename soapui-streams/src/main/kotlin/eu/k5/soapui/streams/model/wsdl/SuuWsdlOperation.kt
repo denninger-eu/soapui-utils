@@ -8,4 +8,9 @@ interface SuuWsdlOperation {
 
     val requests: List<SuuWsdlRequest>
 
+    fun createRequest(name: String): SuuWsdlRequest
+
+    fun getRequest(name: String): SuuWsdlRequest? = requests.firstOrNull { it.name == name }
+
+    fun markLostAndFound()
 }

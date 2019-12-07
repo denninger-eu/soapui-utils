@@ -88,6 +88,10 @@ class Differences {
         addDifference(DifferenceMissing(path(), location.toString()))
     }
 
+    fun addAdditional(type: EntityType, name: String) {
+        val location = Location(type, name)
+        addDifference(DifferenceMissing(path(), location.toString()))
+    }
 
     fun size(): Int {
         return differences.size
@@ -107,7 +111,13 @@ class Differences {
 
         ASSERTION,
 
-        ROOT
+        ROOT,
+
+        WSDL_SERVICE,
+
+        WSDL_OPERATION,
+
+        WSDL_REQUEST
     }
 
     class Location(

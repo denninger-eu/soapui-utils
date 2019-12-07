@@ -17,6 +17,9 @@ import java.nio.file.Path
 class ProjectDirect(
     private val wsdlProject: WsdlProject
 ) : SuProject {
+    override fun createWsdlService(name: String): SuuWsdlService {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     override var name: String
         get() = wsdlProject.name ?: ""

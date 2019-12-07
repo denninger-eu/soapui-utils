@@ -6,6 +6,7 @@ import eu.k5.soapui.streams.model.SuProject
 import eu.k5.soapui.streams.model.assertion.*
 import eu.k5.soapui.streams.model.rest.SuuRestServiceListener
 import eu.k5.soapui.streams.model.test.*
+import eu.k5.soapui.streams.model.wsdl.SuuWsdlServiceListener
 
 fun SuProject.flatten(): List<Any> {
     val list = ArrayList<Any>()
@@ -18,6 +19,10 @@ fun SuProject.flatten(): List<Any> {
 private class FlattenListener(
     private val list: MutableList<Any>
 ) : SuListener {
+    override fun createWsdlServiceListener(): SuuWsdlServiceListener {
+        return SuuWsdlServiceListener.NO_OP
+    }
+
     private var project: SuProject? = null
     override fun enterProject(env: Environment, project: SuProject) {
         this.project = project
@@ -26,7 +31,7 @@ private class FlattenListener(
     override fun exitProject(suuProject: SuProject) {
     }
 
-    override fun createResourceListener(): SuuRestServiceListener {
+    override fun createRestServiceListener(): SuuRestServiceListener {
         return SuuRestServiceListener.NO_OP
     }
 

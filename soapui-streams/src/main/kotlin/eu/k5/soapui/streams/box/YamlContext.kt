@@ -5,6 +5,9 @@ import eu.k5.soapui.streams.box.rest.RestRequestBox
 import eu.k5.soapui.streams.box.rest.RestResourceBox
 import eu.k5.soapui.streams.box.rest.RestServiceBox
 import eu.k5.soapui.streams.box.test.*
+import eu.k5.soapui.streams.box.wsdl.WsdlOperationBox
+import eu.k5.soapui.streams.box.wsdl.WsdlRequestBox
+import eu.k5.soapui.streams.box.wsdl.WsdlServiceBox
 import org.yaml.snakeyaml.TypeDescription
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.constructor.Constructor
@@ -23,6 +26,10 @@ class YamlContext {
             tags[RestResourceBox.RestResourceYaml::class.java] = "!restResource"
             tags[RestMethodBox.RestMethodYaml::class.java] = "!restMethod"
             tags[RestRequestBox.RestRequestYaml::class.java] = "!restRequest"
+
+            tags[WsdlServiceBox.WsdlServiceYaml::class.java] = "!wsdlService"
+            tags[WsdlOperationBox.WsdlOperationYaml::class.java] = "!wsdlOperation"
+            tags[WsdlRequestBox.WsdlRequestYaml::class.java] = "!wsdlRequest"
 
             tags[TestSuiteBox.TestSuiteYaml::class.java] = "!testSuite"
             tags[TestCaseBox.TestCaseYaml::class.java] = "!testCase"

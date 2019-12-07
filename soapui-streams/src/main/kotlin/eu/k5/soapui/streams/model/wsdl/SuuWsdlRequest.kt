@@ -1,17 +1,14 @@
 package eu.k5.soapui.streams.model.wsdl
 
 import eu.k5.soapui.streams.model.Header
+import eu.k5.soapui.streams.model.WithHeader
 
-interface SuuWsdlRequest {
+interface SuuWsdlRequest : WithHeader {
     var name: String
+
     var description: String?
-    val content: String
+    var content: String
 
-    val headers: List<Header>
+    fun markLostAndFound()
 
-    fun getHeader(key: String) = headers.firstOrNull { it.key == key }
-
-    fun removeHeader(key: String)
-
-    fun addOrUpdateHeader(header: Header)
 }

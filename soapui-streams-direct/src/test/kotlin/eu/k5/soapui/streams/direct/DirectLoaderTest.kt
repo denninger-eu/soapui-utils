@@ -2,7 +2,6 @@ package eu.k5.soapui.streams.direct
 
 import eu.k5.soapui.streams.apply
 import eu.k5.soapui.streams.listener.sync.SyncListener
-import eu.k5.soapui.streams.jaxb.Project
 import eu.k5.soapui.streams.model.rest.SuuRestMethod
 import org.junit.jupiter.api.Test
 import java.io.InputStream

@@ -24,7 +24,7 @@ class Suu {
             val listener = SyncListener(source)
 
             listener.enterProject(Environment(), target)
-            restService.apply(listener.createResourceListener())
+            restService.apply(listener.createRestServiceListener())
             listener.exitProject(target)
 
 

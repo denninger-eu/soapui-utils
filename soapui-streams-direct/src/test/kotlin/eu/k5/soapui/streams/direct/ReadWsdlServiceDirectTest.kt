@@ -1,10 +1,15 @@
 package eu.k5.soapui.streams.direct
 
+import eu.k5.soapui.streams.apply
+import eu.k5.soapui.streams.listener.difference.DifferenceListener
+import eu.k5.soapui.streams.listener.sync.SyncListener
 import eu.k5.soapui.streams.model.wsdl.SuuWsdlOperation
 import eu.k5.soapui.streams.model.wsdl.SuuWsdlService
+import eu.k5.soapui.streams.tests.SuuAssert
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 class ReadWsdlServiceDirectTest : AbstractDirectTest() {
     @Test
@@ -42,6 +47,22 @@ class ReadWsdlServiceDirectTest : AbstractDirectTest() {
         val header = request.getHeader("HeaderName")
         assertEquals("HeaderValue", header!!.value[0])
         assertEquals("HeaderValue2", header!!.value[1])
+
+    }
+
+    @Test
+    fun writeBoxFromWsdlService() {
+        val project = testProject("WsdlServiceProject")
+        val box = createTempProjectBox("WsdlServiceProject")
+        box.apply(SyncListener(project))
+
+        SuuAssert().assertEquals(box, project)
+
+        // double apply should not affect differences
+        box.apply(SyncListener(project))
+
+        val secondDifference = DifferenceListener(project)
+        box.apply(secondDifference)
 
     }
 }

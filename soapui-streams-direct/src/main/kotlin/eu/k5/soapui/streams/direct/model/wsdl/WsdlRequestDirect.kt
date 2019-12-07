@@ -8,6 +8,9 @@ import eu.k5.soapui.streams.model.wsdl.SuuWsdlRequest
 class WsdlRequestDirect(
     private val wsdlRequest: WsdlRequest
 ) : SuuWsdlRequest {
+    override fun markLostAndFound() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
 
     override var name: String
@@ -22,9 +25,11 @@ class WsdlRequestDirect(
             wsdlRequest.description = value
         }
 
-    override val content: String
+    override var content: String
         get() = wsdlRequest.requestContent
-
+        set(value) {
+            wsdlRequest.requestContent = value
+        }
 
     override val headers: List<Header>
         get() = wsdlRequest.requestHeaders.map { mapHeader(it) }

@@ -2,6 +2,7 @@ package eu.k5.soapui.streams.box.test
 
 import eu.k5.soapui.streams.box.Box
 import eu.k5.soapui.streams.box.BoxImpl.Companion.changed
+import eu.k5.soapui.streams.box.HeaderBox
 import eu.k5.soapui.streams.box.rest.*
 import eu.k5.soapui.streams.model.Header
 import eu.k5.soapui.streams.model.rest.*
@@ -344,7 +345,7 @@ class TestStepRestRequestBox(
             get() = RestParametersBox(yaml.parameters!!, true, method.parameters) { store() }
 
         override val headers: List<Header>
-            get() = yaml.headers?.map { RestRequestBox.mapHeader(it) } ?: ArrayList()
+            get() = yaml.headers?.map { HeaderBox.mapHeader(it) } ?: ArrayList()
 
         override fun removeHeader(key: String) {
             val changed = yaml.headers?.removeIf { it.key == key } ?: false
@@ -363,7 +364,7 @@ class TestStepRestRequestBox(
 
 
         override fun addOrUpdateHeader(header: Header) {
-            RestRequestBox.handleHeaders(yaml, header) { store() }
+            HeaderBox.handleHeaders(yaml, header) { store() }
         }
 
     }

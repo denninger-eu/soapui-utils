@@ -10,6 +10,10 @@ import eu.k5.soapui.streams.model.rest.SuuRestService
 import eu.k5.soapui.streams.model.SuListener
 import eu.k5.soapui.streams.model.assertion.*
 import eu.k5.soapui.streams.model.test.*
+import eu.k5.soapui.streams.model.wsdl.SuuWsdlOperation
+import eu.k5.soapui.streams.model.wsdl.SuuWsdlRequest
+import eu.k5.soapui.streams.model.wsdl.SuuWsdlService
+import eu.k5.soapui.streams.model.wsdl.SuuWsdlServiceListener
 
 fun <T : SuProject> T.syncWith(other: SuProject): T {
     this.apply(SyncListener(other))
@@ -19,14 +23,26 @@ fun <T : SuProject> T.syncWith(other: SuProject): T {
 fun SuProject.apply(listener: SuListener): SuProject {
     listener.enterProject(Environment(), this)
     for (restService in this.restServices) {
-        restService.apply(listener.createResourceListener())
+        restService.apply(listener.createRestServiceListener())
     }
+
+    handleWsdlInterfaces(listener)
+
     val testSuiteListener = listener.createTestSuiteListener()
     for (testSuite in this.testSuites) {
         testSuite.apply(testSuiteListener)
     }
     listener.exitProject(this)
     return this
+}
+
+private fun SuProject.handleWsdlInterfaces(listener: SuListener) {
+    val wsdlServiceListener = listener.createWsdlServiceListener()
+    wsdlServiceListener.enterProject(this)
+    for (wsdlService in this.wsdlServices) {
+        wsdlService.apply(wsdlServiceListener)
+    }
+    wsdlServiceListener.exitProject(this)
 }
 
 fun SuuRestService.apply(listener: SuuRestServiceListener) {
@@ -64,6 +80,30 @@ fun SuuRestMethod.apply(listener: SuuRestServiceListener) {
     }
     listener.exitMethod(this)
 }
+
+fun SuuWsdlService.apply(listener: SuuWsdlServiceListener) {
+    val result = listener.enter(this)
+    if (result == VisitResult.TERMINATE) {
+        return
+    }
+    for (operation in this.operations) {
+        operation.apply(listener)
+    }
+
+    listener.exit(this)
+}
+
+fun SuuWsdlOperation.apply(listener: SuuWsdlServiceListener) {
+    val result = listener.enterOperation(this)
+    if (result == VisitResult.TERMINATE) {
+        return
+    }
+    for (request in this.requests) {
+        listener.handleRequest(request)
+    }
+    listener.exitOperation(this)
+}
+
 
 fun SuuTestSuite.apply(listener: SuuTestSuiteListener) {
     val result = listener.enter(this)
