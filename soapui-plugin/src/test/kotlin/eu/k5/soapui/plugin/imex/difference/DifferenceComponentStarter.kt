@@ -18,6 +18,7 @@ fun main(args: Array<String>) {
     val suProject = ProjectDirect(wsdlProject)
     val diff = Suu.diff(suProject, ProjectDirect(wsdlProject2))
 
+
     val gui = Runnable {
         try {
             //   UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());

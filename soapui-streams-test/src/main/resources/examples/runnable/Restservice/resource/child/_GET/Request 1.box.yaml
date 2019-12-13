@@ -1,0 +1,8 @@
+!restRequest
+name: Request 1
+parameters:
+- location: RESOURCE_OVERRIDE
+  name: template
+  override: true
+  style: TEMPLATE
+  value: ${#Project#projectProperty}

@@ -1,4 +1,4 @@
-package eu.k5.soapui.stream.executor
+package eu.k5.soapui.executor
 
 import okhttp3.OkHttpClient
 import okhttp3.Request

@@ -1,14 +1,12 @@
 package eu.k5.soapui.plugin.imex
 
-import java.awt.BorderLayout
-import java.awt.GridBagConstraints
-import java.awt.GridBagLayout
-import java.awt.Panel
-import java.awt.event.ActionListener
+import java.awt.*
 import javax.swing.*
 import javax.swing.event.DocumentEvent
 import javax.swing.event.DocumentListener
 import javax.swing.tree.DefaultMutableTreeNode
+import javax.swing.BoxLayout
+import java.awt.Dimension
 
 
 class ImexView(
@@ -17,11 +15,11 @@ class ImexView(
 
     private val controller = ImexController(this, model)
     private val mainFrame: JFrame
+    private val mainLayout: BorderLayout
 
-    private val mainLayout: GridBagLayout
+    private val dataPanel = JPanel()
 
     private val buttonPanel = JPanel()
-    private var inputPanel: JPanel
 
     private val folder: JTextField
 
@@ -31,29 +29,36 @@ class ImexView(
 
     init {
         mainFrame = JFrame("Synchronize Dialolg")
-        mainLayout = GridBagLayout() // BorderLayout(2, 2)
+        mainLayout = BorderLayout(2, 2)
         mainFrame.layout = mainLayout
 
-        
-        diff = DiffView(model)
+        dataPanel.layout = GridBagLayout()// BoxLayout(dataPanel, BoxLayout.PAGE_AXIS)
 
-        mainFrame.add(diff)
-        mainLayout.addLayoutComponent(diff, BorderLayout.CENTER);
+        //folder = addLabelWithInput(dataPanel, "Folder")
+
+        diff = DiffView(model, controller)
 
 
-        val inputLayout = GridBagLayout()
-        inputPanel = JPanel()
-        mainFrame.add(buttonPanel)
-        mainLayout.addLayoutComponent(buttonPanel, BorderLayout.SOUTH);
-     //   mainFrame.add(inputPanel);
-     //   mainLayout.addLayoutComponent(inputPanel, BorderLayout.CENTER);
-
-        folder = addLabelWithInput(inputPanel, inputLayout, "Folder")
+        dataPanel.add(Label("Folder"), constraint(0, 0))
+        folder = JTextField()
+        dataPanel.add(folder, constraint(2, 0))
         folder.document.addDocumentListener(DocumentChangeListener() { model.folder = folder.text })
+
+        //   dataPanel.
+        dataPanel.add(Label("Diff"), constraint(0, 1, fill = GridBagConstraints.BOTH, weighty = 1.0))
+        val jScrollPane = JScrollPane(diff)
+
+        dataPanel.add(jScrollPane, constraint(2, 1))
+
+
+
         addButtons(buttonPanel, controller)
 
+        mainFrame.add(dataPanel, BorderLayout.CENTER);
+        mainFrame.add(buttonPanel, BorderLayout.SOUTH);
+
         mainFrame.pack()
-        mainFrame.setSize(500, 300)
+        mainFrame.setSize(500, 800)
     }
 
     fun display() {
@@ -79,6 +84,7 @@ class ImexView(
 
     companion object {
 
+
         private fun addButtons(buttonPanel: JPanel, controller: ImexController) {
             BoxLayout(buttonPanel, BoxLayout.X_AXIS)
             val label = JLabel("")
@@ -98,26 +104,22 @@ class ImexView(
         }
 
         private fun addLabelWithInput(
-            inputPanel: JPanel,
-            inputLayout: GridBagLayout,
+            dataPanel: JPanel,
             labelText: String
         ): JTextField {
-            val constraints = GridBagConstraints()
+            val inputPanel = JPanel()
+            inputPanel.layout = BoxLayout(inputPanel, BoxLayout.X_AXIS)
 
-            constraints.fill = GridBagConstraints.BOTH
-            constraints.weightx = 0.0
-
-            constraints.gridwidth = GridBagConstraints.RELATIVE
             val label = JLabel(labelText)
-            inputLayout.setConstraints(label, constraints)
             inputPanel.add(label)
-
-            constraints.weightx = 1.0
-            constraints.gridwidth = GridBagConstraints.REMAINDER // next-to-last in
-            // row
+            inputPanel.add(Box.createRigidArea(Dimension(5, 0)))
             val textField = JTextField()
-            inputLayout.setConstraints(textField, constraints)
             inputPanel.add(textField)
+
+            inputPanel.add(Box.createRigidArea(Dimension(5, 0)))
+            var button = JButton("select")
+            inputPanel.add(button)
+            dataPanel.add(inputPanel)
 
             return textField
         }

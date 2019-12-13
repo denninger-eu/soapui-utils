@@ -17,9 +17,6 @@ abstract class AbstractDirectTest {
 
     companion object {
         fun loadFromBox(name: String): ProjectBox {
-
-            val root = searchRoot()
-
             val path = searchRoot().resolve("soapui-streams-test").resolve("src").resolve("main").resolve(
                 "resources"
             ).resolve("examples").resolve(name).resolve("project.box.yaml")

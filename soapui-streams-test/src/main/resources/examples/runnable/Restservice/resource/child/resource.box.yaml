@@ -1,0 +1,8 @@
+!restResource
+name: child
+parameters:
+- location: RESOURCE
+  name: template
+  override: false
+  style: TEMPLATE
+path: '{template}'
