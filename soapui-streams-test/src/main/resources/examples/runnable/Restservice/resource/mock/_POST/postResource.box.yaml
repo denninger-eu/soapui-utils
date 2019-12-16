@@ -1,4 +1,0 @@
-!restRequest
-name: postResource
-### content
-{"post":"post"}

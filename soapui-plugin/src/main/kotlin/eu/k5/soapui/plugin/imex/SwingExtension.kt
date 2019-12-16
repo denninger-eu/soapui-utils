@@ -8,13 +8,16 @@ fun constraint(
     gridx: Int,
     gridy: Int,
     fill: Int = GridBagConstraints.HORIZONTAL,
-    weighty: Double = 0.0
+    weightx: Double = 0.0,
+    weighty: Double = 0.0,
+    gridwidth: Int = 1
 ): GridBagConstraints {
     val constraint = GridBagConstraints()
     constraint.gridx = gridx
     constraint.gridy = gridy
     constraint.fill = fill
-    constraint.ipadx = 100
     constraint.weighty = weighty
+    constraint.weightx = weightx
+    constraint.gridwidth = gridwidth
     return constraint
 }

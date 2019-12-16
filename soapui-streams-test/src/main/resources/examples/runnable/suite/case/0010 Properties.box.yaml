@@ -1,6 +1,0 @@
-!propertiesStep
-name: Properties
-properties:
-- name: key
-  value: keyValue
-weight: 0

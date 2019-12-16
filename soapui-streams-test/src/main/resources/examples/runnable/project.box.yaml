@@ -1,5 +1,0 @@
-!project
-name: Runnable
-properties:
-- name: projectProperty
-  value: mock

@@ -3,13 +3,13 @@ package eu.k5.soapui.plugin.imex.treetable
 import java.awt.Dimension
 import javax.swing.JTable
 
-class TreeTable(treeTableModel: AbstractTreeTableModel) : JTable() {
-    private val tree: TreeTableCellRenderer
+class TreeTable(
+    treeTableModel: AbstractTreeTableModel
+) : JTable() {
+    private val tree = TreeTableCellRenderer(this, treeTableModel)
 
     init {
 
-        // JTree erstellen.
-        tree = TreeTableCellRenderer(this, treeTableModel)
         tree.isRootVisible = false
         // Modell setzen.
         super.setModel(TreeTableModelAdapter(treeTableModel, tree))

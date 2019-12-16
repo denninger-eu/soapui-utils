@@ -16,29 +16,36 @@ class Observable<T>(
     )
 
     fun update(newEntry: T) {
-        if (newEntry != entry) {
-            val copy = ArrayList(observers)
+        println("new Entry $newEntry")
+        val copy = synchronized(this) {
+            ArrayList(observers)
+        }
 
-            entry = newEntry
-            for (observer in copy) {
-                if (observer.onEdt) {
-                    SwingUtilities.invokeLater { observer.callback(newEntry) }
-                } else {
-                    observer.callback(newEntry)
-                }
+        entry = newEntry
+        for (observer in copy) {
+            if (observer.onEdt) {
+                SwingUtilities.invokeLater { observer.callback(newEntry) }
+            } else {
+                observer.callback(newEntry)
             }
+        }
+    }
+
+    private fun addObserver(observer: Observer<T>) {
+        synchronized(this) {
+            observers.add(observer)
         }
     }
 
     fun register(callback: (T) -> Unit): String {
         val newObserver = Observer(UUID.randomUUID().toString(), false, callback)
-        observers.add(newObserver)
+        addObserver(newObserver)
         return newObserver.key
     }
 
     fun registerOnEdt(callback: (T) -> Unit): String {
         val newObserver = Observer(UUID.randomUUID().toString(), true, callback)
-        observers.add(newObserver)
+        addObserver(newObserver)
         return newObserver.key
     }
 

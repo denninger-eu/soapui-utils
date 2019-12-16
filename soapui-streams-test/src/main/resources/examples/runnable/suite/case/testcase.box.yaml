@@ -1,5 +1,0 @@
-!testCase
-name: case
-properties:
-- name: caseProperty
-  value: mock

@@ -1,23 +1,20 @@
 package eu.k5.soapui.plugin
 
-import com.eviware.soapui.impl.rest.RestService
 import com.eviware.soapui.impl.wsdl.WsdlProject
-import com.eviware.soapui.model.project.Project
 import com.eviware.soapui.plugins.ActionConfiguration
 import com.eviware.soapui.plugins.ToolbarPosition
 import com.eviware.soapui.support.action.support.AbstractSoapUIAction
 import eu.k5.soapui.plugin.imex.ImexModel
 import eu.k5.soapui.plugin.imex.ImexView
-import eu.k5.soapui.streams.direct.model.ProjectDirect
-import eu.k5.soapui.streams.direct.model.rest.RestServiceDirect
 
 @ActionConfiguration(
-    actionGroup = "ProjectActions", //
+    actionGroup = "EnabledWsdlProjectActions", //
     toolbarPosition = ToolbarPosition.NONE, //
     toolbarIcon = "/favicon.png", //
-    description = "Quick Repair Tool"
-)//
-class SynchronizeProjectAction : AbstractSoapUIAction<WsdlProject>("Synchronize", "Export to Folder") {
+    description = "Quick Repair Tool",
+    targetType = WsdlProject::class
+)// https://support.smartbear.com/readyapi/docs/configure/plugins/dev/annotations/actions/action.html
+class SynchronizeProjectAction : AbstractSoapUIAction<WsdlProject>("Synchronize", "Synchronize with folder") {
 
 
     override fun perform(project: WsdlProject, o: Any?) {
@@ -25,7 +22,7 @@ class SynchronizeProjectAction : AbstractSoapUIAction<WsdlProject>("Synchronize"
 
         try {
 
-            val model = ImexModel(project, config = SuuConfig.loadDefault())
+            val model = ImexModel(project as WsdlProject, config = SuuConfig.loadDefault())
 
             val view = ImexView(model)
             view.display()

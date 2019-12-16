@@ -13,11 +13,13 @@ class ImexModel(
     val config: SuuConfig = loadDefaultConfig()
 ) {
 
-    var folder: String? = null
+    var folder: Observable<String?> = Observable()
 
     var restService: SuuRestService? = null
 
-    var differences: Observable<Differences> = Observable()
+    var target: Observable<SuProject?> = Observable()
+
+    var differences: Observable<Differences?> = Observable()
 
     enum class Mode {
         IMPORT, EXPORT

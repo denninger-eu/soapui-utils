@@ -10,15 +10,24 @@ import java.nio.file.Paths
 
 
 class ImexController(
-    private val view: ImexView,
-    private val model: ImexModel
+    val model: ImexModel
 ) {
 
-    fun init() {
+    init {
         val projectConfig = model.config.createIfAbsent(model.project.name)
 
+        model.folder.registerOnEdt { folderChanged(it) }
         if (projectConfig != null) {
-            model.folder = projectConfig.base
+            model.folder.update(projectConfig.base)
+        }
+    }
+
+    private fun folderChanged(folder: String?) {
+        println("Folder changed: $folder")
+        model.target.update(null)
+        if (folder != null) {
+            val box = resolveBox()
+            model.target.update(box)
         }
     }
 
@@ -26,19 +35,18 @@ class ImexController(
     fun cancel() {
     }
 
-
     fun doImport() {
         val box = resolveBox()
         println("DoExport: " + box.fileName())
         val projectDirect = ProjectDirect(model.project)
 
+
         Suu.sync(box, projectDirect)
     }
 
     private fun resolveBox(): ProjectBox {
-        println(model.folder)
-        val folder = model.folder
-        println("loading from folder: " + folder)
+        val folder = model.folder.getEntry()
+        println("loading from folder: $folder")
         val path = Paths.get(folder)
 
         if (Files.isDirectory(path)) {

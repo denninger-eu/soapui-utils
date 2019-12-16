@@ -1,4 +1,0 @@
-!restService
-endpoints:
-- http://localhost:8080
-name: Restservice

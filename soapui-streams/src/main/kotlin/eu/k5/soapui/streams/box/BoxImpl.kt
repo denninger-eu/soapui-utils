@@ -80,19 +80,21 @@ class BoxImpl(
         var section = "main"
         var inSection = section == "main"
 
-        for (line in Files.newBufferedReader(path, StandardCharsets.UTF_8).lines()) {
-            if (line.startsWith("###")) {
+        Files.newBufferedReader(path, StandardCharsets.UTF_8).use { reader ->
+            for (line in reader.lines()) {
+                if (line.startsWith("###")) {
 
-                val matcher = SECTION_PATTERN.matcher(line)
-                if (matcher.matches()) {
-                    val newSection = matcher.group("section")
-                    sections[section] = sectionBuilder.toString()
-                    sectionBuilder.clear()
-                    section = newSection
-                }
-            } else {
-                if (inSection) {
-                    sectionBuilder.append(line).append("\n")
+                    val matcher = SECTION_PATTERN.matcher(line)
+                    if (matcher.matches()) {
+                        val newSection = matcher.group("section")
+                        sections[section] = sectionBuilder.toString()
+                        sectionBuilder.clear()
+                        section = newSection
+                    }
+                } else {
+                    if (inSection) {
+                        sectionBuilder.append(line).append("\n")
+                    }
                 }
             }
         }
@@ -106,16 +108,18 @@ class BoxImpl(
         val sectionBuilder = StringBuilder()
         var inSection = section == "main"
 
-        for (line in Files.newBufferedReader(path, StandardCharsets.UTF_8).lines()) {
-            if (line.startsWith("###")) {
-                if (inSection) {
-                    return sectionBuilder.toString()
-                } else if (line == "### $section") {
-                    inSection = true
-                }
-            } else {
-                if (inSection) {
-                    sectionBuilder.append(line).append("\n")
+        Files.newBufferedReader(path, StandardCharsets.UTF_8).use { reader ->
+            for (line in reader.lines()) {
+                if (line.startsWith("###")) {
+                    if (inSection) {
+                        return sectionBuilder.toString()
+                    } else if (line == "### $section") {
+                        inSection = true
+                    }
+                } else {
+                    if (inSection) {
+                        sectionBuilder.append(line).append("\n")
+                    }
                 }
             }
         }
