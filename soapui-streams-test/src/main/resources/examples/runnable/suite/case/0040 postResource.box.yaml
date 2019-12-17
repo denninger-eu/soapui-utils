@@ -1,0 +1,26 @@
+!restRequestStep
+name: postResource
+request: !restRequest
+  name: postResource
+weight: 30
+### base
+!requestBase
+baseMethod: !restMethod
+  httpMethod: POST
+  name: POST
+baseResources:
+- name: resource
+  path: /resource
+- name: mock
+  path: mock
+baseService: !restService
+  name: Restservice
+### content
+{"post":"post", "uuid": "${#Project#projectProperty}"}
+### assertions
+!assertions
+assertions:
+- !jsonPathExists
+  expectedValue: 'true'
+  expression: $.uuid
+  name: JsonPath Existence Match.

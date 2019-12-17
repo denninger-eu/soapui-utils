@@ -31,6 +31,7 @@ fun main(args: Array<String>) {
 
     val view = ImexView(model)
 
+
     model.target.update(ProjectDirect(wsdlProject2))
 
     // executor.submit()

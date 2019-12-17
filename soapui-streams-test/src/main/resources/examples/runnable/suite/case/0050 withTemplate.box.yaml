@@ -1,0 +1,23 @@
+!restRequestStep
+name: withTemplate
+request: !restRequest
+  name: withTemplate
+weight: 40
+### base
+!requestBase
+baseMethod: !restMethod
+  httpMethod: GET
+  name: GET
+baseResources:
+- name: resource
+  path: /resource
+- name: child
+  parameters:
+  - location: RESOURCE
+    name: template
+    override: false
+    style: TEMPLATE
+    value: ${#Project#projectProperty}
+  path: '{template}'
+baseService: !restService
+  name: Restservice

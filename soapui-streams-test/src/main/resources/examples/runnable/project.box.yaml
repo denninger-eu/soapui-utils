@@ -1,0 +1,5 @@
+!project
+name: Runnable
+properties:
+- name: projectProperty
+  value: f517ed3f-4d48-49d0-b340-2effc50e020a

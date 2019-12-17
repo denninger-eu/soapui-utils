@@ -38,7 +38,6 @@ class ImexView(
 
         diff = DiffView(model)
 
-
         dataPanel.add(Label("Folder"), labelConstraint(0))
         dataPanel.add(Box.createHorizontalStrut(5), constraint(1, 0, weighty = 0.0, weightx = 0.0))
         folder = JTextField()
@@ -52,7 +51,6 @@ class ImexView(
         //   dataPanel.
         dataPanel.add(Label("Diff"), labelConstraint(1))
 
-
         dataPanel.add(
             diff,
             constraint(2, 1, fill = GridBagConstraints.BOTH, weighty = 1.0, weightx = 1.0, gridwidth = 2)
@@ -60,7 +58,7 @@ class ImexView(
 
 
 
-        addButtons(buttonPanel, controller)
+        addButtons(buttonPanel, controller, model)
 
         mainFrame.add(dataPanel, BorderLayout.CENTER);
         mainFrame.add(buttonPanel, BorderLayout.SOUTH);
@@ -103,17 +101,27 @@ class ImexView(
             return constraint
         }
 
-        private fun addButtons(buttonPanel: JPanel, controller: ImexController) {
+        private fun addButtons(buttonPanel: JPanel, controller: ImexController, model: ImexModel) {
             BoxLayout(buttonPanel, BoxLayout.X_AXIS)
             val label = JLabel("")
             buttonPanel.add(label)
 
+            val buttonCreate = JButton("Create")
+            buttonCreate.addActionListener { controller.doCreate() }
+            buttonCreate.isEnabled = false
+            model.createEnabled.registerOnEdt { buttonCreate.isEnabled = it ?: false }
+            buttonPanel.add(buttonCreate)
+
             val buttonExport = JButton("Export")
             buttonExport.addActionListener { controller.doExport() }
+            buttonExport.isEnabled = false
+            model.exportEnabled.registerOnEdt { buttonExport.isEnabled = it ?: false }
             buttonPanel.add(buttonExport)
 
             val buttonImport = JButton("Import")
             buttonImport.addActionListener { controller.doImport() }
+            buttonImport.isEnabled = false
+            model.importEnabled.registerOnEdt { buttonImport.isEnabled = it ?: false }
             buttonPanel.add(buttonImport)
 
             val cancel = JButton("Cancel")

@@ -1,0 +1,5 @@
+!testSuite
+name: suite
+properties:
+- name: suiteProperty
+  value: mock
