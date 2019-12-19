@@ -6,6 +6,7 @@ import eu.k5.soapui.executor.RunnerContext
 import eu.k5.soapui.streams.model.test.SuuTestStepRestRequest
 import okhttp3.Request
 import okhttp3.RequestBody
+import okhttp3.Response
 
 class RestRequestRunner(
     private val step: SuuTestStepRestRequest,
@@ -32,13 +33,13 @@ class RestRequestRunner(
 
 
         val response = clientFactory.client().newCall(request).execute()
-        val body = response.body()
-        if (body != null) {
-            val string = body.string()
-            println(string)
-            context.addProperty(responseProperty(step), string)
-        }
+        val clientResponse = asClientRespone(response)
+
+        println(clientResponse.body)
+        context.addProperty(responseProperty(step), clientResponse.body)
+
     }
+
 
     companion object {
         fun requestProperty(step: SuuTestStepRestRequest): String = step.name + ".Request"
@@ -57,5 +58,11 @@ class RestRequestRunner(
             return url
         }
 
+        private fun asClientRespone(response: Response): ClientResponse {
+            val body = response.body()
+
+            val string = body?.string() ?: ""
+            return ClientResponse(string)
+        }
     }
 }

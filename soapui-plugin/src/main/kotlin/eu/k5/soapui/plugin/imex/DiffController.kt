@@ -13,7 +13,7 @@ class DiffController(
     private val executor = Executors.newSingleThreadExecutor()
 
     init {
-        model.target.register { refreshDifferences() }
+        model.target.register { doRefresh() }
     }
 
 
@@ -27,9 +27,15 @@ class DiffController(
         }
     }
 
-    fun refreshDifferences() {
+    private fun doRefresh() {
         model.differences.update(null)
         submitCreateDifferences()
+    }
+
+    fun refreshDifferences() {
+        val old = model.folder.getEntry()
+        model.folder.update(null)
+        model.folder.update(old)
     }
 
 
