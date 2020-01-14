@@ -41,14 +41,6 @@
 
         </plugins>
     </build>
-    <!--
-        <repositories>
-            <repository>
-                <id>smartbear</id>
-                <name>smartbear repository</name>
-                <url>http://smartbearsoftware.com/repository/maven2</url>
-            </repository>
-        </repositories>-->
     <dependencies>
 
         <dependency>
@@ -59,15 +51,10 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-            <version>5.0.1</version>
-            <scope>test</scope>
+            <scope>compile</scope>
         </dependency>
 
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>23.4-jre</version>
-        </dependency>
+
         <dependency>
             <groupId>org.xmlunit</groupId>
             <artifactId>xmlunit-core</artifactId>
