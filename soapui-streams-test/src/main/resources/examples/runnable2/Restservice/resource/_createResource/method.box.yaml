@@ -1,0 +1,3 @@
+!restMethod
+httpMethod: POST
+name: createResource

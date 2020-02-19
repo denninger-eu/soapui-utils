@@ -1,0 +1,8 @@
+!restResource
+name: resource
+parameters:
+- location: RESOURCE
+  name: queryParam
+  override: false
+  style: QUERY
+path: /resource

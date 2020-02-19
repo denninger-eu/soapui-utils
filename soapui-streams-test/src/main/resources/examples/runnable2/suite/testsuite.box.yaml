@@ -1,0 +1,5 @@
+!testSuite
+name: suite
+properties:
+- name: suiteProperty
+  value: b265e0b1-d3ec-412a-b023-616c2e0236dc

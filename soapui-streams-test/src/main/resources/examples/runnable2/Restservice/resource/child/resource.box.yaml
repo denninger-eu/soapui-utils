@@ -1,0 +1,9 @@
+!restResource
+name: child
+parameters:
+- location: RESOURCE
+  name: template
+  override: false
+  style: TEMPLATE
+  value: ${#Project#projectProperty}
+path: '{template}'

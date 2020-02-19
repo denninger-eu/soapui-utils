@@ -1,0 +1,36 @@
+!restRequestStep
+name: createResource
+request: !restRequest
+  headers:
+  - key: headerP
+    values:
+    - headerV
+  name: createResource
+weight: 10
+### base
+!requestBase
+baseMethod: !restMethod
+  httpMethod: POST
+  name: createResource
+baseResources:
+- name: resource
+  parameters:
+  - location: RESOURCE
+    name: queryParam
+    override: false
+    style: QUERY
+  path: /resource
+baseService: !restService
+  name: Restservice
+### content
+{ "value": "value"}
+### assertions
+!assertions
+assertions:
+- !validStatus
+  name: Valid HTTP Status Codes.
+  statusCodes: '200'
+- !jsonPathExists
+  expectedValue: 'true'
+  expression: $.id
+  name: JsonPath Existence Match.

@@ -1,0 +1,41 @@
+!restRequestStep
+name: updateResource
+request: !restRequest
+  name: updateResource
+weight: 50
+### base
+!requestBase
+baseMethod: !restMethod
+  httpMethod: PUT
+  name: PUT
+baseResources:
+- name: resource
+  parameters:
+  - location: RESOURCE
+    name: queryParam
+    override: false
+    style: QUERY
+  path: /resource
+- name: child
+  parameters:
+  - location: RESOURCE
+    name: template
+    override: false
+    style: TEMPLATE
+    value: ${#Project#projectProperty}
+  path: '{template}'
+baseService: !restService
+  name: Restservice
+### content
+{ "id":"${#Project#projectProperty}", "value": "updated" }
+### assertions
+!assertions
+assertions:
+- !jsonPathExists
+  expectedValue: 'true'
+  expression: $.id
+  name: JsonPath Existence Match.
+- !jsonPathMatch
+  expectedValue: updated
+  expression: $.value
+  name: JsonPath Match.
