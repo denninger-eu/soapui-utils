@@ -1,6 +1,5 @@
-package eu.k5.soapui.transform.karate.model
+package eu.k5.soapui.transform.karate
 
-import eu.k5.soapui.transform.karate.Environment
 import java.io.Writer
 
 class ModelWriter(

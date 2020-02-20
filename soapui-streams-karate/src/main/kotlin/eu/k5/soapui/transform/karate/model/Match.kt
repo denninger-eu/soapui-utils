@@ -1,8 +1,10 @@
 package eu.k5.soapui.transform.karate.model
 
+import eu.k5.soapui.transform.karate.ModelWriter
+
 class Match(
-    val type: String,
-    val value: String
+    private val type: String,
+    private val value: String
 ) : Expression {
 
     override fun write(writer: ModelWriter): ModelWriter {

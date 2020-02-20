@@ -1,6 +1,6 @@
 package eu.k5.soapui.transform.karate.model.literals
 
-import eu.k5.soapui.transform.karate.model.ModelWriter
+import eu.k5.soapui.transform.karate.ModelWriter
 
 class JavaClassLiteral(
     private val className: String

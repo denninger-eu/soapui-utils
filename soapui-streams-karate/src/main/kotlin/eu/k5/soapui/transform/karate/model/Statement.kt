@@ -1,6 +1,6 @@
 package eu.k5.soapui.transform.karate.model
 
-import java.io.Writer
+import eu.k5.soapui.transform.karate.ModelWriter
 
 abstract class Statement {
     abstract fun write(writer: ModelWriter): ModelWriter

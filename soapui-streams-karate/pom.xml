@@ -20,6 +20,8 @@
             <groupId>eu.k5.soapui</groupId>
         </dependency>
 
+
+
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
@@ -29,6 +31,8 @@
             <groupId>com.jayway.jsonpath</groupId>
             <artifactId>json-path</artifactId>
         </dependency>
+
+
     </dependencies>
 
 </project>

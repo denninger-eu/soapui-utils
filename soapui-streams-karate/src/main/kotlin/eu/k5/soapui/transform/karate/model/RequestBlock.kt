@@ -1,5 +1,7 @@
 package eu.k5.soapui.transform.karate.model
 
+import eu.k5.soapui.transform.karate.ModelWriter
+import eu.k5.soapui.transform.karate.model.statements.Blank
 import eu.k5.soapui.transform.karate.model.statements.PrefixBlock
 
 class RequestBlock(

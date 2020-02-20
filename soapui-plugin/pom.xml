@@ -100,7 +100,10 @@
             <artifactId>soapui-streams</artifactId>
             <groupId>eu.k5.soapui</groupId>
         </dependency>
-
+        <dependency>
+            <groupId>eu.k5.soapui</groupId>
+            <artifactId>soapui-streams-karate</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>

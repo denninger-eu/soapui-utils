@@ -1,5 +1,7 @@
 package eu.k5.soapui.transform.karate.model
 
+import eu.k5.soapui.transform.karate.ModelWriter
+
 class Block(name: String) : Statement() {
 
     constructor() : this("")

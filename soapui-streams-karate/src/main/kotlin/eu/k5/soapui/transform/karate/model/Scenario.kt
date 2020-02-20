@@ -1,6 +1,6 @@
 package eu.k5.soapui.transform.karate.model
 
-import sun.security.ec.point.ProjectivePoint
+import eu.k5.soapui.transform.karate.ModelWriter
 
 class Scenario(
     val description: String

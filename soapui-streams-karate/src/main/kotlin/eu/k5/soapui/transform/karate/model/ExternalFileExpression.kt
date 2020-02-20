@@ -1,5 +1,7 @@
 package eu.k5.soapui.transform.karate.model
 
+import eu.k5.soapui.transform.karate.ModelWriter
+
 class ExternalFileExpression(
     private val name: String,
     private val content: String

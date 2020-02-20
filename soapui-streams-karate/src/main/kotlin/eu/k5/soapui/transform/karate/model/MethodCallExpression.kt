@@ -1,6 +1,6 @@
 package eu.k5.soapui.transform.karate.model
 
-import eu.k5.soapui.transform.karate.model.literals.VariableLiteral
+import eu.k5.soapui.transform.karate.ModelWriter
 
 class MethodCallExpression(
     private val instance: Expression,

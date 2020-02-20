@@ -1,5 +1,7 @@
 package eu.k5.soapui.transform.karate.model
 
+import eu.k5.soapui.transform.karate.ModelWriter
+
 class DefaultCall(val type: String, val value: String) : Expression {
     override fun write(writer: ModelWriter): ModelWriter {
         return writer.write(type).write(" ").write(value)

@@ -10,6 +10,9 @@ class KarateTransformer {
 
 
     fun transform(testCase: SuuTestCase) {
+        val result = Exp().transform(testCase)
+
+
 
         for (step in testCase.steps) {
 

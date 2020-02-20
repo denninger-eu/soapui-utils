@@ -1,10 +1,10 @@
 package eu.k5.soapui.transform.karate.model
 
+import eu.k5.soapui.transform.karate.ModelWriter
 import eu.k5.soapui.transform.karate.model.literals.JavaClassLiteral
 import eu.k5.soapui.transform.karate.model.literals.Literal
 import eu.k5.soapui.transform.karate.model.literals.VariableLiteral
 import eu.k5.soapui.transform.karate.model.literals.write
-import javax.jws.WebParam
 
 class Declaration(
     private val variableName: VariableLiteral,

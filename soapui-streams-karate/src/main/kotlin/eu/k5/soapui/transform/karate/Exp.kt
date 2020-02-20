@@ -12,20 +12,12 @@ import eu.k5.soapui.transform.karate.model.statements.Blank
 import eu.k5.soapui.transform.karate.model.statements.Star
 import java.io.StringWriter
 import java.io.Writer
-import javax.swing.plaf.nimbus.State
 
-fun main(args: Array<String>) {
-    KarateTransformExp().transform()
-}
-
-class KarateTransformExp : AbstractTest() {
+class Exp {
 
     private val env = Environment()
 
-    fun transform() {
-        val project = loadFromBox("runnable2") as SuProject
-        val testCase = project.testSuites[0].testCases[0]
-
+    fun transform(testCase: SuuTestCase): String {
         val scenario = Scenario(testCase.name)
 
         val ctx = transformHeader(scenario, testCase)
@@ -48,7 +40,9 @@ class KarateTransformExp : AbstractTest() {
 
         val writer: Writer = StringWriter()
         scenario.write(ModelWriter(writer, env))
-        println(writer.toString())
+        val toString = writer.toString()
+        println(toString)
+        return toString
     }
 
     private fun script(step: SuuTestStepScript, ctx: VariableLiteral): Statement {
