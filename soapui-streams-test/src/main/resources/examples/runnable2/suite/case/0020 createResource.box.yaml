@@ -5,6 +5,12 @@ request: !restRequest
   - key: headerP
     values:
     - headerV
+  - key: Accept
+    values:
+    - application/json
+  - key: Content-Type
+    values:
+    - application/json
   name: createResource
 weight: 10
 ### base
@@ -23,7 +29,7 @@ baseResources:
 baseService: !restService
   name: Restservice
 ### content
-{ "value": "value"}
+{ "value": "${="String"x}"}
 ### assertions
 !assertions
 assertions:

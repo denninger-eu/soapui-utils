@@ -6,7 +6,7 @@ import eu.k5.soapui.transform.karate.model.Statement
 
 class PrefixBlock(
     val name: String,
-    val additional: String = " And "
+    private val additional: String = " And "
 ) : Statement() {
 
     val expressions = ArrayList<Expression>()

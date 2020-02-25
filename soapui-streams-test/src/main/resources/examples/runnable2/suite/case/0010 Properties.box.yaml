@@ -3,4 +3,8 @@ name: Properties
 properties:
 - name: key
   value: keyValue
+- name: date
+  value: ${=java.time.LocalDateTime.now()}
+- name: dynamicScript
+  value: '"test"'
 weight: 0

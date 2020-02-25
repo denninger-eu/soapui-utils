@@ -1,6 +1,13 @@
 !restRequestStep
 name: updateResource
 request: !restRequest
+  headers:
+  - key: Accept
+    values:
+    - application/json
+  - key: Content-Type
+    values:
+    - application/json
   name: updateResource
 weight: 50
 ### base

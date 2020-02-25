@@ -8,7 +8,6 @@ class RequestBlock(
     name: String
 ) : Statement() {
     val Comment = Comment(name)
-
     val Given = PrefixBlock.Given()
     val When = PrefixBlock.When()
     val Then = PrefixBlock.Then()

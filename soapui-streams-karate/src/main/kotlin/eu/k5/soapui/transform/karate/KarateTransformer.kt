@@ -9,15 +9,10 @@ import eu.k5.soapui.transform.karate.model.Statement
 class KarateTransformer {
 
 
-    fun transform(testCase: SuuTestCase) {
+    fun transform(testCase: SuuTestCase): TransformationResult {
         val result = Exp().transform(testCase)
 
-
-
-        for (step in testCase.steps) {
-
-
-        }
+        return TransformationResult(result)
     }
 
     private fun transformHeader(testCase: SuuTestCase): Statement {

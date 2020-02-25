@@ -1,6 +1,5 @@
 package eu.k5.soapui.transform.karate
 
-import eu.k5.soapui.streams.model.SuProject
 import eu.k5.soapui.streams.model.assertion.SuuAssertionJsonPathExists
 import eu.k5.soapui.streams.model.assertion.SuuAssertionValidStatus
 import eu.k5.soapui.streams.model.rest.SuuRestMethod
@@ -12,6 +11,7 @@ import eu.k5.soapui.transform.karate.model.statements.Blank
 import eu.k5.soapui.transform.karate.model.statements.Star
 import java.io.StringWriter
 import java.io.Writer
+import java.util.regex.Pattern
 
 class Exp {
 
@@ -47,23 +47,13 @@ class Exp {
 
     private fun script(step: SuuTestStepScript, ctx: VariableLiteral): Statement {
         val block = Block("Script " + step.name)
-        val temp = env.getTempFeatureVariable()
-        block.statements.add(
-            Star(
-                Declaration.textAssign(
-                    temp, MultiLineStringLiteral(step.script ?: "")
-                )
-            )
-        )
+        val stepVariable = VariableLiteral(escapeVariableName(step.name))
+
         block.statements.add(
             Star(
                 Declaration.assign(
                     env.getTempFeatureVariable(),
-                    MethodCallExpression(
-                        ctx, "groovy", listOf(
-                            temp
-                        )
-                    )
+                    MethodCallExpression(stepVariable, "execute")
                 )
             )
         )
@@ -98,11 +88,12 @@ class Exp {
         scenario: Scenario,
         testCase: SuuTestCase
     ): VariableLiteral {
+
         scenario.statements.add(
             Star(
                 Declaration.loadClass(
                     VariableLiteral("Context"),
-                    "eu.k5.greenfield.karate.Context"
+                    env.contextClassName
                 )
             )
         )
@@ -125,9 +116,9 @@ class Exp {
                 created = true
             } else if (step is SuuTestStepProperties) {
                 scenario.statements.add(initProperties(step, ctxVariable))
-
-
                 created = true
+            } else if (step is SuuTestStepScript) {
+                scenario.statements.add(initScript(step, ctxVariable));
             }
         }
 
@@ -137,9 +128,51 @@ class Exp {
         return ctxVariable
     }
 
+    private fun initScript(step: SuuTestStepScript, ctx: VariableLiteral): Statement {
+        val block = Block("Script " + step.name)
+        val temp = env.getTempFeatureVariable()
+        block.statements.add(
+            Star(
+                Declaration.textAssign(
+                    temp, MultiLineStringLiteral(step.script ?: "")
+                )
+            )
+        )
+
+        val stepVariable = VariableLiteral(escapeVariableName(step.name))
+
+        block.statements.add(
+            Star(
+                Declaration.assign(
+                    stepVariable,
+                    MethodCallExpression(
+                        ctx, "groovyScript", listOf(
+                            StringLiteral(step.name)
+                        )
+                    ).chain("script", listOf(temp))
+                )
+            )
+        )
+        block.statements.add(Blank())
+        return block
+    }
+
     private fun initProperties(step: SuuTestStepProperties, ctx: VariableLiteral): Statement {
 
         val block = Block()
+
+        val stepVariable = VariableLiteral(escapeVariableName(step.name))
+        block.statements.add(
+            Star(
+                Declaration.assign(
+                    stepVariable,
+                    MethodCallExpression(
+                        ctx, env.createPropertiesStep, listOf(StringLiteral(step.name))
+                    )
+                )
+            )
+        )
+
         for (prop in step.properties.properties) {
             block.statements.add(
                 Star(
@@ -147,8 +180,8 @@ class Exp {
                         env.getTempFeatureVariable(),
 
                         MethodCallExpression(
-                            ctx, "setProperty", listOf(
-                                StringLiteral(step.name), StringLiteral(prop.name), StringLiteral(prop.value ?: "")
+                            stepVariable, "setProperty", listOf(
+                                StringLiteral(prop.name), StringLiteral(prop.value ?: "")
                             )
                         )
 
@@ -165,22 +198,29 @@ class Exp {
         scenario: Scenario,
         step: SuuTestStepRestRequest,
         ctx: VariableLiteral
-    ) {
+    ): VariableLiteral {
         var methodCall = MethodCallExpression(
-            ctx, "createStep", listOf(StringLiteral(step.name))
+            ctx, env.createRequestStep, listOf(StringLiteral(step.name))
         ).chain("url", listOf(StringLiteral(createUrl(step))))
 
         if (step.baseMethod.httpMethod == SuuRestMethod.HttpMethod.POST || step.baseMethod.httpMethod == SuuRestMethod.HttpMethod.PUT) {
             methodCall = methodCall.chain("request", listOf(StringLiteral(step.request.content ?: "")))
         }
+        val stepVariable = VariableLiteral(escapeVariableName(step.name))
         scenario.statements.add(
             Star(
                 Declaration.assign(
-                    VariableLiteral(step.name),
+                    stepVariable,
                     methodCall
                 )
             )
         )
+        return stepVariable
+    }
+
+    private val ESCAPE_PATTERN = Pattern.compile("""[^-_0-9a-zA-Z{}()\]\[ ]""")
+    private fun escapeVariableName(fileName: String): String {
+        return ESCAPE_PATTERN.matcher(fileName).replaceAll("_")
     }
 
     private fun transfer(step: SuuTestStepPropertyTransfers, ctx: VariableLiteral): Statement {
@@ -190,22 +230,68 @@ class Exp {
         val block = Block(step.name)
         for (transfer in step.transfers) {
 
-
             val expression = Declaration.assign(
                 env.getTempFeatureVariable(),
-                MethodCallExpression(
-                    ctx, "transfer", listOf(
-                        StringLiteral("#" + transfer.source.stepName + "#" + transfer.source.propertyName),
-                        StringLiteral(transfer.source.expression ?: ""),
-                        StringLiteral(transfer.target.stepName + transfer.target.propertyName),
-                        StringLiteral(transfer.target.expression ?: "")
-                    )
-                )
+                trans(ctx, transfer)
             )
             block.statements.add(Star(expression))
         }
         block.statements.add(Blank())
         return block
+    }
+
+    private fun trans(ctx: VariableLiteral, transfer: SuuPropertyTransfer): MethodCallExpression {
+        var transferFrom = if (transfer.source.expression.isNullOrEmpty()) {
+            MethodCallExpression(
+                ctx, "transfer", listOf(
+                    StringLiteral(
+                        asEntity(transfer.source)
+                    )
+                )
+            )
+        } else {
+            MethodCallExpression(
+                ctx, "transfer", listOf(
+                    StringLiteral(asEntity(transfer.source)),
+                    StringLiteral(transfer.source.expression ?: ""),
+                    StringLiteral(transfer.source.language.toString())
+                )
+            )
+        }
+
+        if (transfer.target.expression.isNullOrEmpty()) {
+            return transferFrom.chain(
+                "to", listOf(
+                    StringLiteral(asEntity(transfer.target))
+                )
+            )
+        } else {
+            return transferFrom.chain(
+                "to", listOf(
+                    StringLiteral(asEntity(transfer.target)),
+                    StringLiteral(transfer.target.expression ?: ""),
+                    StringLiteral(transfer.target.language.toString())
+                )
+            )
+        }
+    }
+
+
+    private fun asEntity(target: SuuPropertyTransfer.Transfer): String {
+        var entity: String = if (!(target.stepName ?: "").startsWith("#")) {
+            "#" + target.stepName
+        } else {
+            target.stepName ?: ""
+        }
+        return if (!(target.propertyName ?: "").startsWith("#")
+            && !entity.endsWith("#")
+        ) {
+            entity + "#" + target.propertyName
+        } else {
+            entity + target.propertyName
+
+        }
+
     }
 
     private fun asVariable(target: SuuPropertyTransfer.Transfer): VariableLiteral {
@@ -252,7 +338,7 @@ class Exp {
                         "param",
                         Assignment(
                             ConstantLiteral(parameter.name),
-                            MethodCallExpression(ctx, "applyProperties", listOf(StringLiteral(parameter.value)))
+                            propertyFromContext(ctx, parameter.value)
                         )
                     )
                 )
@@ -262,26 +348,13 @@ class Exp {
                         "header",
                         Assignment(
                             ConstantLiteral(parameter.name),
-                            MethodCallExpression(ctx, "applyProperties", listOf(StringLiteral(parameter.value)))
+                            propertyFromContext(ctx, parameter.value)
                         )
                     )
                 )
             }
         }
 
-        block.Given.expressions.add(
-            DefaultAssignment.exp(
-                "header",
-                Assignment(ConstantLiteral("Accept"), StringLiteral("application/json"))
-            )
-        )
-
-        block.Given.expressions.add(
-            DefaultAssignment.exp(
-                "header",
-                Assignment(ConstantLiteral("Content-Type"), StringLiteral("application/json"))
-            )
-        )
 
         for (header in step.request.headers) {
             for (value in header.value) {
@@ -290,7 +363,7 @@ class Exp {
                         "header",
                         Assignment(
                             ConstantLiteral(header.key),
-                            MethodCallExpression(ctx, "applyProperties", listOf(StringLiteral(value)))
+                            propertyFromContext(ctx, value)
                         )
                     )
                 )
@@ -332,6 +405,13 @@ class Exp {
         }
 
         return block
+    }
+
+    private fun propertyFromContext(ctx: VariableLiteral, value: String): Expression {
+        if (value.indexOf("\${") < 0) {
+            return StringLiteral(value)
+        }
+        return MethodCallExpression(ctx, env.expandProperties, listOf(StringLiteral(value)))
     }
 
     private fun asVariableName(stepName: String): String {

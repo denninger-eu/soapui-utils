@@ -1,0 +1,13 @@
+!propertyTransfers
+name: TransferScriptResult
+transfers:
+- name: TransferResult
+  source:
+    language: XPATH
+    propertyName: result
+    stepName: Groovy2
+  target:
+    language: XPATH
+    propertyName: suiteProperty
+    stepName: '#TestSuite#'
+weight: 80

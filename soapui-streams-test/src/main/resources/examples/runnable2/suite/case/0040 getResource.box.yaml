@@ -1,6 +1,10 @@
 !restRequestStep
 name: getResource
 request: !restRequest
+  headers:
+  - key: Accept
+    values:
+    - application/json
   name: getResource
 weight: 30
 ### base
