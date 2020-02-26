@@ -69,16 +69,7 @@ class Exp {
     private fun delay(step: SuuTestStepDelay, ctx: VariableLiteral): Statement {
         val block = Block("Delay")
         block.statements.add(
-            Star(
-                Declaration.assign(
-                    env.getTempFeatureVariable(),
-                    MethodCallExpression(
-                        ctx, "sleep", listOf(
-                            IntLiteral(step.delay)
-                        )
-                    )
-                )
-            )
+            methodCall(MethodCallExpression(ctx, "sleep", listOf(IntLiteral(step.delay))))
         )
         block.statements.add(Blank())
         return block
@@ -175,20 +166,15 @@ class Exp {
 
         for (prop in step.properties.properties) {
             block.statements.add(
-                Star(
-                    Declaration.assign(
-                        env.getTempFeatureVariable(),
-
-                        MethodCallExpression(
-                            stepVariable, "setProperty", listOf(
-                                StringLiteral(prop.name), StringLiteral(prop.value ?: "")
-                            )
+                methodCall(
+                    MethodCallExpression(
+                        stepVariable, "setProperty", listOf(
+                            StringLiteral(prop.name), StringLiteral(prop.value ?: "")
                         )
-
                     )
-
                 )
             )
+
 
         }
         return block
@@ -229,12 +215,7 @@ class Exp {
 
         val block = Block(step.name)
         for (transfer in step.transfers) {
-
-            val expression = Declaration.assign(
-                env.getTempFeatureVariable(),
-                trans(ctx, transfer)
-            )
-            block.statements.add(Star(expression))
+            block.statements.add(methodCall(trans(ctx, transfer)))
         }
         block.statements.add(Blank())
         return block
@@ -371,11 +352,8 @@ class Exp {
         }
         block.When.expressions.add(DefaultCall.method(step.baseMethod.httpMethod!!.name))
         block.Then.expressions.add(
-            Declaration.assign(
-                env.getTempFeatureVariable(),
-                MethodCallExpression(
-                    stepVariable, "response", listOf(ConstantLiteral("response"))
-                )
+            DefaultAssignment(
+                "print", MethodCallExpression(stepVariable, "response", listOf(ConstantLiteral("response")))
             )
         )
         for (assertion in step.assertions.assertions) {
@@ -406,6 +384,11 @@ class Exp {
 
         return block
     }
+
+    private fun methodCall(call: MethodCallExpression): Statement {
+        return Star(DefaultAssignment("print", call))
+    }
+
 
     private fun propertyFromContext(ctx: VariableLiteral, value: String): Expression {
         if (value.indexOf("\${") < 0) {
