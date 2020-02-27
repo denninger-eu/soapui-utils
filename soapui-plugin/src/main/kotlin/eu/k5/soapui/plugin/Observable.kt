@@ -1,4 +1,4 @@
-package eu.k5.soapui.plugin.imex
+package eu.k5.soapui.plugin
 
 import java.util.*
 import javax.swing.SwingUtilities

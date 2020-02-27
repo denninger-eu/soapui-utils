@@ -1,5 +1,5 @@
 !restRequestStep
-name: getResource
+name: get Resource
 request: !restRequest
   headers:
   - key: Accept

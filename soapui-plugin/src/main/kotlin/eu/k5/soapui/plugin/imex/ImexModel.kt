@@ -1,9 +1,8 @@
 package eu.k5.soapui.plugin.imex
 
 import com.eviware.soapui.impl.wsdl.WsdlProject
-import com.eviware.soapui.model.project.Project
+import eu.k5.soapui.plugin.Observable
 import eu.k5.soapui.plugin.SuuConfig
-import eu.k5.soapui.streams.listener.difference.DiffEntry
 import eu.k5.soapui.streams.listener.difference.Differences
 import eu.k5.soapui.streams.model.SuProject
 import eu.k5.soapui.streams.model.rest.SuuRestService

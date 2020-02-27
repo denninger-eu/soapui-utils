@@ -3,13 +3,10 @@ package eu.k5.soapui.transform.karate
 class TransformationResult(
     val main: String
 ) {
+    val artifacts: MutableList<Artifact> = ArrayList()
 
-
-    val artefacts: Map<String, Artefact> = HashMap()
-
-    class Artefact(
-        val name: String
-    ) {
-
-    }
+    class Artifact(
+        val name: String,
+        val content: String
+    )
 }

@@ -8,6 +8,8 @@ import com.eviware.soapui.model.testsuite.TestSuite
 import com.eviware.soapui.plugins.ActionConfiguration
 import com.eviware.soapui.plugins.ToolbarPosition
 import com.eviware.soapui.support.action.support.AbstractSoapUIAction
+import eu.k5.soapui.plugin.karate.KarateExporterModel
+import eu.k5.soapui.plugin.karate.KarateExporterView
 import eu.k5.soapui.streams.direct.model.test.TestCaseDirect
 import eu.k5.soapui.streams.direct.model.test.TestSuiteDirect
 import eu.k5.soapui.transform.karate.KarateTransformer
@@ -27,9 +29,17 @@ class ExportTestCaseAction : AbstractSoapUIAction<TestCase>("Export Karate", "Sy
         //   val testSuiteDirect = TestSuiteDirect(testCase as WsdlTestSuite).testCases[0]
         val testSuiteDirect = TestCaseDirect(testCase as WsdlTestCase)
 
-        KarateTransformer().transform(testSuiteDirect)
+        val transform = KarateTransformer().transform(testSuiteDirect)
 
+        val model = KarateExporterModel()
+        model.addArtifact("main", transform.main)
 
+        for (artifact in transform.artifacts) {
+            model.addArtifact(artifact.name, artifact.content)
+        }
+
+        val view = KarateExporterView(model)
+        view.display()
     }
 
 
