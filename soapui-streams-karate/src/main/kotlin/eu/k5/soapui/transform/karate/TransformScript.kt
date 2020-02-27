@@ -16,12 +16,12 @@ class TransformScript(
         val block = Block("Script " + step.name)
         val temp = environment.getTempFeatureVariable()
 
-        val artifact = environment.addArtifact(step.name, step.script ?: "", ".groovy")
+        val artifact = environment.addArtifact(step.name + "Script", step.script ?: "", ".groovy")
 
         block.statements.add(
             Star(
                 DefaultAssignment(
-                    "text",
+                    "def",
                     Assignment(
                         artifact.variable,
                         MethodCallExpression(null, "read", listOf(StringLiteral(artifact.name)))

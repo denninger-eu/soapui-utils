@@ -28,11 +28,11 @@ class TransformRestRequest(
 
             val content = step.request.content
             if (!content.isNullOrBlank()) {
-                val artifact = environment.addArtifact(step.name, content, ".json")
+                val artifact = environment.addArtifact(step.name + "Request", content, ".txt")
                 block.statements.add(
                     Star(
                         DefaultAssignment(
-                            "text",
+                            "def",
                             Assignment(
                                 artifact.variable,
                                 MethodCallExpression(null, "read", listOf(StringLiteral(artifact.name)))
