@@ -7,9 +7,7 @@ import eu.k5.soapui.streams.model.rest.SuuRestParameter
 import eu.k5.soapui.streams.model.test.SuuTestStepRestRequest
 import eu.k5.soapui.transform.karate.model.*
 import eu.k5.soapui.transform.karate.model.literals.ConstantLiteral
-import eu.k5.soapui.transform.karate.model.statements.NoOpStatement
 import eu.k5.soapui.transform.karate.model.literals.StringLiteral
-import eu.k5.soapui.transform.karate.model.literals.VariableLiteral
 import eu.k5.soapui.transform.karate.model.statements.Star
 
 class TransformRestRequest(
@@ -30,7 +28,7 @@ class TransformRestRequest(
 
             val content = step.request.content
             if (!content.isNullOrBlank()) {
-                val artifact = environment.addArtifact(step.name, content)
+                val artifact = environment.addArtifact(step.name, content, ".json")
                 block.statements.add(
                     Star(
                         DefaultAssignment(

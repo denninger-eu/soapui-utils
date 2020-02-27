@@ -6,7 +6,9 @@ import eu.k5.soapui.plugin.imex.ImexView
 import java.awt.BorderLayout
 import javax.swing.*
 import java.awt.Dimension
+import java.io.File
 import javax.swing.event.ListSelectionEvent
+import javax.swing.JFileChooser
 
 
 class KarateExporterView(
@@ -14,7 +16,7 @@ class KarateExporterView(
 ) {
 
 
-    private val controller = KarateExporterController(model)
+    private val controller = KarateExporterController(model, this)
     private val mainFrame: JFrame = JFrame("Karate Export")
     private val mainLayout: BorderLayout = BorderLayout(2, 2)
     private val buttonPanel = JPanel()
@@ -62,6 +64,18 @@ class KarateExporterView(
 
     fun display() {
         mainFrame.isVisible = true
+    }
+
+    fun getTargetFolder(): File? {
+        val chooser = JFileChooser()
+        chooser.fileSelectionMode = JFileChooser.DIRECTORIES_ONLY;
+
+        val result = chooser.showOpenDialog(null)
+        if (result == JFileChooser.APPROVE_OPTION) {
+            return chooser.selectedFile
+        } else {
+            return null
+        }
     }
 
     companion object {

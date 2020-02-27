@@ -1,10 +1,7 @@
 package eu.k5.soapui.transform.karate
 
 import eu.k5.soapui.streams.model.test.SuuTestStepScript
-import eu.k5.soapui.transform.karate.model.Block
-import eu.k5.soapui.transform.karate.model.Declaration
-import eu.k5.soapui.transform.karate.model.MethodCallExpression
-import eu.k5.soapui.transform.karate.model.Statement
+import eu.k5.soapui.transform.karate.model.*
 import eu.k5.soapui.transform.karate.model.literals.MultiLineStringLiteral
 import eu.k5.soapui.transform.karate.model.literals.StringLiteral
 import eu.k5.soapui.transform.karate.model.literals.VariableLiteral
@@ -18,10 +15,17 @@ class TransformScript(
     override fun header(step: SuuTestStepScript): Statement {
         val block = Block("Script " + step.name)
         val temp = environment.getTempFeatureVariable()
+
+        val artifact = environment.addArtifact(step.name, step.script ?: "", ".groovy")
+
         block.statements.add(
             Star(
-                Declaration.textAssign(
-                    temp, MultiLineStringLiteral(step.script ?: "")
+                DefaultAssignment(
+                    "text",
+                    Assignment(
+                        artifact.variable,
+                        MethodCallExpression(null, "read", listOf(StringLiteral(artifact.name)))
+                    )
                 )
             )
         )
@@ -36,7 +40,7 @@ class TransformScript(
                         environment.ctx, "groovyScript", listOf(
                             StringLiteral(step.name)
                         )
-                    ).chain("script", listOf(temp))
+                    ).chain("script", listOf(artifact.variable))
                 )
             )
         )

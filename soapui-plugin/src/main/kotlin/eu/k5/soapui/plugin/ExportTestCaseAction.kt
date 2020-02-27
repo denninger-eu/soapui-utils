@@ -32,7 +32,7 @@ class ExportTestCaseAction : AbstractSoapUIAction<TestCase>("Export Karate", "Sy
         val transform = KarateTransformer().transform(testSuiteDirect)
 
         val model = KarateExporterModel()
-        model.addArtifact("main", transform.main)
+        model.addArtifact("main.feature", transform.main)
 
         for (artifact in transform.artifacts) {
             model.addArtifact(artifact.name, artifact.content)

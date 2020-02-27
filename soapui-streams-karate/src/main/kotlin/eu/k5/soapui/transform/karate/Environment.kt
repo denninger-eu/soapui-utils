@@ -3,7 +3,6 @@ package eu.k5.soapui.transform.karate
 import eu.k5.soapui.transform.karate.model.Scenario
 import eu.k5.soapui.transform.karate.model.literals.VariableLiteral
 import java.io.StringWriter
-import java.util.stream.BaseStream
 
 class Environment {
 
@@ -33,8 +32,8 @@ class Environment {
         return steps.computeIfAbsent(name) { VariableLiteral(base.escapeVariableName(name)) }
     }
 
-    fun addArtifact(name: String, content: String): Artifact {
-        val artifact = Artifact(name, content, VariableLiteral(base.escapeVariableName(name)))
+    fun addArtifact(name: String, content: String, type: String): Artifact {
+        val artifact = Artifact(name + type, content, VariableLiteral(base.escapeVariableName(name)))
         artifacts[name] = artifact
         return artifact
     }
@@ -42,7 +41,7 @@ class Environment {
     fun getResult(): TransformationResult {
         val result = TransformationResult(mainDocument ?: "")
         for (artifact in artifacts) {
-            result.artifacts.add(TransformationResult.Artifact(artifact.key, artifact.value.content))
+            result.artifacts.add(TransformationResult.Artifact(artifact.value.name, artifact.value.content))
         }
         return result
     }
