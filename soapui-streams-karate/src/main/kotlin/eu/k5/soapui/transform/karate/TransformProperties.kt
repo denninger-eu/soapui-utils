@@ -21,9 +21,7 @@ class TransformProperties(
     override fun body(step: SuuTestStepProperties): Statement = NoOpStatement()
 
     override fun header(step: SuuTestStepProperties): Statement {
-
         val block = Block()
-
         val stepVariable = environment.getVariableForStep(step.name)
         block.statements.add(
             Star(
@@ -46,8 +44,6 @@ class TransformProperties(
                     )
                 )
             )
-
-
         }
         return block
     }

@@ -27,7 +27,7 @@ class MainTransformer(
             } else if (step is SuuTestStepDelay) {
                 scenario.statements.add(delay(step, ctx))
             } else if (step is SuuTestStepProperties) {
-                scenario.statements.add(env.propertiesTransformer.header(step))
+                scenario.statements.add(env.propertiesTransformer.body(step))
             } else if (step is SuuTestStepScript) {
                 scenario.statements.add(env.scriptTransformer.body(step))
             } else if (step is SuuTestStepProperties) {

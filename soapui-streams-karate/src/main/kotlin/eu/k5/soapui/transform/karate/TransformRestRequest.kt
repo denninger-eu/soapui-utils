@@ -86,6 +86,9 @@ class TransformRestRequest(
         }
 
         for (parameter in step.allParameters().values) {
+            if (parameter.value.isNullOrEmpty()) {
+                continue
+            }
             if (parameter.style == SuuRestParameter.Style.QUERY) {
                 block.Given.expressions.add(
                     DefaultAssignment.exp(
