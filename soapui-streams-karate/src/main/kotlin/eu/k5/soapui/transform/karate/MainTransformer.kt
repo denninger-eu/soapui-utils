@@ -3,12 +3,8 @@ package eu.k5.soapui.transform.karate
 import eu.k5.soapui.streams.model.test.*
 import eu.k5.soapui.transform.karate.model.*
 import eu.k5.soapui.transform.karate.model.literals.IntLiteral
-import eu.k5.soapui.transform.karate.model.literals.StringLiteral
 import eu.k5.soapui.transform.karate.model.literals.VariableLiteral
 import eu.k5.soapui.transform.karate.model.statements.Blank
-import eu.k5.soapui.transform.karate.model.statements.Star
-import java.io.StringWriter
-import java.io.Writer
 
 class MainTransformer(
     private val env: Environment
@@ -20,17 +16,18 @@ class MainTransformer(
         val ctx = transformHeader(scenario, testCase)
 
         for (step in testCase.steps) {
-            if (step is SuuTestStepRestRequest) {
-                scenario.statements.add(env.restRequestTransformer.body(step))
-            } else if (step is SuuTestStepPropertyTransfers) {
-                scenario.statements.add(env.transferTransformer.body(step))
-            } else if (step is SuuTestStepDelay) {
-                scenario.statements.add(delay(step, ctx))
-            } else if (step is SuuTestStepProperties) {
-                scenario.statements.add(env.propertiesTransformer.body(step))
-            } else if (step is SuuTestStepScript) {
-                scenario.statements.add(env.scriptTransformer.body(step))
-            } else if (step is SuuTestStepProperties) {
+            if (!step.enabled) {
+                continue;
+            }
+
+            when (step) {
+                is SuuTestStepRestRequest -> scenario.statements.add(env.restRequestTransformer.body(step))
+                is SuuTestStepPropertyTransfers -> scenario.statements.add(env.transferTransformer.body(step))
+                is SuuTestStepDelay -> scenario.statements.add(delay(step, ctx))
+                is SuuTestStepProperties -> scenario.statements.add(env.propertiesTransformer.body(step))
+                is SuuTestStepScript -> scenario.statements.add(env.scriptTransformer.body(step))
+                is SuuTestStepProperties -> {
+                }
             }
         }
         return scenario
@@ -56,6 +53,9 @@ class MainTransformer(
 
         var created = false
         for (step in testCase.steps) {
+            if (!step.enabled) {
+                continue
+            }
             if (step is SuuTestStepRestRequest) {
                 scenario.statements.add(env.restRequestTransformer.header(step))
                 created = true
