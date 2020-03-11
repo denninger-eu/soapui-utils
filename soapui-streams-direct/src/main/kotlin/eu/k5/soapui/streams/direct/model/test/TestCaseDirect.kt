@@ -147,6 +147,9 @@ class TestCaseDirect(
             stepFactories[WsdlGroovyScriptTestStep::class.java] = { testCase, step ->
                 TestStepScriptDirect(testCase, step as WsdlGroovyScriptTestStep)
             }
+            stepFactories[WsdlTestRequestStep::class.java] = { testCase, step ->
+                TestStepWsdlRequestDirect(testCase, step as WsdlTestRequestStep)
+            }
         }
 
         fun supported(testStep: TestStep): Boolean = stepFactories.containsKey(testStep.javaClass)

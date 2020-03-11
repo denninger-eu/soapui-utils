@@ -20,7 +20,6 @@ import kotlin.collections.ArrayList
 
 class TestStepRestRequestDirect(
     testCase: TestCaseDirect,
-
     private val restRequestStep: RestTestRequestStep
 ) : AbstractTestStepDirect(
     testCase,

@@ -19,7 +19,6 @@ class MainTransformer(
             if (!step.enabled) {
                 continue;
             }
-
             when (step) {
                 is SuuTestStepRestRequest -> scenario.statements.add(env.restRequestTransformer.body(step))
                 is SuuTestStepPropertyTransfers -> scenario.statements.add(env.transferTransformer.body(step))
