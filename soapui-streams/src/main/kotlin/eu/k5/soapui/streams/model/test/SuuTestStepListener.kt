@@ -7,9 +7,11 @@ interface SuuTestStepListener {
 
     fun transfer(step: SuuTestStepPropertyTransfers)
 
-
     fun enterRestRequest(step: SuuTestStepRestRequest): VisitResult
     fun exitRestRequest(step: SuuTestStepRestRequest)
+
+    fun enterWsdlRequest(step: SuuTestStepWsdlRequest): VisitResult
+    fun exitWsdlRequest(step: SuuTestStepWsdlRequest)
 
     fun properties(step: SuuTestStepProperties)
 
@@ -21,6 +23,13 @@ interface SuuTestStepListener {
 
     companion object {
         val NO_OP = object : SuuTestStepListener {
+            override fun exitWsdlRequest(step: SuuTestStepWsdlRequest) {
+            }
+
+            override fun enterWsdlRequest(step: SuuTestStepWsdlRequest): VisitResult {
+                return VisitResult.TERMINATE
+            }
+
             override fun script(step: SuuTestStepScript) {
             }
 

@@ -82,6 +82,8 @@ private class SelectTestSuiteListener(
 private class SelectTestStepListener(
     val query: SelectionQuery
 ) : SuuTestStepListener {
+
+
     override fun script(step: SuuTestStepScript) {
     }
 
@@ -93,6 +95,13 @@ private class SelectTestStepListener(
     }
 
     override fun exitRestRequest(step: SuuTestStepRestRequest) {
+    }
+
+    override fun enterWsdlRequest(step: SuuTestStepWsdlRequest): VisitResult {
+        return VisitResult.CONTINUE
+    }
+
+    override fun exitWsdlRequest(step: SuuTestStepWsdlRequest) {
     }
 
     override fun properties(step: SuuTestStepProperties) {
@@ -111,6 +120,10 @@ private class SelectTestStepListener(
 private class SelectAssertionListener(
     val query: SelectionQuery
 ) : SuuAssertionListener {
+    override fun soapResponse(assertion: SuuAssertionSoapResponse) {
+        query.tryAdd(assertion)
+    }
+
     override fun validStatus(assertion: SuuAssertionValidStatus) {
         query.tryAdd(assertion)
     }

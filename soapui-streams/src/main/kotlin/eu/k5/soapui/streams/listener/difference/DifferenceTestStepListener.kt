@@ -9,6 +9,7 @@ class DifferenceTestStepListener(
 ) : SuuTestStepListener {
 
 
+
     private var restRequest: SuuTestStepRestRequest? = null
 
     private inline fun <reified T : SuuTestStep> handle(
@@ -88,6 +89,13 @@ class DifferenceTestStepListener(
 
         restRequest = ref
         return VisitResult.CONTINUE
+    }
+
+    override fun enterWsdlRequest(step: SuuTestStepWsdlRequest): VisitResult {
+        return VisitResult.CONTINUE
+    }
+
+    override fun exitWsdlRequest(step: SuuTestStepWsdlRequest) {
     }
 
     override fun exitRestRequest(step: SuuTestStepRestRequest) {

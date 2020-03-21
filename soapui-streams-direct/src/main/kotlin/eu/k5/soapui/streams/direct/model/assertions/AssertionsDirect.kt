@@ -6,6 +6,7 @@ import com.eviware.soapui.impl.wsdl.teststeps.assertions.json.JsonPathContentAss
 import com.eviware.soapui.impl.wsdl.teststeps.assertions.json.JsonPathCountAssertion
 import com.eviware.soapui.impl.wsdl.teststeps.assertions.json.JsonPathExistenceAssertion
 import com.eviware.soapui.impl.wsdl.teststeps.assertions.json.JsonPathRegExAssertion
+import com.eviware.soapui.impl.wsdl.teststeps.assertions.soap.SoapResponseAssertion
 import com.eviware.soapui.model.testsuite.TestAssertion
 import com.eviware.soapui.security.assertion.InvalidHttpStatusCodesAssertion
 import com.eviware.soapui.security.assertion.ValidHttpStatusCodesAssertion
@@ -15,6 +16,10 @@ class AssertionsDirect(
     private val assertionList: MutableList<TestAssertion>,
     private val addAssertion: (String) -> TestAssertion
 ) : SuuAssertions {
+    override fun createSoapResponse(name: String): SuuAssertionSoapResponse {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     /*
         "JMS Status" -> "JMS Status"
         "WS-Security Status" -> "WSS Status Assertion"
@@ -106,6 +111,7 @@ class AssertionsDirect(
                 is JsonPathRegExAssertion -> AssertionJsonPathRegExDirect(testAssertion)
                 is XQueryContainsAssertion -> AssertionXQueryDirect(testAssertion)
                 is XPathContainsAssertion -> AssertionXPathDirect(testAssertion)
+                is SoapResponseAssertion -> AssertionSoapResponseDirect(testAssertion)
                 else -> TODO("Unsupported assertion: " + testAssertion.javaClass.toString())
             }
         }

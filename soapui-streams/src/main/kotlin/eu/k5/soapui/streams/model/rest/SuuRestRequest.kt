@@ -9,6 +9,7 @@ interface SuuRestRequest : WithHeader {
     var description: String?
 
     val parameters: SuuRestParameters
+    
 
     var content: String?
 

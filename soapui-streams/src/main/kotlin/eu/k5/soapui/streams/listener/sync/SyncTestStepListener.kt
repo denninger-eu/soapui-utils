@@ -9,6 +9,12 @@ class SyncTestStepListener(
     private val reference: SuuTestCase,
     private val target: SuuTestCase
 ) : SuuTestStepListener {
+    override fun enterWsdlRequest(step: SuuTestStepWsdlRequest): VisitResult {
+        return VisitResult.CONTINUE
+    }
+
+    override fun exitWsdlRequest(step: SuuTestStepWsdlRequest) {
+    }
 
     private val misc = SyncMisc()
 
@@ -50,7 +56,7 @@ class SyncTestStepListener(
         }
 
         step.description = ref.description
-        
+
         SyncRestRequest().handle(step.request, ref.request)
 
 

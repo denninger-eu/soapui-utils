@@ -12,6 +12,8 @@ import eu.k5.soapui.streams.model.test.*
 class TestCaseBox(
     private val box: Box
 ) : SuuTestCase {
+
+
     override fun reorderSteps(): Boolean {
         return false
     }
@@ -77,6 +79,12 @@ class TestCaseBox(
         return targetStep
     }
 
+    override fun createWsdlRequestStep(name: String, operation: String): SuuTestStepWsdlRequest {
+        val targetStep = createStep(name, SuuTestStepWsdlRequest::class.java) as TestStepWsdlRequestBox
+        targetStep.operationName = operation
+        return targetStep
+    }
+
     class TestCaseYaml {
         var name: String? = null
         var enabled: Boolean? = null
@@ -104,9 +112,11 @@ class TestCaseBox(
             stepFactory[SuuTestStepRestRequest::class.java] = { parent: Box, name: String ->
                 TestStepRestRequestBox.create(parent, name)
             }
-
             stepFactory[SuuTestStepProperties::class.java] = { parent: Box, name: String ->
                 TestStepPropertiesBox.create(parent, name)
+            }
+            stepFactory[SuuTestStepWsdlRequest::class.java] = { parent: Box, name: String ->
+                TestStepWsdlRequestBox.create(parent, name)
             }
         }
 
@@ -115,18 +125,15 @@ class TestCaseBox(
 
         fun mapBox(box: Box): TestStepBox {
             val load = box.load()
-            if (load is TestStepPropertyTransfersBox.PropertyTransfersYaml) {
-                return TestStepPropertyTransfersBox(box)
-            } else if (load is TestStepDelayBox.DelayYaml) {
-                return TestStepDelayBox(box)
-            } else if (load is TestStepRestRequestBox.RestRequestYaml) {
-                return TestStepRestRequestBox(box)
-            } else if (load is TestStepPropertiesBox.PropertiesYaml) {
-                return TestStepPropertiesBox(box)
-            } else if (load is TestStepScriptBox.ScriptYaml) {
-                return TestStepScriptBox(box)
+            when (load) {
+                is TestStepPropertyTransfersBox.PropertyTransfersYaml -> return TestStepPropertyTransfersBox(box)
+                is TestStepDelayBox.DelayYaml -> return TestStepDelayBox(box)
+                is TestStepRestRequestBox.RestRequestYaml -> return TestStepRestRequestBox(box)
+                is TestStepPropertiesBox.PropertiesYaml -> return TestStepPropertiesBox(box)
+                is TestStepScriptBox.ScriptYaml -> return TestStepScriptBox(box)
+
+                else -> TODO(load.javaClass.toString())
             }
-            TODO(load.javaClass.toString())
         }
 
         fun <T : SuuTestStep> createStep(parent: Box, name: String, type: Class<T>): T {

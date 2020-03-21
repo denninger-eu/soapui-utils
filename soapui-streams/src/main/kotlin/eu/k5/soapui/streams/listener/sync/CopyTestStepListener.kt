@@ -2,16 +2,17 @@ package eu.k5.soapui.streams.listener.sync
 
 import eu.k5.soapui.streams.listener.VisitResult
 import eu.k5.soapui.streams.model.test.*
+import java.lang.IllegalStateException
 
 class CopyTestStepListener(
     private val target: SuuTestCase
 ) : SuuTestStepListener {
-    private val misc = SyncMisc()
 
-    private var targetStep: SuuTestStepRestRequest? = null
+    private val misc = SyncMisc()
+    private var targetRestStep: SuuTestStepRestRequest? = null
+    private var targetWsdlStep: SuuTestStepWsdlRequest? = null
 
     override fun enterRestRequest(refStep: SuuTestStepRestRequest): VisitResult {
-
 
         val targetStep = target.createRestRequestStep(
             refStep.name,
@@ -20,21 +21,23 @@ class CopyTestStepListener(
             refStep.baseMethod
         )
         handleStep(refStep, targetStep, false)
-
-
         targetStep.request.name = refStep.request.name
         targetStep.request.description = refStep.request.description
         targetStep.request.content = refStep.request.content
         for (header in refStep.request.headers) {
             targetStep.request.addOrUpdateHeader(header)
         }
-
-
-        this.targetStep = targetStep
-
-
+        this.targetRestStep = targetStep
         return VisitResult.CONTINUE
     }
+
+    override fun enterWsdlRequest(refStep: SuuTestStepWsdlRequest): VisitResult {
+        val targetStep = target.createWsdlRequestStep(refStep.name, refStep.operationName)
+
+        this.targetWsdlStep = targetStep
+        return VisitResult.CONTINUE
+    }
+
 
     override fun script(step: SuuTestStepScript) {
         val targetStep = target.createScriptStep(step.name)
@@ -44,11 +47,19 @@ class CopyTestStepListener(
 
 
     override fun exitRestRequest(step: SuuTestStepRestRequest) {
-        targetStep = null
+        targetRestStep = null
+    }
+
+    override fun exitWsdlRequest(step: SuuTestStepWsdlRequest) {
+        targetWsdlStep = null
     }
 
     override fun createAssertionListener(): SuuAssertionListener {
-        return CopyAssertionListener(targetStep!!.assertions)
+        return when {
+            targetRestStep != null -> CopyAssertionListener(targetRestStep!!.assertions)
+            targetWsdlStep != null -> CopyAssertionListener(targetWsdlStep!!.assertions)
+            else -> throw IllegalStateException("Missing testStep")
+        }
     }
 
     private fun handleStep(reference: SuuTestStep, target: SuuTestStep, properties: Boolean = true) {

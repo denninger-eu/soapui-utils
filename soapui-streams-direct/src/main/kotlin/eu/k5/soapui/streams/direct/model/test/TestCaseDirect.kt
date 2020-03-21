@@ -17,6 +17,9 @@ import eu.k5.soapui.streams.model.test.*
 class TestCaseDirect(
     private val testCase: WsdlTestCase
 ) : SuuTestCase {
+    override fun createWsdlRequestStep(name: String, operation: String): SuuTestStepWsdlRequest {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     private val weights = HashMap<TestStep, Int>()
     override var name: String

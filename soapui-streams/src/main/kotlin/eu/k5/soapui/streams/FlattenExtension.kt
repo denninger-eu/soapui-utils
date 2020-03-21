@@ -69,6 +69,8 @@ private class FlattenTestSuiteListener(
 private class FlattenTestStepListener(
     private val list: MutableList<Any>
 ) : SuuTestStepListener {
+
+
     override fun script(step: SuuTestStepScript) {
         list.add(step)
     }
@@ -83,6 +85,15 @@ private class FlattenTestStepListener(
     }
 
     override fun exitRestRequest(step: SuuTestStepRestRequest) {
+    }
+
+
+    override fun enterWsdlRequest(step: SuuTestStepWsdlRequest): VisitResult {
+        list.add(step)
+        return VisitResult.CONTINUE
+    }
+
+    override fun exitWsdlRequest(step: SuuTestStepWsdlRequest) {
     }
 
     override fun properties(step: SuuTestStepProperties) {
@@ -103,6 +114,10 @@ private class FlattenTestStepListener(
 private class FlattenAssertionListener(
     private val list: MutableList<Any>
 ) : SuuAssertionListener {
+    override fun soapResponse(assertion: SuuAssertionSoapResponse) {
+        list.add(assertion)
+    }
+
     override fun validStatus(assertion: SuuAssertionValidStatus) {
         list.add(assertion)
     }

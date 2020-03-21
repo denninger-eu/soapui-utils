@@ -2,7 +2,6 @@ package eu.k5.soapui.streams.model.test
 
 import eu.k5.soapui.streams.model.SuuProperties
 import eu.k5.soapui.streams.model.rest.SuuRestMethod
-import eu.k5.soapui.streams.model.rest.SuuRestRequest
 import eu.k5.soapui.streams.model.rest.SuuRestResource
 import eu.k5.soapui.streams.model.rest.SuuRestService
 
@@ -33,7 +32,10 @@ interface SuuTestCase {
 
     fun createScriptStep(name: String): SuuTestStepScript
 
+    fun createWsdlRequestStep(name: String, operation: String) : SuuTestStepWsdlRequest
+
 
     fun reorderSteps(): Boolean
+
 
 }

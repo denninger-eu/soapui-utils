@@ -8,6 +8,9 @@ class SyncAssertionListener(
     private val reference: SuuTestStepRestRequest,
     private val target: SuuTestStepRestRequest
 ) : SuuAssertionListener {
+    override fun soapResponse(assertion: SuuAssertionSoapResponse) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
 
     private inline fun <reified T : SuuAssertion> handle(assertion: T, sync: (T) -> Unit) {

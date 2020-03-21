@@ -21,8 +21,14 @@ interface SuuAssertionListener {
 
     fun exitAssertions(assertions: SuuAssertions)
 
+    fun soapResponse(assertion: SuuAssertionSoapResponse)
+
     companion object {
         val NO_OP = object : SuuAssertionListener {
+            override fun soapResponse(assertion: SuuAssertionSoapResponse) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
             override fun validStatus(assertion: SuuAssertionValidStatus) {
                 TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }

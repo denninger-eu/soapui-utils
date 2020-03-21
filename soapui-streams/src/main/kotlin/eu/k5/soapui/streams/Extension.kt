@@ -138,6 +138,12 @@ fun SuuTestCase.apply(listener: SuuTestSuiteListener) {
             }
         } else if (step is SuuTestStepScript) {
             testStepListener.script(step)
+        } else if (step is SuuTestStepWsdlRequest) {
+            val result = testStepListener.enterWsdlRequest(step)
+            if (result != VisitResult.TERMINATE) {
+                handleAssertions(step.assertions, step, testStepListener)
+                testStepListener.exitWsdlRequest(step)
+            }
         }
     }
 
@@ -178,6 +184,8 @@ private fun handleAssertions(
             assertionListener.xpath(assertion)
         } else if (assertion is SuuAssertionXQuery) {
             assertionListener.xquery(assertion)
+        } else if(assertion is SuuAssertionSoapResponse){
+            assertionListener.soapResponse(assertion)
         } else {
             TODO(assertion.javaClass.toString())
         }

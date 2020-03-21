@@ -353,6 +353,16 @@ class AssertionsBox(
     ) : AssertionXmlContainsBox<AssertionXQueryBox>(yaml, store), SuuAssertionXQuery
 
 
+    class AssertionSoapResponseYaml : AssertionYaml<AssertionSoapResponseBox>() {
+
+        override fun asBox(store: () -> Unit): AssertionSoapResponseBox = AssertionSoapResponseBox(this, store)
+    }
+
+    class AssertionSoapResponseBox(
+        private val yaml: AssertionSoapResponseYaml,
+        private val store: () -> Unit
+    ) : AssertionBox(yaml, store), SuuAssertionSoapResponse {}
+
     private inline fun <reified T : AssertionBox> create(name: String, newInstance: AssertionYaml<T>): T {
         newInstance.name = name
         yaml.assertions!!.add(newInstance)
@@ -405,6 +415,10 @@ class AssertionsBox(
 
     override fun createXQuery(name: String): SuuAssertionXQuery {
         return create(name, AssertionXQueryYaml())
+    }
+
+    override fun createSoapResponse(name: String): SuuAssertionSoapResponse {
+        return create(name, AssertionSoapResponseYaml())
     }
 
 

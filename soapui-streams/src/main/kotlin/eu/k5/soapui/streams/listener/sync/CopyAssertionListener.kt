@@ -85,6 +85,11 @@ class CopyAssertionListener(
     }
 
 
+    override fun soapResponse(assertion: SuuAssertionSoapResponse) {
+        val newAssertion = target.createSoapResponse(assertion.name)
+        newAssertion.enabled = assertion.enabled
+    }
+
     override fun exitAssertions(assertions: SuuAssertions) {
     }
 }

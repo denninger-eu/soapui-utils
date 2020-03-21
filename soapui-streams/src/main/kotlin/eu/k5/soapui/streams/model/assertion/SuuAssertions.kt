@@ -27,5 +27,6 @@ interface SuuAssertions {
 
     fun createXPath(name: String): SuuAssertionXPath
     fun createXQuery(name: String): SuuAssertionXQuery
+    fun createSoapResponse(name: String): SuuAssertionSoapResponse
 
 }

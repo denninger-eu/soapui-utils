@@ -63,6 +63,5 @@ class ReadWsdlServiceDirectTest : AbstractDirectTest() {
 
         val secondDifference = DifferenceListener(project)
         box.apply(secondDifference)
-
     }
 }

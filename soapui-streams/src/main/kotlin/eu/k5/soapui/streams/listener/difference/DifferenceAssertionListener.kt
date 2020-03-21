@@ -8,6 +8,8 @@ class DifferenceAssertionListener(
     private val differences: Differences,
     private val assertions: SuuAssertions
 ) : SuuAssertionListener {
+    override fun soapResponse(assertion: SuuAssertionSoapResponse) {
+    }
 
     private inline fun <reified T : SuuAssertion> handle(
         assertion: T, check: (T) -> Unit
