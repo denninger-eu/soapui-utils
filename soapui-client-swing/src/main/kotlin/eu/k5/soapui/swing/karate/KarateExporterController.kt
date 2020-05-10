@@ -1,5 +1,7 @@
-package eu.k5.soapui.plugin.karate
+package eu.k5.soapui.swing.karate
 
+import eu.k5.soapui.swing.MainModel
+import eu.k5.soapui.transform.karate.TransformationResult
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 
@@ -7,6 +9,7 @@ class KarateExporterController(
     private val model: KarateExporterModel,
     private val view: KarateExporterView
 ) {
+
 
     fun doSaveInFolder() {
 

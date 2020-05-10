@@ -1,4 +1,4 @@
-package eu.k5.soapui.plugin.imex.treetable
+package eu.k5.soapui.swing.widget
 
 import javax.swing.JTree
 import javax.swing.event.TreeExpansionEvent
@@ -6,8 +6,8 @@ import javax.swing.event.TreeExpansionListener
 import javax.swing.table.AbstractTableModel
 
 class TreeTableModelAdapter(
-    internal var treeTableModel: AbstractTreeTableModel,
-    internal var tree: JTree
+    private var treeTableModel: AbstractTreeTableModel,
+    private var tree: JTree
 ) : AbstractTableModel() {
 
     init {

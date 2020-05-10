@@ -1,4 +1,4 @@
-package eu.k5.soapui.plugin.imex.treetable
+package eu.k5.soapui.swing.widget
 
 import java.awt.Dimension
 import javax.swing.JTable
@@ -23,7 +23,10 @@ class TreeTable(
         // Renderer fuer den Tree.
         setDefaultRenderer(TreeTableModel::class.java, tree)
         // Editor fuer die TreeTable
-        setDefaultEditor(TreeTableModel::class.java, TreeTableCellEditor(tree, this))
+        setDefaultEditor(
+            TreeTableModel::class.java,
+            TreeTableCellEditor(tree, this)
+        )
 
         // Kein Grid anzeigen.
         setShowGrid(false)

@@ -1,6 +1,6 @@
-package eu.k5.soapui.plugin.karate
+package eu.k5.soapui.swing.karate
 
-import eu.k5.soapui.plugin.Observable
+import eu.k5.soapui.swing.Observable
 import javax.swing.DefaultListModel
 
 class KarateExporterModel {

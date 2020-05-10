@@ -1,4 +1,4 @@
-package eu.k5.soapui.plugin.imex.treetable
+package eu.k5.soapui.swing.widget
 
 import java.awt.Component
 import java.awt.Graphics

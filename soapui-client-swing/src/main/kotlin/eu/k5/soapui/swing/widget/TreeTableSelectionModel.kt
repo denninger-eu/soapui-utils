@@ -1,4 +1,4 @@
-package eu.k5.soapui.plugin.imex.treetable
+package eu.k5.soapui.swing.widget
 
 import javax.swing.ListSelectionModel
 import javax.swing.event.ListSelectionListener

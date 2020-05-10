@@ -1,14 +1,11 @@
-package eu.k5.soapui.plugin.karate
+package eu.k5.soapui.swing.karate
 
-import eu.k5.soapui.plugin.imex.ImexController
-import eu.k5.soapui.plugin.imex.ImexModel
-import eu.k5.soapui.plugin.imex.ImexView
+import eu.k5.soapui.swing.MainModel
 import java.awt.BorderLayout
-import javax.swing.*
 import java.awt.Dimension
 import java.io.File
+import javax.swing.*
 import javax.swing.event.ListSelectionEvent
-import javax.swing.JFileChooser
 
 
 class KarateExporterView(
@@ -17,7 +14,7 @@ class KarateExporterView(
 
 
     private val controller = KarateExporterController(model, this)
-    private val mainFrame: JFrame = JFrame("Karate Export")
+    private val mainPanel = JPanel() // = JFrame("Karate Export")
     private val mainLayout: BorderLayout = BorderLayout(2, 2)
     private val buttonPanel = JPanel()
     private val content = JTextArea()
@@ -27,7 +24,7 @@ class KarateExporterView(
     private val artifacts: JList<KarateExporterModel.Artifact>
 
     init {
-        mainFrame.layout = mainLayout
+        mainPanel.layout = mainLayout
 
         artifacts = JList(model.artifacts)
         artifacts.selectionMode = ListSelectionModel.SINGLE_INTERVAL_SELECTION
@@ -39,16 +36,16 @@ class KarateExporterView(
 
         content.isEditable = false
 
-        model.current.registerOnEdt { updateContent() }
+        model.current.registerOnEdt { old, new -> updateContent() }
 
         addButtons(buttonPanel, controller, model)
 
 
-        mainFrame.add(artifactsScrollPane, BorderLayout.WEST);
-        mainFrame.add(contentScrollPane, BorderLayout.CENTER);
-        mainFrame.add(buttonPanel, BorderLayout.SOUTH)
-        mainFrame.pack()
-        mainFrame.setSize(800, 800)
+        mainPanel.add(artifactsScrollPane, BorderLayout.WEST);
+        mainPanel.add(contentScrollPane, BorderLayout.CENTER);
+        mainPanel.add(buttonPanel, BorderLayout.SOUTH)
+        /*  mainFrame.pack()
+          mainFrame.setSize(800, 800)*/
     }
 
     private fun updateContent() {
@@ -62,9 +59,12 @@ class KarateExporterView(
         }
     }
 
-    fun display() {
+    fun asPanel(): JPanel = mainPanel
+
+
+/*    fun display() {
         mainFrame.isVisible = true
-    }
+    }*/
 
     fun getTargetFolder(): File? {
         val chooser = JFileChooser()

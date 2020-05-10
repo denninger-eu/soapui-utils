@@ -1,4 +1,4 @@
-package eu.k5.soapui.plugin.karate
+package eu.k5.soapui.swing.karate
 
 import javax.swing.SwingUtilities
 
@@ -12,6 +12,6 @@ fun main(args: Array<String>) {
     model.artifacts.add(2, KarateExporterModel.Artifact("Test2", "content2"))
 
     val view = KarateExporterView(model)
-    SwingUtilities.invokeLater { view.display() }
+  //  SwingUtilities.invokeLater { view.display() }
 
 }
