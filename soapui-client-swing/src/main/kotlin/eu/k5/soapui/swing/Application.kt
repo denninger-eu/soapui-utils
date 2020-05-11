@@ -1,6 +1,5 @@
 package eu.k5.soapui.swing
 
-import eu.k5.soapui.swing.karate.KarateExporterView
 import javax.swing.SwingUtilities
 
 fun main(args: Array<String>) {

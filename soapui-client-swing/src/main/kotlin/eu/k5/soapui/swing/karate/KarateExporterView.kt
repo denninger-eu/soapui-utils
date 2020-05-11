@@ -1,9 +1,11 @@
 package eu.k5.soapui.swing.karate
 
 import eu.k5.soapui.swing.MainModel
+import eu.k5.soapui.swing.MainView
 import java.awt.BorderLayout
 import java.awt.Dimension
 import java.io.File
+import java.util.prefs.Preferences
 import javax.swing.*
 import javax.swing.event.ListSelectionEvent
 
@@ -68,10 +70,20 @@ class KarateExporterView(
 
     fun getTargetFolder(): File? {
         val chooser = JFileChooser()
+
+        val prefs: Preferences = Preferences.userNodeForPackage(KarateExporterView::class.java)
+
         chooser.fileSelectionMode = JFileChooser.DIRECTORIES_ONLY;
 
+        val parentFolder = File(prefs.get("folder", ""))
+        if (parentFolder.exists()) {
+            chooser.currentDirectory = parentFolder
+        }
         val result = chooser.showOpenDialog(null)
         if (result == JFileChooser.APPROVE_OPTION) {
+            val selectedFile = chooser.selectedFile
+            prefs.put("folder", selectedFile.parentFile.canonicalPath)
+
             return chooser.selectedFile
         } else {
             return null

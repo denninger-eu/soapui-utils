@@ -30,6 +30,7 @@ class MainController(
         }
         println("Updating exporter")
         model.exporterModel.artifacts.clear()
+        model.exporterModel.current.update(null)
         for (artifact in result.artifacts) {
             model.exporterModel.artifacts.addElement(KarateExporterModel.Artifact(artifact.name, artifact.content))
         }
