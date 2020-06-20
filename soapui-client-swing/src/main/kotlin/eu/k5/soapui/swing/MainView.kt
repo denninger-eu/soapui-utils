@@ -28,20 +28,26 @@ class MainView(
 
     init {
 
+
         projectPanel.layout = BoxLayout(projectPanel, BoxLayout.Y_AXIS)
+
+        val projectHeaderPanel = JPanel()
+        projectHeaderPanel.layout = BoxLayout(projectHeaderPanel, BoxLayout.X_AXIS)
+
         val label = JLabel("Projects")
-        projectPanel.add(label)
+        projectHeaderPanel.add(label)
 
         val addProject = JButton("Add")
         addProject.addActionListener { controller.doAddProject() }
-        projectPanel.add(addProject)
+        projectHeaderPanel.add(addProject)
 
+        projectPanel.add(projectHeaderPanel)
 
         projects = JList(model.projects)
         projects.addListSelectionListener { updateSelectedProject(it) }
 
         projectsScrollPane = JScrollPane(projects)
-        projectsScrollPane.preferredSize = Dimension(250, 80)
+        projectsScrollPane.preferredSize = Dimension(250, 50)
 
         projectPanel.add(projectsScrollPane)
         projectStructure.layout = BoxLayout(projectStructure, BoxLayout.Y_AXIS)

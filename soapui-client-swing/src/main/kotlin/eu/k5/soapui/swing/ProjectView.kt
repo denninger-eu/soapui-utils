@@ -42,11 +42,11 @@ class ProjectView(
         val ml: MouseListener = object : MouseAdapter() {
             override fun mousePressed(e: MouseEvent) {
                 val selRow: Int = partsTree.getRowForLocation(e.getX(), e.getY())
-                val selPath: TreePath = partsTree.getPathForLocation(e.getX(), e.getY())
                 if (selRow != -1) {
                     if (e.getClickCount() === 1) {
                         // mySingleClick(selRow, selPath)
                     } else if (e.getClickCount() === 2) {
+                        val selPath: TreePath = partsTree.getPathForLocation(e.getX(), e.getY())
                         myDoubleClick(selRow, selPath)
                     }
                 }
