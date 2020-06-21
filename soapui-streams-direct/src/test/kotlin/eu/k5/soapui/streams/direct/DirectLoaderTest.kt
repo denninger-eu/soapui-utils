@@ -30,9 +30,8 @@ class DirectLoaderTest {
 
         getTestProject("RestServiceOnly").use {
             val source = DirectLoader().bind(it)
-            val target = Project()
 
-            val listener = SyncListener(source)
+/*            val listener = SyncListener(source)
             target.apply(listener)
 
 
@@ -43,13 +42,13 @@ class DirectLoaderTest {
             assertEquals("basePathValue", restService.basePath)
             //    println(DirectLoader.toXml(source as Project))
 
-            println(" target " + target.toXml())
+            println(" target " + target.toXml())*/
 
 
         }
     }
 
-    @Test
+/*    @Test
     fun `sync Resource`() {
         getTestProject("RestServiceWithResourceOnly").use {
             val source = DirectLoader().bind(it)
@@ -71,11 +70,11 @@ class DirectLoaderTest {
 
             println(" target " + target.toXml())
         }
-    }
+    }*/
 
-    @Test
+/*    @Test
     fun `sync Resource into RestService`() {
-        val target = getTestProject("RestServiceOnly").use { DirectLoader().bind(it) } as Project
+    //    val target = getTestProject("RestServiceOnly").use { DirectLoader().bind(it) } as Project
 
         getTestProject("RestServiceWithResourceOnly").use {
             val source = DirectLoader().bind(it)
@@ -98,7 +97,7 @@ class DirectLoaderTest {
 
 
         }
-    }
+    }*/
 
     @Test
     fun `sync Method into Resource`() {

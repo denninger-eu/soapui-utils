@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project id="72deec4d-d957-41ee-b542-40fe6518bb0e" activeEnvironment="Default" name="WsdlServiceProject"
+                    resourceRoot="" soapui-version="5.5.0" xmlns:con="http://eviware.com/soapui/config">
+    <con:settings/>
+    <con:interface xsi:type="con:WsdlInterface" id="f7023f1d-2a81-48fb-9b75-a18354ce00a3" wsaVersion="NONE"
+                   name="StockQuoteSoapBinding" type="wsdl"
+                   bindingName="{http://example.com/stockquote.wsdl}StockQuoteSoapBinding" soapVersion="1_1"
+                   anonymous="optional" definition="file:/C:/data/stock.wsdl"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <con:description>ServiceDescription</con:description>
+        <con:settings/>
+        <con:definitionCache type="TEXT" rootPart="file:/C:/data/stock.wsdl">
+            <con:part>
+                <con:url>file:/C:/data/stock.wsdl</con:url>
+                <con:content><![CDATA[<definitions name="StockQuote" targetNamespace="http://example.com/stockquote.wsdl" xmlns:tns="http://example.com/stockquote.wsdl" xmlns:xsd1="http://example.com/stockquote.xsd" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns="http://schemas.xmlsoap.org/wsdl/">
+  <types>
+    <schema targetNamespace="http://example.com/stockquote.xsd" xmlns="http://www.w3.org/2001/XMLSchema">
+      <element name="TradePriceRequest">
+        <complexType>
+          <sequence>
+            <element name="tickerSymbol" type="string"/>
+          </sequence>
+        </complexType>
+      </element>
+      <element name="TradePrice">
+        <complexType>
+          <sequence>
+            <element name="price" type="float"/>
+          </sequence>
+        </complexType>
+      </element>
+    </schema>
+  </types>
+  <message name="GetLastTradePriceInput">
+    <part name="body" element="xsd1:TradePriceRequest"/>
+  </message>
+  <message name="GetLastTradePriceOutput">
+    <part name="body" element="xsd1:TradePrice"/>
+  </message>
+  <portType name="StockQuotePortType">
+    <operation name="GetLastTradePrice">
+      <input message="tns:GetLastTradePriceInput"/>
+      <output message="tns:GetLastTradePriceOutput"/>
+    </operation>
+  </portType>
+  <binding name="StockQuoteSoapBinding" type="tns:StockQuotePortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="GetLastTradePrice">
+      <soap:operation soapAction="http://example.com/GetLastTradePrice"/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+    </operation>
+  </binding>
+  <service name="StockQuoteService">
+    <documentation>My first service</documentation>
+    <port name="StockQuotePort" binding="tns:StockQuoteSoapBinding">
+      <soap:address location="http://example.com/stockquote"/>
+    </port>
+  </service>
+</definitions>]]></con:content>
+                <con:type>http://schemas.xmlsoap.org/wsdl/</con:type>
+            </con:part>
+        </con:definitionCache>
+        <con:endpoints>
+            <con:endpoint>http://example.com/stockquote</con:endpoint>
+        </con:endpoints>
+        <con:operation id="d61593c1-0a72-4be8-9b74-ba2060ddf5a6" isOneWay="false"
+                       action="http://example.com/GetLastTradePrice" name="GetLastTradePrice"
+                       bindingOperationName="GetLastTradePrice" type="Request-Response" inputName=""
+                       receivesAttachments="false" sendsAttachments="false" anonymous="optional">
+            <con:description>OperationDescription</con:description>
+            <con:settings/>
+            <con:call id="4a533e09-af82-46a3-bf76-38dcea5faefb" name="RequestName">
+                <con:description>RequestDescription</con:description>
+                <con:settings>
+                    <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment
+                        xmlns:con="http://eviware.com/soapui/config">
+                        &lt;con:entry key="HeaderName" value="HeaderValue"/>
+                        &lt;con:entry key="HeaderName" value="HeaderValue2"/>
+                        &lt;/xml-fragment>
+                    </con:setting>
+                </con:settings>
+                <con:encoding>UTF-8</con:encoding>
+                <con:endpoint>http://example.com/stockquote</con:endpoint>
+                <con:request>RequestContent</con:request>
+                <con:credentials>
+                    <con:authType>No Authorization</con:authType>
+                </con:credentials>
+                <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+                <con:jmsPropertyConfig/>
+                <con:wsaConfig mustUnderstand="NONE" version="200508" action="http://example.com/GetLastTradePrice"/>
+                <con:wsrmConfig version="1.2"/>
+            </con:call>
+        </con:operation>
+    </con:interface>
+    <con:properties/>
+    <con:wssContainer/>
+    <con:oAuth2ProfileContainer/>
+    <con:oAuth1ProfileContainer/>
+</con:soapui-project>
