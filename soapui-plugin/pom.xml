@@ -102,7 +102,7 @@
         </dependency>
         <dependency>
             <groupId>eu.k5.soapui</groupId>
-            <artifactId>soapui-streams-karate</artifactId>
+            <artifactId>soapui-transform-karate</artifactId>
         </dependency>
 
         <dependency>

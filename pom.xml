@@ -12,6 +12,7 @@
         <module>soapui-plugin</module>
         <module>soapui-streams</module>
         <module>soapui-streams-direct</module>
+        <module>soapui-streams-jaxb</module>
         <module>soapui-transform-base</module>
         <module>soapui-transform-karate</module>
         <module>soapui-transform-restassured</module>
@@ -140,7 +141,19 @@
 
             <dependency>
                 <groupId>eu.k5.soapui</groupId>
-                <artifactId>soapui-streams-karate</artifactId>
+                <artifactId>soapui-transform-base</artifactId>
+                <version>0.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>eu.k5.soapui</groupId>
+                <artifactId>soapui-transform-karate</artifactId>
+                <version>0.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>eu.k5.soapui</groupId>
+                <artifactId>soapui-transform-restassured</artifactId>
                 <version>0.1-SNAPSHOT</version>
             </dependency>
 
