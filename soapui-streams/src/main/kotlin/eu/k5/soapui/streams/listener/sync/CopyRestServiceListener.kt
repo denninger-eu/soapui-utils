@@ -33,7 +33,7 @@ class CopyRestServiceListener(
     private var targetMethod: SuuRestMethod? = null
 
     override fun enter(restService: SuuRestService): VisitResult {
-        val newRestService = target!!.createRestService(restService.name!!)
+        val newRestService = target!!.createRestService(restService.name)
         newRestService.description = restService.description
         newRestService.basePath = restService.basePath
 
@@ -51,9 +51,9 @@ class CopyRestServiceListener(
 
     override fun enterResource(suuResource: SuuRestResource): VisitResult {
         val newResource = if (targetResources.isEmpty()) {
-            targetRestService!!.createResource(suuResource.name!!, suuResource.path!!)
+            targetRestService!!.createResource(suuResource.name, suuResource.path!!)
         } else {
-            targetResources.peek().createChildResource(suuResource.name!!, suuResource.path!!)
+            targetResources.peek().createChildResource(suuResource.name, suuResource.path!!)
         }
         newResource.description = suuResource.description
         misc.handleParameters(
@@ -69,7 +69,7 @@ class CopyRestServiceListener(
     }
 
     override fun enterMethod(suuRestMethod: SuuRestMethod): VisitResult {
-        val newMethod = targetResources.peek().createMethod(suuRestMethod.name!!)
+        val newMethod = targetResources.peek().createMethod(suuRestMethod.name)
         newMethod.description = suuRestMethod.description
         newMethod.httpMethod = suuRestMethod.httpMethod
         misc.handleParameters(
@@ -84,13 +84,13 @@ class CopyRestServiceListener(
     }
 
     override fun handleRequest(suuRestRequest: SuuRestRequest) {
-        val newRequest = targetMethod!!.createRequest(suuRestRequest.name!!)
+        val newRequest = targetMethod!!.createRequest(suuRestRequest.name)
         newRequest.description = suuRestRequest.description
         newRequest.content = suuRestRequest.content
         misc.copyHeaders(suuRestRequest, newRequest)
         misc.handleParameters(
-            newRequest.parameters!!,
-            suuRestRequest.parameters!!,
+            newRequest.parameters,
+            suuRestRequest.parameters,
             true
         )
     }

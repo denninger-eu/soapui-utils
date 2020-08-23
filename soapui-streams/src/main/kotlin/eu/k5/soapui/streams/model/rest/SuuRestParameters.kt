@@ -16,7 +16,7 @@ interface SuuRestParameters {
 
     fun addOrUpdate(parameter: SuuRestParameter) =
         addOrUpdate(
-            parameter.name!!, parameter.value!!, parameter.style!!, parameter.location
+            parameter.name, parameter.value, parameter.style, parameter.location
         )
 
     fun hasParameter(name: String?): Boolean = allParameters.firstOrNull { it.name == name } != null

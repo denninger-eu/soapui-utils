@@ -27,22 +27,22 @@ class SyncRestServiceListener(
     private var referenceMethod: SuuRestMethod? = null
 
 
-    override fun enter(targetRestService: SuuRestService): VisitResult {
-        referenceRestService = referenceProject.getRestService(targetRestService.name!!)
+    override fun enter(restService: SuuRestService): VisitResult {
+        referenceRestService = referenceProject.getRestService(restService.name!!)
         if (referenceRestService == null) {
             return VisitResult.TERMINATE
         }
-        targetRestService.description = referenceRestService!!.description
-        targetRestService.basePath = referenceRestService!!.basePath
+        restService.description = referenceRestService!!.description
+        restService.basePath = referenceRestService!!.basePath
 
         return VisitResult.CONTINUE
     }
 
-    override fun exit(targetRestService: SuuRestService) {
+    override fun exit(restService: SuuRestService) {
         val missingResources = ArrayList(referenceRestService!!.resources)
-        targetRestService.resources.forEach { found -> missingResources.removeIf { it.name == found.name } }
+        restService.resources.forEach { found -> missingResources.removeIf { it.name == found.name } }
 
-        val copyListener = CopyRestServiceListener(targetRestService)
+        val copyListener = CopyRestServiceListener(restService)
         for (missingResource in missingResources) {
             missingResource.apply(copyListener)
         }
@@ -58,17 +58,17 @@ class SyncRestServiceListener(
         }
     }
 
-    override fun enterResource(targetRestResource: SuuRestResource): VisitResult {
-        val reference = findReferenceResource(targetRestResource.name!!)
+    override fun enterResource(suuResource: SuuRestResource): VisitResult {
+        val reference = findReferenceResource(suuResource.name)
         if (reference == null) {
             TODO("implement, remove")
             return VisitResult.TERMINATE
         }
-        targetRestResource.description = reference.description
-        targetRestResource.path = reference.path
+        suuResource.description = reference.description
+        suuResource.path = reference.path
 
         misc.handleParameters(
-            targetRestResource.parameters,
+            suuResource.parameters,
             reference.parameters
         )
 
@@ -76,17 +76,17 @@ class SyncRestServiceListener(
         return VisitResult.CONTINUE
     }
 
-    override fun exitResource(targetRestResource: SuuRestResource) {
+    override fun exitResource(suuResource: SuuRestResource) {
         val missingMethods = ArrayList(referenceResources.peek().methods)
-        targetRestResource.methods.forEach { found -> missingMethods.removeIf { it.name == found.name } }
+        suuResource.methods.forEach { found -> missingMethods.removeIf { it.name == found.name } }
 
-        val copyListener = CopyRestServiceListener(targetRestResource)
+        val copyListener = CopyRestServiceListener(suuResource)
         for (missingMethod in missingMethods) {
             missingMethod.apply(copyListener)
         }
 
         val missingChildResources = ArrayList(referenceResources.peek().childResources)
-        targetRestResource.childResources.forEach { found -> missingChildResources.removeIf { it.name == found.name } }
+        suuResource.childResources.forEach { found -> missingChildResources.removeIf { it.name == found.name } }
         for (missingChildResource in missingChildResources) {
             missingChildResource.apply(copyListener)
         }
@@ -94,14 +94,14 @@ class SyncRestServiceListener(
     }
 
 
-    override fun enterMethod(targetRestMethod: SuuRestMethod): VisitResult {
-        val reference = referenceResources.peek().getMethod(targetRestMethod.name)
+    override fun enterMethod(suuRestMethod: SuuRestMethod): VisitResult {
+        val reference = referenceResources.peek().getMethod(suuRestMethod.name)
             ?: return VisitResult.TERMINATE
-        targetRestMethod.description = reference.description
-        targetRestMethod.httpMethod = reference.httpMethod
+        suuRestMethod.description = reference.description
+        suuRestMethod.httpMethod = reference.httpMethod
 
         misc.handleParameters(
-            targetRestMethod.parameters,
+            suuRestMethod.parameters,
             reference.parameters
         )
         referenceMethod = reference
@@ -120,13 +120,13 @@ class SyncRestServiceListener(
     }
 
 
-    override fun handleRequest(targetRestRequest: SuuRestRequest) {
-        val referenceRequest = referenceMethod!!.getRequest(targetRestRequest.name)
+    override fun handleRequest(suuRestRequest: SuuRestRequest) {
+        val referenceRequest = referenceMethod!!.getRequest(suuRestRequest.name)
         if (referenceRequest == null) {
             // Move to lost and found
             return
         }
-        SyncRestRequest().handle(targetRestRequest, referenceRequest)
+        SyncRestRequest().handle(suuRestRequest, referenceRequest)
     }
 
 }

@@ -12,27 +12,27 @@ class CopyTestStepListener(
     private var targetRestStep: SuuTestStepRestRequest? = null
     private var targetWsdlStep: SuuTestStepWsdlRequest? = null
 
-    override fun enterRestRequest(refStep: SuuTestStepRestRequest): VisitResult {
+    override fun enterRestRequest(step: SuuTestStepRestRequest): VisitResult {
 
         val targetStep = target.createRestRequestStep(
-            refStep.name,
-            refStep.baseService,
-            refStep.baseResources,
-            refStep.baseMethod
+            step.name,
+            step.baseService,
+            step.baseResources,
+            step.baseMethod
         )
-        handleStep(refStep, targetStep, false)
-        targetStep.request.name = refStep.request.name
-        targetStep.request.description = refStep.request.description
-        targetStep.request.content = refStep.request.content
-        for (header in refStep.request.headers) {
+        handleStep(step, targetStep, false)
+        targetStep.request.name = step.request.name
+        targetStep.request.description = step.request.description
+        targetStep.request.content = step.request.content
+        for (header in step.request.headers) {
             targetStep.request.addOrUpdateHeader(header)
         }
         this.targetRestStep = targetStep
         return VisitResult.CONTINUE
     }
 
-    override fun enterWsdlRequest(refStep: SuuTestStepWsdlRequest): VisitResult {
-        val targetStep = target.createWsdlRequestStep(refStep.name, refStep.operationName)
+    override fun enterWsdlRequest(step: SuuTestStepWsdlRequest): VisitResult {
+        val targetStep = target.createWsdlRequestStep(step.name, step.operationName)
 
         this.targetWsdlStep = targetStep
         return VisitResult.CONTINUE
@@ -69,12 +69,11 @@ class CopyTestStepListener(
 
     }
 
-    override fun transfer(refStep: SuuTestStepPropertyTransfers) {
-        val targetStep = target.createStep(refStep.name, SuuTestStepPropertyTransfers::class.java)
-        handleStep(refStep, targetStep)
+    override fun transfer(step: SuuTestStepPropertyTransfers) {
+        val targetStep = target.createStep(step.name, SuuTestStepPropertyTransfers::class.java)
+        handleStep(step, targetStep)
 
-        val missing = ArrayList<String>()
-        for (refTransfer in refStep.transfers) {
+        for (refTransfer in step.transfers) {
             var target = targetStep.getTransfer(refTransfer.name)
             if (target == null) {
                 target = targetStep.addTransfer(refTransfer.name)

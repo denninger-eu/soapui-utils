@@ -20,19 +20,19 @@ class DifferenceRestServiceListener(
 
     private var referenceMethod: SuuRestMethod? = null
 
-    override fun enter(actualRestService: SuuRestService): VisitResult {
+    override fun enter(restService: SuuRestService): VisitResult {
         differences.pushRestService("restService")
-        val refRestService = project.getRestService(actualRestService.name!!)
+        val refRestService = project.getRestService(restService.name)
         if (refRestService == null) {
-            differences.addAdditional(actualRestService.name!!)
+            differences.addAdditional(restService.name)
             return VisitResult.TERMINATE
         }
 
-        differences.addChange("name", refRestService.name, actualRestService.name)
-        differences.addChange("description", refRestService.description, actualRestService.description)
-        differences.addChange("basePath", refRestService.basePath, actualRestService.basePath)
+        differences.addChange("name", refRestService.name, restService.name)
+        differences.addChange("description", refRestService.description, restService.description)
+        differences.addChange("basePath", refRestService.basePath, restService.basePath)
 
-        handleEndpoints(actualRestService, refRestService)
+        handleEndpoints(restService, refRestService)
 
         referenceRestService = refRestService
         return VisitResult.CONTINUE
@@ -58,16 +58,16 @@ class DifferenceRestServiceListener(
         differences.pop()
     }
 
-    override fun enterResource(actualResource: SuuRestResource): VisitResult {
+    override fun enterResource(suuResource: SuuRestResource): VisitResult {
         differences.pushResource("resource")
-        val refResource = getResource(actualResource.name)
+        val refResource = getResource(suuResource.name)
         if (refResource == null) {
-            differences.addAdditional(actualResource.name)
+            differences.addAdditional(suuResource.name)
             return VisitResult.TERMINATE
         }
 
-        differences.addChange("description", refResource.description, actualResource.description)
-        misc.handleParameters(refResource.parameters, actualResource.parameters)
+        differences.addChange("description", refResource.description, suuResource.description)
+        misc.handleParameters(refResource.parameters, suuResource.parameters)
         referenceResources.push(refResource)
         return VisitResult.CONTINUE
     }
@@ -85,18 +85,18 @@ class DifferenceRestServiceListener(
         differences.pop()
     }
 
-    override fun enterMethod(actualMethod: SuuRestMethod): VisitResult {
-        val refMethod = referenceResources.peek().getMethod(actualMethod.name)
+    override fun enterMethod(suuRestMethod: SuuRestMethod): VisitResult {
+        val refMethod = referenceResources.peek().getMethod(suuRestMethod.name)
         if (refMethod == null) {
-            differences.addAdditional(actualMethod.name)
+            differences.addAdditional(suuRestMethod.name)
             return VisitResult.TERMINATE
         }
-        differences.pushMethod(actualMethod.name)
-        differences.addChange("name", refMethod.name, actualMethod.name)
-        differences.addChange("description", refMethod.description, actualMethod.description)
-        differences.addChange("httpMethod", refMethod.httpMethod, actualMethod.httpMethod)
+        differences.pushMethod(suuRestMethod.name)
+        differences.addChange("name", refMethod.name, suuRestMethod.name)
+        differences.addChange("description", refMethod.description, suuRestMethod.description)
+        differences.addChange("httpMethod", refMethod.httpMethod, suuRestMethod.httpMethod)
 
-        misc.handleParameters(refMethod.parameters, actualMethod.parameters)
+        misc.handleParameters(refMethod.parameters, suuRestMethod.parameters)
         this.referenceMethod = refMethod
         return VisitResult.CONTINUE
     }
@@ -105,8 +105,8 @@ class DifferenceRestServiceListener(
         differences.pop()
     }
 
-    override fun handleRequest(actualRequest: SuuRestRequest) {
-        DifferenceRestRequest(differences).handle(referenceMethod!!.getRequest(actualRequest.name), actualRequest)
+    override fun handleRequest(suuRestRequest: SuuRestRequest) {
+        DifferenceRestRequest(differences).handle(referenceMethod!!.getRequest(suuRestRequest.name), suuRestRequest)
     }
 
 
