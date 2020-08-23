@@ -12,8 +12,9 @@
         <module>soapui-plugin</module>
         <module>soapui-streams</module>
         <module>soapui-streams-direct</module>
-        <module>soapui-streams-karate</module>
-
+        <module>soapui-transform-base</module>
+        <module>soapui-transform-karate</module>
+        <module>soapui-transform-restassured</module>
     </modules>
 
 

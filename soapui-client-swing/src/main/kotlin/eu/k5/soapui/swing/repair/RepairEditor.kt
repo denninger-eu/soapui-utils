@@ -1,3 +1,4 @@
+/*
 package eu.k5.tolerant.soapui.plugin.eu.k5.soapui.plugin.tolerant
 
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea
@@ -35,11 +36,13 @@ class Repair(private val request: RepairRequest) {
       //  converter = TolerantConverter(request.converter!!.queryConverterConfiguration(request.converterKey!!))
     }
 
-   /** private fun convert(request: String): TolerantConverterResult {
+   */
+/** private fun convert(request: String): TolerantConverterResult {
         val converterRequest = TolerantConverterRequest()
         converterRequest.content = request
         return converter.convert(converterRequest)
-    }**/
+    }**//*
+
 
     fun start() {
         SwingUtilities.invokeAndWait({
@@ -158,4 +161,4 @@ class DocumentChanged(private val handle: () -> Unit) : DocumentListener {
 
     override fun changedUpdate(e: DocumentEvent?) = handle()
 
-}
+}*/

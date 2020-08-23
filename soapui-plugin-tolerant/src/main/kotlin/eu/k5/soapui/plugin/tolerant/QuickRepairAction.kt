@@ -17,8 +17,8 @@ class QuickRepairAction : AbstractSoapUIAction<WsdlRequest>("Quick Repair", "Rep
 
     override fun perform(request: WsdlRequest, o: Any?) {
         try {
-            val tolerantConverter =
-                createTolerantConverter(request.operation.`interface`)
+          //  val tolerantConverter =
+            //createTolerantConverter(request.operation.`interface`)
 
 /*
             val converterRequest = TolerantConverterRequest()
