@@ -1,3 +1,4 @@
+/*
 package eu.k5.soapui.plugin.imex
 
 import eu.k5.soapui.streams.Suu
@@ -39,4 +40,4 @@ class DiffController(
     }
 
 
-}
+}*/

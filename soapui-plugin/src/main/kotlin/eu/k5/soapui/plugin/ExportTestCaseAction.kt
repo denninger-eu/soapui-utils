@@ -8,8 +8,8 @@ import com.eviware.soapui.model.testsuite.TestSuite
 import com.eviware.soapui.plugins.ActionConfiguration
 import com.eviware.soapui.plugins.ToolbarPosition
 import com.eviware.soapui.support.action.support.AbstractSoapUIAction
-import eu.k5.soapui.plugin.karate.KarateExporterModel
-import eu.k5.soapui.plugin.karate.KarateExporterView
+/*import eu.k5.soapui.plugin.karate.KarateExporterModel
+import eu.k5.soapui.plugin.karate.KarateExporterView*/
 import eu.k5.soapui.streams.direct.model.test.TestCaseDirect
 import eu.k5.soapui.streams.direct.model.test.TestSuiteDirect
 import eu.k5.soapui.transform.karate.KarateTransformer
@@ -25,7 +25,7 @@ import kotlin.math.log
 class ExportTestCaseAction : AbstractSoapUIAction<TestCase>("Export Karate", "Synchronize with folder") {
 
     override fun perform(testCase: TestCase?, p1: Any?) {
-        println("Do export")
+/*        println("Do export")
         //   val testSuiteDirect = TestSuiteDirect(testCase as WsdlTestSuite).testCases[0]
         val testSuiteDirect = TestCaseDirect(testCase as WsdlTestCase)
 
@@ -39,7 +39,7 @@ class ExportTestCaseAction : AbstractSoapUIAction<TestCase>("Export Karate", "Sy
         }
 
         val view = KarateExporterView(model)
-        view.display()
+        view.display()*/
     }
 
 

@@ -1,7 +1,8 @@
+/*
 package eu.k5.soapui.plugin.imex
 
 import com.eviware.soapui.impl.wsdl.WsdlProject
-import eu.k5.soapui.plugin.Observable
+
 import eu.k5.soapui.plugin.SuuConfig
 import eu.k5.soapui.streams.listener.difference.Differences
 import eu.k5.soapui.streams.model.SuProject
@@ -12,7 +13,8 @@ class ImexModel(
     val config: SuuConfig = loadDefaultConfig()
 ) {
 
-    var folder: Observable<String?> = Observable()
+*/
+/*    var folder: Observable<String?> = Observable()
     var restService: SuuRestService? = null
 
     var target: Observable<SuProject?> = Observable()
@@ -23,7 +25,8 @@ class ImexModel(
 
     val exportEnabled = Observable<Boolean?>()
 
-    val importEnabled = Observable<Boolean?>()
+    val importEnabled = Observable<Boolean?>()*//*
+
 
     enum class Mode {
         IMPORT, EXPORT
@@ -35,4 +38,4 @@ class ImexModel(
         }
     }
 
-}
+}*/

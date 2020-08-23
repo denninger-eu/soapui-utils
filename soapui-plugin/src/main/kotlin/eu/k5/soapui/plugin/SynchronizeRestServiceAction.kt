@@ -4,8 +4,6 @@ import com.eviware.soapui.impl.rest.RestService
 import com.eviware.soapui.plugins.ActionConfiguration
 import com.eviware.soapui.plugins.ToolbarPosition
 import com.eviware.soapui.support.action.support.AbstractSoapUIAction
-import eu.k5.soapui.plugin.imex.ImexModel
-import eu.k5.soapui.plugin.imex.ImexView
 import eu.k5.soapui.streams.direct.model.ProjectDirect
 import eu.k5.soapui.streams.direct.model.rest.RestServiceDirect
 
@@ -21,7 +19,7 @@ class SynchronizeRestServiceAction : AbstractSoapUIAction<RestService>("Synchron
     override fun perform(restService: RestService, o: Any?) {
         println("do synchronize")
 
-        try {
+/*        try {
 
             val model = ImexModel(restService.project, config = SuuConfig.loadDefault())
             model.restService = RestServiceDirect(restService)
@@ -32,7 +30,7 @@ class SynchronizeRestServiceAction : AbstractSoapUIAction<RestService>("Synchron
         } catch (exception: Throwable) {
             exception.printStackTrace(System.err)
             throw exception
-        }
+        }*/
 
     }
 

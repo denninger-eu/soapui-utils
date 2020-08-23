@@ -4,8 +4,6 @@ import com.eviware.soapui.impl.wsdl.WsdlProject
 import com.eviware.soapui.plugins.ActionConfiguration
 import com.eviware.soapui.plugins.ToolbarPosition
 import com.eviware.soapui.support.action.support.AbstractSoapUIAction
-import eu.k5.soapui.plugin.imex.ImexModel
-import eu.k5.soapui.plugin.imex.ImexView
 
 @ActionConfiguration(
     actionGroup = "EnabledWsdlProjectActions", //
@@ -19,7 +17,7 @@ class SynchronizeProjectAction : AbstractSoapUIAction<WsdlProject>("Synchronize"
 
     override fun perform(project: WsdlProject, o: Any?) {
         println("do synchronize")
-
+/*
         try {
 
             val model = ImexModel(project as WsdlProject, config = SuuConfig.loadDefault())
@@ -30,7 +28,7 @@ class SynchronizeProjectAction : AbstractSoapUIAction<WsdlProject>("Synchronize"
         } catch (exception: Throwable) {
             exception.printStackTrace(System.err)
             throw exception
-        }
+        }*/
 
     }
 

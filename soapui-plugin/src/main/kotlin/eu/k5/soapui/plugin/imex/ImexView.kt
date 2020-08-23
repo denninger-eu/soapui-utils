@@ -1,3 +1,4 @@
+/*
 package eu.k5.soapui.plugin.imex
 
 import java.awt.*
@@ -152,4 +153,4 @@ class ImexView(
 
 
     }
-}
+}*/

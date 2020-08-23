@@ -1,8 +1,11 @@
+/*
 package eu.k5.soapui.plugin.imex
 
-import eu.k5.soapui.plugin.imex.difference.DifferenceDataModel
+*/
+/*import eu.k5.soapui.plugin.imex.difference.DifferenceDataModel
 import eu.k5.soapui.plugin.imex.difference.DifferenceTree
-import eu.k5.soapui.plugin.imex.treetable.TreeTable
+import eu.k5.soapui.plugin.imex.treetable.TreeTable*//*
+
 import eu.k5.soapui.streams.listener.difference.Differences
 import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
@@ -41,7 +44,9 @@ class DiffView(
             constraint(0, 1, gridwidth = 3, weighty = 1.0, weightx = 1.0, fill = GridBagConstraints.BOTH)
         )
         updateTree(model.differences.getEntry())
-        model.differences.registerOnEdt { updateTree(it) }
+*/
+/*        model.differences.registerOnEdt { updateTree(it) }*//*
+
     }
 
     private fun updateTree(differences: Differences?) {
@@ -59,7 +64,8 @@ class DiffView(
             }
             println("Empty no change")
         } else {
-            remove(scrollPane)
+*/
+/*            remove(scrollPane)
             val init = DifferenceTree.init(differences)
             scrollPane = JScrollPane(TreeTable(DifferenceDataModel(init)))
             add(
@@ -69,7 +75,8 @@ class DiffView(
             println("assigned tree")
             empty = false
             repaint()
-            revalidate()
+            revalidate()*//*
+
         }
     }
-}
+}*/

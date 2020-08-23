@@ -1,3 +1,4 @@
+/*
 package eu.k5.soapui.plugin.imex
 
 import eu.k5.soapui.streams.Suu
@@ -16,11 +17,13 @@ class ImexController(
     init {
         val projectConfig = model.config.createIfAbsent(model.project.name)
 
-        model.folder.registerOnEdt { folderChanged(it) }
+*/
+/*        model.folder.registerOnEdt { folderChanged(it) }
         if (projectConfig != null) {
             model.folder.update(projectConfig.base)
         }
-        model.target.registerOnEdt { targetChanged(it) }
+        model.target.registerOnEdt { targetChanged(it) }*//*
+
     }
 
     private fun folderChanged(folder: String?) {
@@ -78,8 +81,11 @@ class ImexController(
     private fun resolveExistingOrCreate(): ProjectBox {
         val folder = model.folder.getEntry()
             ?: throw UnsupportedOperationException("Unable to create in 'null' folder")
-        val path = Paths.get(folder)
+*/
+/*        val path = Paths.get(folder)*//*
 
+*/
+/*
         if (Files.isDirectory(path)) {
             val projectPath = path.resolve(ProjectBox.FILE_NAME)
             if (Files.exists(projectPath)) {
@@ -91,7 +97,8 @@ class ImexController(
             Files.createDirectories(path)
         }
         val projectPath = path.resolve(ProjectBox.FILE_NAME)
-        return ProjectBox.create(projectPath, model.project.name)
+        return ProjectBox.create(projectPath, model.project.name)*//*
+
     }
 
 
@@ -110,4 +117,4 @@ class ImexController(
         Suu.sync(projectDirect, box)
     }
 
-}
+}*/
