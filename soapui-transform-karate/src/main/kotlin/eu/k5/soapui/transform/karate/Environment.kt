@@ -1,5 +1,6 @@
 package eu.k5.soapui.transform.karate
 
+import eu.k5.soapui.transform.ModelWriter
 import eu.k5.soapui.transform.TransformationResult
 import eu.k5.soapui.transform.karate.model.Scenario
 import eu.k5.soapui.transform.karate.model.literals.VariableLiteral
@@ -48,9 +49,9 @@ class Environment {
     }
 
     fun write(scenario: Scenario) {
-        val writer = StringWriter()
-        scenario.write(ModelWriter(writer, this))
-        mainDocument = writer.toString()
+        val writer = ModelWriter()
+        scenario.write(writer)
+        mainDocument = writer.mainContent()
     }
 
 
