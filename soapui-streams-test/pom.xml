@@ -16,6 +16,11 @@
 
 
     <dependencies>
+        
+        <dependency>
+            <groupId>eu.k5.soapui</groupId>
+            <artifactId>soapui-streams</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>

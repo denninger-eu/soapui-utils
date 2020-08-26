@@ -13,14 +13,19 @@
         <version>0.1-SNAPSHOT</version>
     </parent>
 
+
     <dependencies>
 
         <dependency>
-            <artifactId>soapui-streams</artifactId>
             <groupId>eu.k5.soapui</groupId>
+            <artifactId>soapui-streams</artifactId>
         </dependency>
 
-
+        <dependency>
+            <groupId>eu.k5.soapui</groupId>
+            <artifactId>soapui-streams-test</artifactId>
+            <scope>test</scope>
+        </dependency>
 
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -31,7 +36,6 @@
             <groupId>com.jayway.jsonpath</groupId>
             <artifactId>json-path</artifactId>
         </dependency>
-
 
     </dependencies>
 

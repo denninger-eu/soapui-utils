@@ -6,6 +6,7 @@ import eu.k5.soapui.streams.model.assertion.SuuAssertionValidStatus
 import eu.k5.soapui.streams.model.rest.SuuRestMethod
 import eu.k5.soapui.streams.model.rest.SuuRestParameter
 import eu.k5.soapui.streams.model.test.*
+import eu.k5.soapui.test.AbstractTest
 import eu.k5.soapui.transform.karate.model.*
 import eu.k5.soapui.transform.karate.model.literals.*
 import eu.k5.soapui.transform.karate.model.statements.Blank
@@ -21,7 +22,6 @@ fun main(args: Array<String>) {
 class KarateTransformExp : AbstractTest() {
 
     private val env = Environment()
-
 
     fun transform() {
 

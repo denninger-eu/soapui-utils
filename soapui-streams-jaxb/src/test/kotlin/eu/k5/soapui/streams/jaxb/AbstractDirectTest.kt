@@ -14,7 +14,7 @@ abstract class AbstractJaxbTest {
         private fun searchRoot(): Path {
             var path: Path? = Paths.get(".").toAbsolutePath()
 
-            for (x in 0..10) {
+            for (level in 0..10) {
                 if (Files.exists(path?.resolve("soapui-streams-test"))) {
                     return path!!
                 }

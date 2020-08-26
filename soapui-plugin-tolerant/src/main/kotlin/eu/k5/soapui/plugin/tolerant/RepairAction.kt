@@ -17,7 +17,7 @@ class RepairAction : AbstractSoapUIAction<WsdlRequest>("Repair Dialog", "Repairs
 
 
     override fun perform(request: WsdlRequest, o: Any?) {
-        try {
+/*        try {
             val tolerantConverter =
                 createTolerantConverter(request.operation.`interface`)
 
@@ -49,6 +49,6 @@ class RepairAction : AbstractSoapUIAction<WsdlRequest>("Repair Dialog", "Repairs
             e.printStackTrace()
         }
 
-        System.out.println("repair");
+        System.out.println("repair");*/
     }
 }

@@ -1,3 +1,4 @@
+/*
 package eu.k5.soapui.transform.karate
 
 import eu.k5.soapui.streams.box.BoxImpl
@@ -36,4 +37,4 @@ abstract class AbstractTest {
         }
 
     }
-}
+}*/

@@ -16,10 +16,9 @@
     <dependencies>
 
         <dependency>
-            <artifactId>soapui-streams</artifactId>
             <groupId>eu.k5.soapui</groupId>
+            <artifactId>soapui-streams</artifactId>
         </dependency>
-
 
 
         <dependency>

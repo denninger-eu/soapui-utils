@@ -37,11 +37,11 @@
 
         <plugins>
 
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <version>3.0.0-M5</version>
-        </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0-M5</version>
+            </plugin>
 
             <plugin>
                 <artifactId>kotlin-maven-plugin</artifactId>
@@ -136,31 +136,43 @@
             <dependency>
                 <groupId>eu.k5.soapui</groupId>
                 <artifactId>soapui-streams</artifactId>
-                <version>0.1-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>eu.k5.soapui</groupId>
                 <artifactId>soapui-streams-direct</artifactId>
-                <version>0.1-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>eu.k5.soapui</groupId>
                 <artifactId>soapui-transform-base</artifactId>
-                <version>0.1-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>eu.k5.soapui</groupId>
                 <artifactId>soapui-transform-karate</artifactId>
-                <version>0.1-SNAPSHOT</version>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>eu.k5.soapui</groupId>
+                <artifactId>soapui-streams-karate</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>eu.k5.soapui</groupId>
+                <artifactId>soapui-streams-test</artifactId>
+                <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>eu.k5.soapui</groupId>
                 <artifactId>soapui-transform-restassured</artifactId>
-                <version>0.1-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
 
 
