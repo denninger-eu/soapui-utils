@@ -1,11 +1,16 @@
-package eu.k5.soapui.transform.karate
+package eu.k5.soapui.transform
 
+import java.io.StringWriter
 import java.io.Writer
 
 class ModelWriter(
-    private val writer: Writer,
-    val env: Environment
 ) {
+    private val writer = StringWriter()
+
+    private var mainName: String = "main"
+
+    val additionalArtifacts = ArrayList<Artifact>()
+
     var indent = 0
 
 
@@ -46,4 +51,11 @@ class ModelWriter(
         writer.write("\n")
         return this
     }
+
+    fun mainContent(): String = writer.toString()
+
+    class Artifact(
+        val name: String,
+        val content: String
+    )
 }

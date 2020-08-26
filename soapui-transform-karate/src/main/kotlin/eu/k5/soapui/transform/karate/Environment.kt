@@ -1,5 +1,6 @@
 package eu.k5.soapui.transform.karate
 
+import eu.k5.soapui.transform.TransformationResult
 import eu.k5.soapui.transform.karate.model.Scenario
 import eu.k5.soapui.transform.karate.model.literals.VariableLiteral
 import java.io.StringWriter
@@ -53,7 +54,7 @@ class Environment {
     }
 
 
-    val contextClassName = "eu.k5.dread.karate.RunnerContext"
+    val contextClassName = "eu.k5.dread.soapui.SoapuiContext"
 
     val createPropertiesStep = "propertiesStep"
 

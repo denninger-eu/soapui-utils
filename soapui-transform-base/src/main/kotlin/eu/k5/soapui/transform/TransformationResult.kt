@@ -1,4 +1,4 @@
-package eu.k5.soapui.transform.karate
+package eu.k5.soapui.transform
 
 class TransformationResult(
     val main: String

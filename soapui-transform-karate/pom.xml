@@ -28,6 +28,11 @@
         </dependency>
 
         <dependency>
+            <groupId>eu.k5.soapui</groupId>
+            <artifactId>soapui-transform-base</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
         </dependency>
@@ -35,6 +40,14 @@
         <dependency>
             <groupId>com.jayway.jsonpath</groupId>
             <artifactId>json-path</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>eu.k5.soapui</groupId>
+            <artifactId>soapui-transform-base</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>eu.k5.soapui</groupId>
+            <artifactId>soapui-transform-base</artifactId>
         </dependency>
 
     </dependencies>

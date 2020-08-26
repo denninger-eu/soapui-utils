@@ -168,7 +168,11 @@
                 <artifactId>soapui-streams-test</artifactId>
                 <version>${project.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>eu.k5.soapui</groupId>
+                <artifactId>soapui-transform-base</artifactId>
+                <version>${project.version}</version>
+            </dependency>
             <dependency>
                 <groupId>eu.k5.soapui</groupId>
                 <artifactId>soapui-transform-restassured</artifactId>

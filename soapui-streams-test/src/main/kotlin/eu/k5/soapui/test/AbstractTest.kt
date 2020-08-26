@@ -11,13 +11,18 @@ abstract class AbstractTest {
     companion object {
 
 
-        fun loadFromBox(name: String): ProjectBox {
+        fun loadTestcase(name: String): ProjectBox = loadBox(name, "testcases")
+
+
+        fun loadFromBox(name: String): ProjectBox = loadBox(name, "examples")
+
+
+        private fun loadBox(name: String, scope: String): ProjectBox {
             val path = searchRoot().resolve("soapui-streams-test").resolve("src").resolve("main").resolve(
                 "resources"
-            ).resolve("examples").resolve(name).resolve("project.box.yaml")
+            ).resolve(scope).resolve(name).resolve("project.box.yaml")
             return ProjectBox(BoxImpl(path))
         }
-
 
         private fun searchRoot(): Path {
             var path: Path? = Paths.get(".").toAbsolutePath()

@@ -16,7 +16,7 @@
 
 
     <dependencies>
-        
+
         <dependency>
             <groupId>eu.k5.soapui</groupId>
             <artifactId>soapui-streams</artifactId>
@@ -30,6 +30,12 @@
         <dependency>
             <groupId>org.yaml</groupId>
             <artifactId>snakeyaml</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 
