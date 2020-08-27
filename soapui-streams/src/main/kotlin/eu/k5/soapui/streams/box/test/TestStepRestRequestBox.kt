@@ -339,7 +339,15 @@ class TestStepRestRequestBox(
                     store()
                 }
             }
+        override var mediaType: String?
+            get() = yaml.mediaType
+            set(value) {
+                if (changed(yaml.mediaType, value)) {
+                    yaml.mediaType = value
+                    store()
+                }
 
+            }
 
         override val parameters: SuuRestParameters
             get() = RestParametersBox(yaml.parameters!!, true, method.parameters) { store() }

@@ -27,6 +27,12 @@ class RestRequestDirect(
             request.requestContent = value
         }
 
+    override var mediaType: String?
+        get() = request.mediaType
+        set(value) {
+            request.mediaType = value
+        }
+
     override val parameters: SuuRestParameters =
         RestParametersDirect(
             request.params,
@@ -34,17 +40,10 @@ class RestRequestDirect(
         )
 
     override val headers: List<Header>
-        get() = appendDefaultHeaders(request.requestHeaders.map { mapHeader(it) })
+        get() = request.requestHeaders.map { mapHeader(it) }
 
 
-    private fun appendDefaultHeaders(headers: List<Header>): List<Header> {
-        if (request.mediaType == null || contains(headers, "Content-Type")) {
-            return headers
-        }
-        val newHeaders = ArrayList(headers);
-        newHeaders.add(Header("Content-Type", request.mediaType))
-        return newHeaders
-    }
+
 
     override fun removeHeader(key: String) {
         request.requestHeaders.remove(key)

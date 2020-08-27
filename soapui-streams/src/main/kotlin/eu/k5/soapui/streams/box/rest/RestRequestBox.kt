@@ -60,10 +60,20 @@ class RestRequestBox(
         get() = box.loadSection("content")
         set(value) = storeContent(value)
 
+    override var mediaType: String?
+        get() = yaml.mediaType
+        set(value) {
+            if (changed(yaml.mediaType, value)) {
+                yaml.mediaType = value
+                store()
+            }
+        }
+
     class RestRequestYaml : HeaderBox.WithHeaderYaml {
         var name: String? = null
         var description: String? = null
         var parameters: MutableList<RestParametersBox.RestParameterYaml>? = ArrayList()
+        var mediaType: String? = null
         override var headers: MutableList<HeaderBox.HeaderYaml>? = ArrayList()
     }
 

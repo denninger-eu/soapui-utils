@@ -11,4 +11,7 @@ interface SuuWsdlRequest : WithHeader {
 
     fun markLostAndFound()
 
+    override val additionalHeaders: List<Header>
+        get() = emptyList()
+
 }

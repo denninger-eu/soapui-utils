@@ -2,6 +2,7 @@ package eu.k5.soapui.streams.direct
 
 import eu.k5.soapui.streams.apply
 import eu.k5.soapui.streams.listener.sync.SyncListener
+import eu.k5.soapui.streams.model.SuProject
 import eu.k5.soapui.streams.model.rest.SuuRestMethod
 import org.junit.jupiter.api.Test
 import java.io.InputStream
@@ -130,7 +131,6 @@ class DirectLoaderTest {
         assertFalse(restService.resources.isEmpty())
         assertFalse(restService.resources[0].childResources.isEmpty(), "No child resource found")
         val resource = restService.resources[0].childResources[0]
-        println(" target " + target.toXml())
 
         assertEquals("childResourceDescription", resource.description)
         assertEquals("childResourcePath", resource.path)
@@ -256,8 +256,8 @@ class DirectLoaderTest {
 
     companion object {
 
-        fun testProject(name: String): Project {
-            return getTestProject(name).use { DirectLoader().bind(it) } as Project
+        fun testProject(name: String): SuProject {
+            return getTestProject(name).use { DirectLoader().bind(it) }
         }
 
         fun getTestProject(name: String): InputStream {

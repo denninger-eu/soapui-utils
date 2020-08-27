@@ -23,6 +23,8 @@ class DirectLoader : Loader {
     override fun bind(inputStream: InputStream): SuProject {
         val wsdlProject = WsdlProject(inputStream, null)
 
+        return ProjectDirect(wsdlProject)
+
         TODO("maybe deprecated")
 /*        val project = Project()
         val sync = SyncListener(ProjectDirect(wsdlProject))
