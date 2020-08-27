@@ -1,3 +1,4 @@
+/*
 package eu.k5.soapui.plugin.imex.difference
 
 import eu.k5.soapui.plugin.imex.DiffView
@@ -44,4 +45,4 @@ class DiffViewMain(
         add(JScrollPane(diff))
         setSize(1000, 800)
     }
-}
+}*/

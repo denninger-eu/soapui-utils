@@ -1,3 +1,4 @@
+/*
 package eu.k5.soapui.plugin.imex.difference
 
 import eu.k5.soapui.plugin.imex.loadProject
@@ -70,4 +71,4 @@ class DifferenceTreeTableMain(
             return root
         }
     }
-}
+}*/

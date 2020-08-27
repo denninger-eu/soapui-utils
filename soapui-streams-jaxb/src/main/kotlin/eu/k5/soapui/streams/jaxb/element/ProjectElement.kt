@@ -2,7 +2,7 @@ package eu.k5.soapui.streams.jaxb.element
 
 import javax.xml.bind.annotation.*
 
-@XmlRootElement(name = "soapui-project", namespace = "http://eviware.com/soapui/config")
+@XmlRootElement(name = "soapui-project", namespace = NAMESPACE)
 @XmlAccessorType(XmlAccessType.NONE)
 class ProjectElement {
 
@@ -15,6 +15,9 @@ class ProjectElement {
 
     val interfaces: List<InterfaceElement>? = ArrayList()
 
-    @XmlElement(name = "properties", namespace = "http://eviware.com/soapui/config")
+    @XmlElement(name = "properties", namespace = NAMESPACE)
     var properties: PropertiesElement? = null
+
+    @XmlElement(name = "testSuite", namespace = NAMESPACE)
+    var testSuites: List<TestSuiteElement>? = ArrayList()
 }

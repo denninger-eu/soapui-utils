@@ -1,3 +1,4 @@
+/*
 package eu.k5.soapui.plugin.imex
 
 import com.eviware.soapui.impl.wsdl.WsdlProject
@@ -89,3 +90,4 @@ fun loadProject(name: String): WsdlProject {
 }
 
 fun loadProject(): WsdlProject = loadProject("RestServiceComplete-soapui-project.xml")
+*/

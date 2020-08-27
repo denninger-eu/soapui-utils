@@ -7,16 +7,16 @@ import javax.xml.bind.annotation.XmlElement
 @XmlAccessorType(XmlAccessType.NONE)
 class PropertiesElement {
 
-    @XmlElement(name = "property")
+    @XmlElement(name = "property", namespace = NAMESPACE)
     var properties: List<PropertyElement>? = null
 
     @XmlAccessorType(XmlAccessType.NONE)
     class PropertyElement {
 
-        @XmlElement(name = "name")
+        @XmlElement(name = "name", namespace = NAMESPACE)
         var name: String? = null
 
-        @XmlElement(name = "value")
+        @XmlElement(name = "value", namespace = NAMESPACE)
         var value: String? = null
     }
 }
