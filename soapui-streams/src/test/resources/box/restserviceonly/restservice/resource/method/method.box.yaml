@@ -1,3 +1,4 @@
+!restMethod
 name: "methodName"
 description: "methodDescription"
 httpMethod: "GET"

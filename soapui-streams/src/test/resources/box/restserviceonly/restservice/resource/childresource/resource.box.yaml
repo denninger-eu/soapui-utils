@@ -1,3 +1,4 @@
+!restResource
 name: childResourceName
 description: childResourceDescription
 path: childResourcePath

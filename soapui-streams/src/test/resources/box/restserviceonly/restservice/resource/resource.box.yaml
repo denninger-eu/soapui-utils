@@ -1,3 +1,4 @@
+!restResource
 name: resourceName
 description: resourceDescription
 path: resourcePath

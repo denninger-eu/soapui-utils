@@ -1,3 +1,4 @@
+!restService
 name: restserviceName
 description: restserviceDescription
 basePath: restserviceBasePath

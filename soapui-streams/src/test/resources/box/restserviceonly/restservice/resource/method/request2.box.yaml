@@ -1,4 +1,4 @@
-!!eu.k5.soapui.streams.box.rest.RestRequestBox$RestRequestYaml
+!restRequest
 description: requestDescription
 name: request2Name
 parameters:
