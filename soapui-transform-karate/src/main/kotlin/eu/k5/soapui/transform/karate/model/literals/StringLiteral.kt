@@ -1,6 +1,7 @@
 package eu.k5.soapui.transform.karate.model.literals
 
-import eu.k5.soapui.transform.karate.ModelWriter
+import eu.k5.soapui.transform.ModelWriter
+
 
 class StringLiteral(
     val string: String

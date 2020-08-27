@@ -1,7 +1,7 @@
 package eu.k5.soapui.transform.karate.model.literals
 
+import eu.k5.soapui.transform.ModelWriter
 import eu.k5.soapui.transform.karate.model.Expression
-import eu.k5.soapui.transform.karate.ModelWriter
 
 interface Literal : Expression {
 
