@@ -1,7 +1,7 @@
 package eu.k5.soapui.transform.karate.model.statements
 
+import eu.k5.soapui.transform.ModelWriter
 import eu.k5.soapui.transform.karate.model.Expression
-import eu.k5.soapui.transform.karate.ModelWriter
 import eu.k5.soapui.transform.karate.model.Statement
 
 class PrefixBlock(
@@ -31,8 +31,10 @@ class PrefixBlock(
     companion object {
         fun Given(): PrefixBlock =
             PrefixBlock("Given ", "  And ")
+
         fun When(): PrefixBlock =
             PrefixBlock("When  ", "  And ")
+
         fun Then(): PrefixBlock =
             PrefixBlock("Then  ", "  And ")
     }
