@@ -6,8 +6,7 @@ import javax.xml.bind.annotation.XmlAttribute
 import javax.xml.bind.annotation.XmlElement
 
 @XmlAccessorType(XmlAccessType.NONE)
-class TestSuiteElement {
-
+class TestCaseElement {
     @XmlAttribute(name = "name")
     var name: String? = null
 
@@ -17,6 +16,6 @@ class TestSuiteElement {
     @XmlElement(name = "properties", namespace = NAMESPACE)
     var properties: PropertiesElement? = null
 
-    @XmlElement(name = "testCase", namespace = NAMESPACE)
-    var testCases: List<TestCaseElement>? = ArrayList()
+    @XmlElement(name = "testStep", namespace = NAMESPACE)
+    var testSteps: List<TestStepElement>? = ArrayList()
 }
