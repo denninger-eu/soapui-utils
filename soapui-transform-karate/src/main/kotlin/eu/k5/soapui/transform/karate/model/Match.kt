@@ -1,6 +1,7 @@
 package eu.k5.soapui.transform.karate.model
 
-import eu.k5.soapui.transform.karate.ModelWriter
+import eu.k5.soapui.transform.ModelWriter
+
 
 class Match(
     private val type: String,
