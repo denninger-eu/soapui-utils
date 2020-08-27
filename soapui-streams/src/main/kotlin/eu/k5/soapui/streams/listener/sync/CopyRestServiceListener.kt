@@ -87,6 +87,7 @@ class CopyRestServiceListener(
         val newRequest = targetMethod!!.createRequest(suuRestRequest.name)
         newRequest.description = suuRestRequest.description
         newRequest.content = suuRestRequest.content
+        newRequest.mediaType = suuRestRequest.mediaType
         misc.copyHeaders(suuRestRequest, newRequest)
         misc.handleParameters(
             newRequest.parameters,

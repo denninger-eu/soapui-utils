@@ -24,6 +24,7 @@ class CopyTestStepListener(
         targetStep.request.name = step.request.name
         targetStep.request.description = step.request.description
         targetStep.request.content = step.request.content
+        targetStep.request.mediaType = step.request.mediaType
         for (header in step.request.headers) {
             targetStep.request.addOrUpdateHeader(header)
         }

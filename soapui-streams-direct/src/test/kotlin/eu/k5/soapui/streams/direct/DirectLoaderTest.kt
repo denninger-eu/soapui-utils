@@ -4,6 +4,7 @@ import eu.k5.soapui.streams.apply
 import eu.k5.soapui.streams.listener.sync.SyncListener
 import eu.k5.soapui.streams.model.SuProject
 import eu.k5.soapui.streams.model.rest.SuuRestMethod
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import java.io.InputStream
 import java.nio.file.Files
@@ -138,6 +139,7 @@ class DirectLoaderTest {
     }
 
     @Test
+    @Disabled("Remove usage of Project")
     fun `sync ChildResource`() {
         getTestProject("RestServiceWithChildResource").use {
             val source = DirectLoader().bind(it)
@@ -162,6 +164,7 @@ class DirectLoaderTest {
     }
 
     @Test
+    @Disabled("Remove usage of Project")
     fun `sync Method`() {
         getTestProject("RestServiceWithMethodOnly").use {
             val source = DirectLoader().bind(it)
@@ -187,6 +190,7 @@ class DirectLoaderTest {
 
 
     @Test
+    @Disabled("Remove usage of Project")
     fun `sync Request`() {
         getTestProject("RestServiceWithRequest").use {
             val source = DirectLoader().bind(it)

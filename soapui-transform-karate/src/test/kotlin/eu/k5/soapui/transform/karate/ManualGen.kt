@@ -1,5 +1,6 @@
 package eu.k5.soapui.transform.karate
 
+import eu.k5.soapui.transform.ModelWriter
 import eu.k5.soapui.transform.karate.model.*
 import java.io.StringWriter
 
@@ -13,7 +14,7 @@ class ManualGen {
     fun gen() {
         val writer = StringWriter()
 
-        val modelWriter = ModelWriter(writer, Environment())
+        val modelWriter = ModelWriter()
         scenario().write(modelWriter)
 
         println(writer.toString())
@@ -33,7 +34,6 @@ class ManualGen {
         block.Then.expressions.add(Match.status("201"))
         return block
     }
-
 
 
     /**

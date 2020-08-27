@@ -2,6 +2,7 @@ package eu.k5.soapui.streams.direct
 
 import eu.k5.soapui.streams.model.Header
 import eu.k5.soapui.streams.model.test.*
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 class SyncTestStepTest : AbstractSyncTest() {
@@ -55,6 +56,8 @@ class SyncTestStepTest : AbstractSyncTest() {
     }
 
 
+
+    @Disabled("Not supported yet")
     @Test
     fun assertionTestPropertyTransfersInsert() {
         sync<SuuTestStepPropertyTransfers>() {

@@ -3,7 +3,7 @@ package eu.k5.soapui.streams.direct
 import eu.k5.soapui.streams.model.assertion.*
 import eu.k5.soapui.streams.model.Header
 import eu.k5.soapui.streams.model.test.*
-import org.junit.Ignore
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 class SyncAssertionTest : AbstractSyncTest() {
@@ -70,7 +70,7 @@ class SyncAssertionTest : AbstractSyncTest() {
         }
     }
 
-    @Ignore("Not created in reference soapui project")
+    @Disabled("Not created in reference soapui project")
     @Test
     fun assertionJsonPathExists() {
         sync<SuuAssertionJsonPathExists>() {
@@ -120,7 +120,6 @@ class SyncAssertionTest : AbstractSyncTest() {
     }
 
 
-
     @Test
     fun assertionTestStepRestRequest_addHeader() {
         sync<SuuTestStepRestRequest>() {
@@ -128,7 +127,6 @@ class SyncAssertionTest : AbstractSyncTest() {
             1
         }
     }
-
 
 
 }

@@ -2,6 +2,7 @@ package eu.k5.soapui.streams.direct
 
 import eu.k5.soapui.streams.flatten
 import eu.k5.soapui.streams.syncWith
+import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 abstract class AbstractSyncTest : AbstractDirectTest() {
@@ -10,7 +11,9 @@ abstract class AbstractSyncTest : AbstractDirectTest() {
         val referenceProject = testProject("TestSuiteProject")
         val box = createTempProjectBox("sync_" + T::class.java.simpleName).syncWith(referenceProject)
 
-        val selected = box.flatten().filterIsInstance<T>().first()
+        val candidates = box.flatten().filterIsInstance<T>()
+        assertFalse(candidates.isEmpty(), "No entry of type " + T::class.java.simpleName + " found in project")
+        val selected = candidates.first()
         val count = createAsync(selected)
 
         val beforeSync = AbstractDirectTest.getDifferences(referenceProject, box)

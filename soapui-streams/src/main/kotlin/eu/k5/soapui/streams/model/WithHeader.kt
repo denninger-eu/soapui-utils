@@ -7,7 +7,11 @@ interface WithHeader {
 
     fun allHeaders(): List<Header> {
         val result = ArrayList(headers)
-        result.addAll(additionalHeaders)
+        for (header in additionalHeaders) {
+            if (getHeader(header.key) != null) {
+                result.add(header)
+            }
+        }
         return result
     }
 
