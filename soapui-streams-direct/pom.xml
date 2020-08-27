@@ -13,12 +13,10 @@
     </parent>
 
     <dependencies>
-
         <dependency>
             <artifactId>soapui-streams</artifactId>
             <groupId>eu.k5.soapui</groupId>
         </dependency>
-
 
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>

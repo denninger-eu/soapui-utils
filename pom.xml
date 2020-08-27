@@ -116,20 +116,6 @@
         </dependency>
 
 
-        <!--
-
-        <dependency>
-            <groupId>com.smartbear.soapui</groupId>
-            <artifactId>soapui</artifactId>
-            <version>5.3.0</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>javafx</groupId>
-                    <artifactId>jfxrt</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
--->
     </dependencies>
 
     <dependencyManagement>
@@ -148,6 +134,18 @@
 
             <dependency>
                 <groupId>eu.k5.soapui</groupId>
+                <artifactId>soapui-streams-karate</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>eu.k5.soapui</groupId>
+                <artifactId>soapui-streams-test</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>eu.k5.soapui</groupId>
                 <artifactId>soapui-transform-base</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -158,22 +156,7 @@
                 <version>${project.version}</version>
             </dependency>
 
-            <dependency>
-                <groupId>eu.k5.soapui</groupId>
-                <artifactId>soapui-streams-karate</artifactId>
-                <version>${project.version}</version>
-            </dependency>
 
-            <dependency>
-                <groupId>eu.k5.soapui</groupId>
-                <artifactId>soapui-streams-test</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>eu.k5.soapui</groupId>
-                <artifactId>soapui-transform-base</artifactId>
-                <version>${project.version}</version>
-            </dependency>
             <dependency>
                 <groupId>eu.k5.soapui</groupId>
                 <artifactId>soapui-transform-restassured</artifactId>
@@ -201,6 +184,10 @@
                     <exclusion>
                         <groupId>javafx</groupId>
                         <artifactId>jfxrt</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>junit</groupId>
+                        <artifactId>junit</artifactId>
                     </exclusion>
                 </exclusions>
                 <scope>provided</scope>
