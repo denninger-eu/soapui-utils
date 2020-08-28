@@ -1,10 +1,8 @@
 package eu.k5.soapui.transform.restassured
 
 import eu.k5.soapui.streams.model.SuProject
-import eu.k5.soapui.streams.model.test.*
 import eu.k5.soapui.test.AbstractTest
 import eu.k5.soapui.transform.ModelWriter
-import eu.k5.soapui.transform.restassured.model.*
 import java.io.StringWriter
 
 fun main(args: Array<String>) {
@@ -17,7 +15,7 @@ class ManualGen : AbstractTest() {
         val project = loadFromBox("runnable2") as SuProject
         val testCase = project.testSuites[0].testCases[0]
 
-        val transformer = RaTransformer(testCase)
+        val transformer = DispatchTransformer(testCase)
 
         val scenario = transformer.transform()
 

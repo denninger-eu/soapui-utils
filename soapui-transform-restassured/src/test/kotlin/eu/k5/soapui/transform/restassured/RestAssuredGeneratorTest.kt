@@ -4,7 +4,7 @@ import eu.k5.soapui.test.AbstractTest
 import eu.k5.soapui.test.ClasspathContentAssert
 import org.junit.jupiter.api.Test
 
-class RaTransformerTest : AbstractTest() {
+class RestAssuredGeneratorTest : AbstractTest() {
 
 
     @Test
@@ -12,21 +12,20 @@ class RaTransformerTest : AbstractTest() {
 
         val testCase = loadTestcase("properties").testSuites[0].testCases[0]
 
-        val transformer = RestAssuredTransformer()
+        val transformer = RestAssuredGenerator()
         val result = transformer.transform(testCase)
 
-        ClasspathContentAssert.equals("restassured/properties/Testcase.java", result.main)
+        ClasspathContentAssert.equals("restassured/properties.java", result.main)
     }
 
     @Test
-    fun `propertyTransfer`(){
+    fun `propertyTransfers`() {
         val testCase = loadTestcase("propertytransfers").testSuites[0].testCases[0]
 
-        val transformer = RestAssuredTransformer()
+        val transformer = RestAssuredGenerator()
         val result = transformer.transform(testCase)
 
-        ClasspathContentAssert.equals("restassured/properties/Testcase.java", result.main)
-
+        ClasspathContentAssert.equals("restassured/propertytransfers.java", result.main)
     }
 
 }

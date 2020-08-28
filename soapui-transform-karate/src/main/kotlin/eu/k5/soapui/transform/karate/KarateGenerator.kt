@@ -3,7 +3,7 @@ package eu.k5.soapui.transform.karate
 import eu.k5.soapui.streams.model.test.SuuTestCase
 import eu.k5.soapui.transform.TransformationResult
 
-class KarateTransformer {
+class KarateGenerator {
 
     fun transform(testCase: SuuTestCase): TransformationResult {
 

@@ -1,19 +1,11 @@
 package eu.k5.soapui.plugin
 
-import com.eviware.soapui.impl.wsdl.WsdlProject
-import com.eviware.soapui.impl.wsdl.WsdlTestSuite
-import com.eviware.soapui.impl.wsdl.testcase.WsdlTestCase
 import com.eviware.soapui.model.testsuite.TestCase
-import com.eviware.soapui.model.testsuite.TestSuite
 import com.eviware.soapui.plugins.ActionConfiguration
 import com.eviware.soapui.plugins.ToolbarPosition
 import com.eviware.soapui.support.action.support.AbstractSoapUIAction
 /*import eu.k5.soapui.plugin.karate.KarateExporterModel
 import eu.k5.soapui.plugin.karate.KarateExporterView*/
-import eu.k5.soapui.streams.direct.model.test.TestCaseDirect
-import eu.k5.soapui.streams.direct.model.test.TestSuiteDirect
-import eu.k5.soapui.transform.karate.KarateTransformer
-import kotlin.math.log
 
 @ActionConfiguration(
     actionGroup = "WsdlTestCaseActions", //

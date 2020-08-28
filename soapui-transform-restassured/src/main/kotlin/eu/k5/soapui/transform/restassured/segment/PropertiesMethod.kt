@@ -1,10 +1,12 @@
-package eu.k5.soapui.transform.restassured.model
+package eu.k5.soapui.transform.restassured.segment
 
 import eu.k5.soapui.transform.ModelWriter
+import eu.k5.soapui.transform.restassured.ast.Segment
+import eu.k5.soapui.transform.restassured.ast.literal.StringLiteral
 
 class PropertiesMethod(
     private val name: String
-) : MethodBody() {
+) : Segment {
 
     private val properties = ArrayList<Property>()
 
@@ -17,20 +19,22 @@ class PropertiesMethod(
         val value: String?
     )
 
-    override fun write(writer: ModelWriter) {
-        writer.writeIndention().write("PropertyHolder step=context.propertiesStep(\"").write(name).write("\");")
+    override fun write(writer: ModelWriter): ModelWriter {
+        writer.writeIndention().write("PropertyHolder step=context.propertiesStep(").write(StringLiteral(name))
+            .write(");")
         writer.newLine()
         for (property in properties) {
 
-            writer.writeIndention().write("step.setProperty(\"").write(property.key).write("\",");
+            writer.writeIndention().write("step.setProperty(").write(StringLiteral(property.key)).write(",");
             if (property.value != null) {
-                writer.write("\"").write(escapeString(property.value)).write("\"")
+                writer.write(StringLiteral(property.value))
             } else {
                 writer.write("null")
             }
             writer.write(");")
             writer.newLine()
         }
+        return writer
     }
 
     private fun escapeString(string: String): String {

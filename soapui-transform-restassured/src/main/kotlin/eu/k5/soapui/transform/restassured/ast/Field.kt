@@ -1,4 +1,4 @@
-package eu.k5.soapui.transform.restassured.model.base
+package eu.k5.soapui.transform.restassured.ast
 
 class Field(
     val name: String,

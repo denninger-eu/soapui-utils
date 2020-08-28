@@ -1,8 +1,8 @@
 package eu.k5.soapui.transform.restassured.model
 
-import eu.k5.soapui.transform.restassured.model.base.Field
-import eu.k5.soapui.transform.restassured.model.base.Method
-import eu.k5.soapui.transform.restassured.model.base.Statement
+import eu.k5.soapui.transform.restassured.ast.Field
+import eu.k5.soapui.transform.restassured.ast.Method
+import eu.k5.soapui.transform.restassured.ast.Statement
 
 class Scenario(
     val name: String

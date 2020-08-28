@@ -25,7 +25,7 @@ class BaseTransformer(
     }
 
     fun methodCall(call: MethodCallExpression): Statement {
-        return Star(DefaultAssignment("print", call))
+        return Star(DefaultAssignment("if (true) ", call))
     }
 
     companion object {

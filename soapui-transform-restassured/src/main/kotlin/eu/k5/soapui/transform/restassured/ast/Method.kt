@@ -1,11 +1,10 @@
-package eu.k5.soapui.transform.restassured.model.base
+package eu.k5.soapui.transform.restassured.ast
 
 import eu.k5.soapui.transform.ModelWriter
-import eu.k5.soapui.transform.restassured.model.MethodBody
 
 open class Method(
     val name: String,
-    val body: MethodBody,
+    val body: Segment,
     private val visibility: Visibility = Visibility.PUBLIC
 
 ) {

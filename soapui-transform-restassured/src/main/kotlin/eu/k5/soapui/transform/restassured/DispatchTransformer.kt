@@ -3,16 +3,21 @@ package eu.k5.soapui.transform.restassured
 import eu.k5.soapui.streams.model.test.SuuTestCase
 import eu.k5.soapui.streams.model.test.SuuTestStepProperties
 import eu.k5.soapui.streams.model.test.SuuTestStepPropertyTransfers
+import eu.k5.soapui.transform.restassured.ast.Field
+import eu.k5.soapui.transform.restassured.ast.Statement
+import eu.k5.soapui.transform.restassured.ast.expression.Assignment
+import eu.k5.soapui.transform.restassured.ast.expression.ConstructorCall
+import eu.k5.soapui.transform.restassured.ast.expression.FieldAccessExpression
 import eu.k5.soapui.transform.restassured.model.*
-import eu.k5.soapui.transform.restassured.model.base.*
 
-class RaTransformer(
+class DispatchTransformer(
     private val testCase: SuuTestCase
 ) {
     private val scenario = Scenario(testCase.name)
     private val environment = Environment()
     private val propertiesTransformer = PropertiesTransformer(environment, scenario)
     private val propertyTransfersTransfomrer = PropertyTransferTransformer(environment, scenario)
+
     fun transform(): Scenario {
         addContext()
 

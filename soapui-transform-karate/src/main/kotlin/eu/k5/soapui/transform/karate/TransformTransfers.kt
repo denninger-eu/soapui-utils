@@ -2,6 +2,7 @@ package eu.k5.soapui.transform.karate
 
 import eu.k5.soapui.streams.model.test.SuuPropertyTransfer
 import eu.k5.soapui.streams.model.test.SuuTestStepPropertyTransfers
+import eu.k5.soapui.transform.extensions.asEntity
 import eu.k5.soapui.transform.karate.model.Block
 import eu.k5.soapui.transform.karate.model.MethodCallExpression
 import eu.k5.soapui.transform.karate.model.Statement
@@ -61,20 +62,6 @@ class TransformTransfers(
         }
     }
 
-    private fun asEntity(target: SuuPropertyTransfer.Transfer): String {
-        var entity: String = if (!(target.stepName ?: "").startsWith("#")) {
-            "#" + target.stepName
-        } else {
-            target.stepName ?: ""
-        }
-        return if (!(target.propertyName ?: "").startsWith("#")
-            && !entity.endsWith("#")
-        ) {
-            entity + "#" + target.propertyName
-        } else {
-            entity + target.propertyName
-
-        }
-    }
+    private fun asEntity(target: SuuPropertyTransfer.Transfer): String = target.asEntity()
 
 }

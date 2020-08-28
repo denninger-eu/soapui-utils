@@ -2,10 +2,11 @@ package eu.k5.soapui.transform.restassured
 
 import eu.k5.soapui.streams.model.test.SuuTestStepProperties
 import eu.k5.soapui.transform.restassured.model.*
-import eu.k5.soapui.transform.restassured.model.base.Method
-import eu.k5.soapui.transform.restassured.model.base.MethodCall
-import eu.k5.soapui.transform.restassured.model.base.Statement
-import eu.k5.soapui.transform.restassured.model.base.Visibility
+import eu.k5.soapui.transform.restassured.ast.Method
+import eu.k5.soapui.transform.restassured.ast.expression.MethodCall
+import eu.k5.soapui.transform.restassured.ast.Statement
+import eu.k5.soapui.transform.restassured.ast.Visibility
+import eu.k5.soapui.transform.restassured.segment.PropertiesMethod
 
 class PropertiesTransformer(
     private val environment: Environment,

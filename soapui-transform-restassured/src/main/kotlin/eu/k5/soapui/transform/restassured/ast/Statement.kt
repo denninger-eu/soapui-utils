@@ -1,6 +1,7 @@
-package eu.k5.soapui.transform.restassured.model.base
+package eu.k5.soapui.transform.restassured.ast
 
 import eu.k5.soapui.transform.ModelWriter
+import eu.k5.soapui.transform.restassured.ast.Expression
 
 class Statement(
     val expression: Expression

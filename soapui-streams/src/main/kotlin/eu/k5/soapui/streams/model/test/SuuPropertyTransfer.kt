@@ -19,7 +19,6 @@ interface SuuPropertyTransfer {
 
         var language: Language
 
-
     }
 
     enum class Language {

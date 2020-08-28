@@ -1,7 +1,8 @@
-package eu.k5.soapui.transform.restassured.model
+package eu.k5.soapui.transform.restassured
 
 import eu.k5.soapui.transform.ModelWriter
-import eu.k5.soapui.transform.restassured.model.base.Visibility
+import eu.k5.soapui.transform.restassured.ast.Visibility
+import eu.k5.soapui.transform.restassured.model.Scenario
 import java.util.*
 import kotlin.collections.ArrayList
 

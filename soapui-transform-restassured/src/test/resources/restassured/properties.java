@@ -10,6 +10,6 @@ class caseTest {
         PropertyHolder step=context.propertiesStep("Properties");
         step.setProperty("key","keyValue");
         step.setProperty("date","${=java.time.LocalDateTime.now()}");
-        step.setProperty("dynamicScript",""test"");
+        step.setProperty("dynamicScript","\"test\"");
     }
 }

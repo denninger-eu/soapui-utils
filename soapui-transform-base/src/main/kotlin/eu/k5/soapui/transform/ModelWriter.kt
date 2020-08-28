@@ -43,6 +43,9 @@ class ModelWriter(
         return this
     }
 
+    fun write(writable: Writable): ModelWriter = writable.write(this)
+
+
     fun writeIndention(): ModelWriter {
         for (index in 0 until indent) {
             write("\t")
