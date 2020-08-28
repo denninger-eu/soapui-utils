@@ -2,6 +2,7 @@ package eu.k5.soapui.transform.restassured
 
 import eu.k5.soapui.streams.model.test.SuuTestCase
 import eu.k5.soapui.streams.model.test.SuuTestStepProperties
+import eu.k5.soapui.streams.model.test.SuuTestStepPropertyTransfers
 import eu.k5.soapui.transform.restassured.model.*
 import eu.k5.soapui.transform.restassured.model.base.*
 
@@ -11,7 +12,7 @@ class RaTransformer(
     private val scenario = Scenario(testCase.name)
     private val environment = Environment()
     private val propertiesTransformer = PropertiesTransformer(environment, scenario)
-
+    private val propertyTransfersTransfomrer = PropertyTransferTransformer(environment, scenario)
     fun transform(): Scenario {
         addContext()
 
@@ -21,6 +22,7 @@ class RaTransformer(
             }
             when (step) {
                 is SuuTestStepProperties -> propertiesTransformer.transform(step)
+                is SuuTestStepPropertyTransfers -> propertyTransfersTransfomrer.transform(step)
             }
         }
 

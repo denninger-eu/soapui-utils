@@ -13,9 +13,6 @@ class PropertiesTransformer(
 ) : Transformer<SuuTestStepProperties> {
 
     override fun transform(step: SuuTestStepProperties) {
-
-
-
         val body = PropertiesMethod(step.name)
         scenario.addImport(environment.propertyHolderFqn())
         for (property in step.properties.properties) {

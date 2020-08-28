@@ -35,7 +35,10 @@ class ModelWriter(
         return this
     }
 
-    fun write(strings: String): ModelWriter {
+    fun write(strings: String?): ModelWriter {
+        if (strings == null) {
+            return this
+        }
         writer.write(strings)
         return this
     }

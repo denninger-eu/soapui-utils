@@ -1,0 +1,43 @@
+!propertyTransfers
+name: transfer
+transfers:
+- name: response
+  source:
+    expression: $.id
+    language: JSONPATH
+    propertyName: Response
+    stepName: createResource
+  target:
+    language: JSONPATH
+    propertyName: projectProperty
+    stepName: '#Project#'
+- name: responseToSuite
+  source:
+    expression: $.id
+    language: JSONPATH
+    propertyName: Response
+    stepName: createResource
+  target:
+    language: JSONPATH
+    propertyName: suiteProperty
+    stepName: '#TestSuite#'
+- name: responseToCase
+  source:
+    expression: $.id
+    language: JSONPATH
+    propertyName: Response
+    stepName: createResource
+  target:
+    language: JSONPATH
+    propertyName: caseProperty
+    stepName: '#TestCase#'
+- name: transferToScript
+  source:
+    language: XPATH
+    propertyName: dynamicScript
+    stepName: Properties
+  target:
+    language: XPATH
+    propertyName: script
+    stepName: Groovy2
+weight: 20

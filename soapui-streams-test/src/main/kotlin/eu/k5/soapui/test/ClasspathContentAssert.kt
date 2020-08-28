@@ -7,7 +7,10 @@ class ClasspathContentAssert {
 
     companion object {
         fun equals(expected: String, actual: String, mode: Mode = Mode.TRIMED) {
-            val expectedContent = Thread.currentThread().contextClassLoader.getResourceAsStream(expected).use {
+            val expectedContent: String? = Thread.currentThread().contextClassLoader.getResourceAsStream(expected).use {
+                if (it == null) {
+                   return@use null
+                }
                 it.reader(StandardCharsets.UTF_8).readText()
             }
 
@@ -18,7 +21,10 @@ class ClasspathContentAssert {
         }
 
 
-        private fun normalize(string: String, mode: Mode): String {
+        private fun normalize(string: String?, mode: Mode): String {
+            if (string == null) {
+                return ""
+            }
             return string.lines().map { it.trim() }.filter { !it.isEmpty() }.joinToString()
         }
     }
