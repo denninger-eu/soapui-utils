@@ -10,8 +10,7 @@ class StringLiteral(
         return writer.write("\"").write(escaped()).write("\"")
     }
 
-    private fun escaped(): String {
-        // TODO: further escape string
-        return string.replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "\\r")
-    }
+    private fun escaped(): String =
+        string.replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "\\r")
+
 }

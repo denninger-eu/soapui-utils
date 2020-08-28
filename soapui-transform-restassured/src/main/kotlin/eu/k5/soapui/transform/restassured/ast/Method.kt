@@ -1,22 +1,35 @@
 package eu.k5.soapui.transform.restassured.ast
 
 import eu.k5.soapui.transform.ModelWriter
+import eu.k5.soapui.transform.Writable
 
-open class Method(
-    val name: String,
-    val body: Segment,
-    private val visibility: Visibility = Visibility.PUBLIC
+class Method(
+    override val name: String,
+    private val body: Segment,
+    private val visibility: Visibility = Visibility.PUBLIC,
+    private val returnType: String = "void"
+) : MethodRef, Writable {
 
-) {
+    val imports: List<String>
+        get() {
+            val list = ArrayList(body.imports)
+            list.addAll(annotations.imports)
+            return list
+        }
 
+    val annotations = Annotations()
 
-    fun write(writer: ModelWriter) {
-        writer.writeIndention().write(visibility.keyword).write(" void ").write(name).write("(){")
+    override fun write(writer: ModelWriter): ModelWriter {
+        writer.write(annotations)
+        writer.writeIndention().write(visibility.keyword).write(" ").write(returnType).write(" ").write(name)
+            .write("(){")
         writer.incIndent()
         writer.newLine()
-        body.write(writer)
+        writer.write(body)
         writer.decIndent()
         writer.writeLine("}")
+        writer.newLine()
+        return writer
     }
 
 

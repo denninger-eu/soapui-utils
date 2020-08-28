@@ -28,4 +28,14 @@ class RestAssuredGeneratorTest : AbstractTest() {
         ClasspathContentAssert.equals("restassured/propertytransfers.java", result.main)
     }
 
+    @Test
+    fun `get restRequest`() {
+        val testCase = loadTestcase("getrestrequest").testSuites[0].testCases[0]
+
+        val transformer = RestAssuredGenerator()
+        val result = transformer.transform(testCase)
+
+        ClasspathContentAssert.equals("restassured/getrestrequest.java", result.main)
+    }
+
 }

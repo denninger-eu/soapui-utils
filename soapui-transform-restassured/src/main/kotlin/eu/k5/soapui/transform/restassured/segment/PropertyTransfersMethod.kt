@@ -12,6 +12,10 @@ class PropertyTransfersMethod(
 
     private val transfers = ArrayList<SuuPropertyTransfer>()
 
+    override val imports: List<String>
+        get() = emptyList()
+
+
     fun addTransfer(transfer: SuuPropertyTransfer) {
         transfers.add(transfer)
     }
@@ -26,6 +30,7 @@ class PropertyTransfersMethod(
         }
         return writer
     }
+
 
     private fun writeTransfer(writer: ModelWriter, transfer: SuuPropertyTransfer.Transfer) {
         writer.write(StringLiteral(transfer.asEntity()))

@@ -3,12 +3,17 @@ package eu.k5.soapui.transform.restassured.segment
 import eu.k5.soapui.transform.ModelWriter
 import eu.k5.soapui.transform.restassured.ast.Segment
 import eu.k5.soapui.transform.restassured.ast.literal.StringLiteral
+import eu.k5.soapui.transform.restassured.model.Environment
 
 class PropertiesMethod(
+    private val environment: Environment,
     private val name: String
 ) : Segment {
 
     private val properties = ArrayList<Property>()
+
+    override val imports: List<String>
+        get() = listOf(environment.propertyHolderFqn())
 
     fun addProperty(name: String, value: String?) {
         properties.add(Property(name, value))

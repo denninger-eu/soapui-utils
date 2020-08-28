@@ -3,7 +3,7 @@ Scenario: case
 	* def ctx = new Context()
 
 	* def Properties = ctx.propertiesStep("Properties")
-	* print Properties.setProperty("key","keyValue")
-	* print Properties.setProperty("date","${=java.time.LocalDateTime.now()}")
-	* print Properties.setProperty("dynamicScript","\"test\"")
+	* if (true)  Properties.setProperty("key","keyValue")
+	* if (true)  Properties.setProperty("date","${=java.time.LocalDateTime.now()}")
+	* if (true)  Properties.setProperty("dynamicScript","\"test\"")
 

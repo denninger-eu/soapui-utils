@@ -29,13 +29,13 @@ class KarateGeneratorTest {
     }
 
     @Test
-    fun `restRequest`() {
+    fun `restRequest get`() {
 
-        val testCase = AbstractTest.loadTestcase("propertytransfers").testSuites[0].testCases[0]
+        val testCase = AbstractTest.loadTestcase("getrestrequest").testSuites[0].testCases[0]
 
         val transformer = KarateGenerator()
         val result = transformer.transform(testCase)
 
-        ClasspathContentAssert.equals("karate/propertytransfers.feature", result.main)
+        ClasspathContentAssert.equals("karate/getrestrequest.feature", result.main)
     }
 }

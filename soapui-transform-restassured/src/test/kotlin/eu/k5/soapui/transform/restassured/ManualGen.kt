@@ -20,11 +20,9 @@ class ManualGen : AbstractTest() {
         val scenario = transformer.transform()
 
 
-        val writer1 = StringWriter()
-        val writer = ScenarioWriter(scenario, ModelWriter())
+        val writer1 = ModelWriter().write(scenario)
 
 
-        writer.write()
 
         println(writer1.toString())
 /*

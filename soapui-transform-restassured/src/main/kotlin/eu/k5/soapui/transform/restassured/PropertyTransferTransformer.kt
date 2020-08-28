@@ -19,7 +19,10 @@ class PropertyTransferTransformer(
             body.addTransfer(transfer)
         }
         val method = Method(step.name, body, Visibility.PUBLIC)
-        scenario.methods.add(method)
+        method.annotations.add(environment.test)
+        method.annotations.add(environment.displayName(step.name))
+        method.annotations.add(environment.dependsOn(step.name))
+        scenario.addMethod(method)
     }
 
 }

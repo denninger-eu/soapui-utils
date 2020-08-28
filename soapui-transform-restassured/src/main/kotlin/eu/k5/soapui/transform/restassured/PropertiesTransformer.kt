@@ -14,13 +14,12 @@ class PropertiesTransformer(
 ) : Transformer<SuuTestStepProperties> {
 
     override fun transform(step: SuuTestStepProperties) {
-        val body = PropertiesMethod(step.name)
-        scenario.addImport(environment.propertyHolderFqn())
+        val body = PropertiesMethod(environment, step.name)
         for (property in step.properties.properties) {
             body.addProperty(property.name, property.value)
         }
         val method = Method("init" + step.name, body, Visibility.PRIVATE)
-        scenario.methods.add(method)
+        scenario.addMethod(method)
         scenario.init.add(Statement(MethodCall(method)))
     }
 }

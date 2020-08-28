@@ -5,6 +5,7 @@ import eu.k5.soapui.streams.model.assertion.SuuAssertionValidStatus
 import eu.k5.soapui.streams.model.rest.SuuRestMethod
 import eu.k5.soapui.streams.model.rest.SuuRestParameter
 import eu.k5.soapui.streams.model.test.SuuTestStepRestRequest
+import eu.k5.soapui.transform.extensions.createUrl
 import eu.k5.soapui.transform.karate.model.*
 import eu.k5.soapui.transform.karate.model.literals.ConstantLiteral
 import eu.k5.soapui.transform.karate.model.literals.StringLiteral
@@ -19,7 +20,7 @@ class TransformRestRequest(
         val block = Block()
         var methodCall = MethodCallExpression(
             environment.ctx, environment.createRequestStep, listOf(StringLiteral(step.name))
-        ).chain("url", listOf(StringLiteral(createUrl(step))))
+        ).chain("url", listOf(StringLiteral(step.createUrl(environment.baseUrl))))
 
         if (step.baseMethod.httpMethod == SuuRestMethod.HttpMethod.POST
             || step.baseMethod.httpMethod == SuuRestMethod.HttpMethod.PUT
@@ -52,21 +53,7 @@ class TransformRestRequest(
         return block
     }
 
-    private fun createUrl(step: SuuTestStepRestRequest): String {
-        var path = environment.baseUrl
-        for (resource in step.baseResources) {
-            if (!(path.endsWith("/") || resource.path!!.startsWith("/"))) {
-                path = "$path/"
-            }
-            path += resource.path
-        }
-        for (parameter in step.allParameters()) {
-            if (parameter.value.style == SuuRestParameter.Style.TEMPLATE) {
-                path = path.replace("{" + parameter.value.name + "}", parameter.value.value)
-            }
-        }
-        return path
-    }
+
 
     override fun body(step: SuuTestStepRestRequest): Statement {
 
