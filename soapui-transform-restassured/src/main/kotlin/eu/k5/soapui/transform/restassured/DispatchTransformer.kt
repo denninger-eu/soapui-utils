@@ -1,9 +1,6 @@
 package eu.k5.soapui.transform.restassured
 
-import eu.k5.soapui.streams.model.test.SuuTestCase
-import eu.k5.soapui.streams.model.test.SuuTestStepProperties
-import eu.k5.soapui.streams.model.test.SuuTestStepPropertyTransfers
-import eu.k5.soapui.streams.model.test.SuuTestStepRestRequest
+import eu.k5.soapui.streams.model.test.*
 import eu.k5.soapui.transform.restassured.ast.Field
 import eu.k5.soapui.transform.restassured.ast.Method
 import eu.k5.soapui.transform.restassured.ast.Statement
@@ -11,6 +8,7 @@ import eu.k5.soapui.transform.restassured.ast.StatementList
 import eu.k5.soapui.transform.restassured.ast.expression.Assignment
 import eu.k5.soapui.transform.restassured.ast.expression.ConstructorCall
 import eu.k5.soapui.transform.restassured.ast.expression.FieldAccess
+import eu.k5.soapui.transform.restassured.ast.expression.Reference
 import eu.k5.soapui.transform.restassured.model.*
 
 class DispatchTransformer(
@@ -18,9 +16,11 @@ class DispatchTransformer(
 ) {
     private val environment = Environment()
     private val scenario = Scenario(environment, testCase.name)
+
     private val propertiesTransformer = PropertiesTransformer(environment, scenario)
     private val propertyTransfersTransformer = PropertyTransferTransformer(environment, scenario)
     private val restRequestTransformer = RestRequestTransformer(environment, scenario)
+    private val scriptTransformer = ScriptTransformer(environment, scenario)
 
     fun transform(): Scenario {
         addContext()
@@ -33,6 +33,7 @@ class DispatchTransformer(
                 is SuuTestStepProperties -> propertiesTransformer.transform(step)
                 is SuuTestStepPropertyTransfers -> propertyTransfersTransformer.transform(step)
                 is SuuTestStepRestRequest -> restRequestTransformer.transform(step)
+                is SuuTestStepScript -> scriptTransformer.transform(step)
             }
         }
 
@@ -52,7 +53,12 @@ class DispatchTransformer(
         scenario.addMethod(method)
 
         scenario.init.add(
-            Statement(Assignment(FieldAccess("context"), ConstructorCall(environment.context())))
+            Statement(
+                Assignment(
+                    FieldAccess("context"),
+                    ConstructorCall(environment.context(), listOf(Reference("this")))
+                )
+            )
         )
     }
 }

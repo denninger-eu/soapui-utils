@@ -33,4 +33,8 @@ class Method(
         return writer
     }
 
+    companion object {
+        fun named(name: String) = MethodRef.withName(name)
+    }
+
 }

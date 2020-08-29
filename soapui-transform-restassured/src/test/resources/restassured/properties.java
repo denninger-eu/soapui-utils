@@ -1,19 +1,19 @@
 import eu.k5.dread.soapui.SoapuiContext;
 import eu.k5.dread.soapui.SoapuiContext.PropertyHolder;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.ExtendsWith;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@ExtendsWith(Dependent.DependsOnTestWatcher.class)
+@ExtendWith(Dependent.DependsOnTestWatcher.class)
 @TestMethodOrder(Dependent.DependsOnMethodOrder.class)
 public class caseTest {
     private SoapuiContext context;
 
     @BeforeAll
     public void init(){
-        this.context = new SoapuiContext();
+        this.context = new SoapuiContext(this);
         initProperties();
     }
 

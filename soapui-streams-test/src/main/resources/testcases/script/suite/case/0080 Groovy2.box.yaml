@@ -1,0 +1,5 @@
+!scriptStep
+name: Groovy2
+weight: 70
+### script
+"test"

@@ -50,4 +50,15 @@ class KarateGeneratorTest {
 
         ClasspathContentAssert.equals("karate/postrestrequest.feature", result.main)
     }
+
+    @Test
+    fun `script`() {
+
+        val testCase = AbstractTest.loadTestcase("script").testSuites[0].testCases[0]
+
+        val transformer = KarateGenerator()
+        val result = transformer.transform(testCase)
+
+        ClasspathContentAssert.equals("karate/script.feature", result.main)
+    }
 }

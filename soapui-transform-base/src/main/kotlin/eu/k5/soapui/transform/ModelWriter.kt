@@ -92,4 +92,6 @@ class ModelWriter(
         val name: String,
         val content: String
     )
+
+    fun addArtifact(name: String, content: String) = additionalArtifacts.add(Artifact(name, content))
 }

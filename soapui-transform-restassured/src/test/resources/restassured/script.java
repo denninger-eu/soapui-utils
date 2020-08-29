@@ -15,15 +15,13 @@ public class caseTest {
     @BeforeAll
     public void init(){
         this.context = new SoapuiContext(this);
+        context.groovyScript("Groovy2").script(context.read("Groovy2.groovy"));
     }
 
     @Test
-    @DisplayName("transfer")
-    public void transfer(){
-        context.transfer("#createResource#Response","$.id","JSONPATH").to("#Project#projectProperty");
-        context.transfer("#createResource#Response","$.id","JSONPATH").to("#TestSuite#suiteProperty");
-        context.transfer("#createResource#Response","$.id","JSONPATH").to("#TestCase#caseProperty");
-        context.transfer("#Properties#dynamicScript").to("#Groovy2#script");
+    @DisplayName("Groovy2")
+    public void Groovy2(){
+        context.groovyScript("Groovy2").execute();
     }
 
 }

@@ -56,14 +56,7 @@ class RestRequestSegment(
             call = call.chain("body", MethodCall(request, "request"), indent = 0)
         }
 
-        call = when (step.baseMethod.httpMethod) {
-            SuuRestMethod.HttpMethod.GET -> call.chain("get", MethodCall(request, "url"), indent = 0)
-            SuuRestMethod.HttpMethod.POST -> call.chain("post", MethodCall(request, "url"), indent = 0)
-            SuuRestMethod.HttpMethod.PUT -> call.chain("put", MethodCall(request, "url"), indent = 0)
-
-            else -> call
-        }
-
+        call = call.chain(step.baseMethod.httpMethod!!.name.toLowerCase(), MethodCall(request, "url"), indent = 0)
         call = call.chain("then", indent = 0)
 
         writer.write(

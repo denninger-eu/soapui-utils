@@ -18,7 +18,7 @@ class PropertiesTransformer(
         for (property in step.properties.properties) {
             body.addProperty(property.name, property.value)
         }
-        val method = Method("init" + step.name, body, Visibility.PRIVATE)
+        val method = Method("init" + BaseTransformer.escapeVariableName(step.name), body, Visibility.PRIVATE)
         scenario.addMethod(method)
         scenario.init.add(Statement(MethodCall(method)))
     }

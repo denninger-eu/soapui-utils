@@ -1,12 +1,14 @@
 package eu.k5.soapui.transform.restassured.model
 
 import eu.k5.soapui.transform.restassured.ast.Annotations
+import eu.k5.soapui.transform.restassured.ast.expression.Reference
 import eu.k5.soapui.transform.restassured.ast.literal.ClassLiteral
 import eu.k5.soapui.transform.restassured.ast.literal.FieldLiteral
 import eu.k5.soapui.transform.restassured.ast.literal.StringLiteral
 
 class Environment {
 
+    val context = Reference("context")
 
     val baseUrl = "\${#TestCase#baseUrl}"
 
@@ -24,6 +26,8 @@ class Environment {
 
     fun requestContextFqn() = contextFqn() + "." + requestContext()
 
+    val scriptContext = "ScriptContext"
+    val scriptContextFqn = contextFqn() + "." + scriptContext
 
     val restassured = "io.restassured"
     fun restassuredStar() = "static $restassured.RestAssured.*"

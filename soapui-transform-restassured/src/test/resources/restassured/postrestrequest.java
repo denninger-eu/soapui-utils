@@ -18,24 +18,28 @@ public class caseTest {
     @BeforeAll
     public void init(){
         this.context = new SoapuiContext(this);
-        initget_Resource();
+        initcreateResource();
     }
 
-    private void initget_Resource(){
-        RestRequestContext request=context.requestStep("get Resource");
-        request.url("${#TestCase#baseUrl}/resource/${#Project#projectProperty}");
+    private void initcreateResource(){
+        RestRequestContext request=context.requestStep("createResource");
+        request.url("${#TestCase#baseUrl}/resource").request("{ \"value\": \"${=\"String\"x}\"}\n");
     }
 
     @Test
-    @DisplayName("get Resource")
-    public void get_Resource(){
-        RestRequestContext request = context.requestStep("get Resource");
+    @DisplayName("createResource")
+    public void createResource(){
+        RestRequestContext request = context.requestStep("createResource");
         Response response = given()
+                .header("headerP", "headerV")
                 .header("Accept", "application/json")
-                .get(request.url())
+                .header("Content-Type", "application/json")
+                .body(request.request())
+                .post(request.url())
                 .then()
                 .extract().response();
         request.status(response.statusCode()).response(response.asString());
+        request.assertStatus(200);
         request.assertJsonPathExists("$.id", "true");
     }
 
