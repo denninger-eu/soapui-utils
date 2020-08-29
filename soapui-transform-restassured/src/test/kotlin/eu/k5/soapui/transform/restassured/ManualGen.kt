@@ -24,7 +24,7 @@ class ManualGen : AbstractTest() {
 
 
 
-        println(writer1.toString())
+        println(writer1.mainContent())
 /*
         val writer = StringWriter()
 

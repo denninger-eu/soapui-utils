@@ -26,9 +26,13 @@ class RestRequestTransformer(
         val requestMethod = Method(fieldName, RestRequestSegment(environment, step))
         requestMethod.annotations.add(environment.test)
         requestMethod.annotations.add(environment.displayName(step.name))
-        requestMethod.annotations.add(environment.dependsOn(step.name))
+
+        if (environment.lastStep != null) {
+            requestMethod.annotations.add(environment.dependsOn(environment.lastStep!!))
+        }
         scenario.addMethod(requestMethod)
 
+        environment.lastStep = fieldName
     }
 
 }

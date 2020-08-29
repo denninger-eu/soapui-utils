@@ -26,6 +26,8 @@ class MethodCall(
             if (indentChained >= 0) {
                 writer.incIndent(indentChained).newLine()
                 writer.writeIndention().write(".")
+            } else {
+                writer.write(".")
             }
         }
 

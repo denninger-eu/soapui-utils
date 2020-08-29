@@ -10,6 +10,7 @@ class Environment {
 
     val baseUrl = "\${#TestCase#baseUrl}"
 
+    var lastStep: String? = null
 
     fun context() = "SoapuiContext"
 
@@ -60,8 +61,8 @@ class Environment {
 
     fun extendsWith(): Annotations.AnnotationUsage {
         return Annotations.AnnotationUsage(
-            "ExtendsWith",
-            "org.junit.jupiter.api.ExtendsWith",
+            "ExtendWith",
+            "org.junit.jupiter.api.extension.ExtendWith",
             listOf(ClassLiteral("Dependent.DependsOnTestWatcher"))
         )
     }

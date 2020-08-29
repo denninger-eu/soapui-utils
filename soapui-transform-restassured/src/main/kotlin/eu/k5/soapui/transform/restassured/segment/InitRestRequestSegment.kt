@@ -1,5 +1,6 @@
 package eu.k5.soapui.transform.restassured.segment
 
+import eu.k5.soapui.streams.model.rest.SuuRestMethod
 import eu.k5.soapui.streams.model.test.SuuTestStepRestRequest
 import eu.k5.soapui.transform.ModelWriter
 import eu.k5.soapui.transform.extensions.createUrl
@@ -26,16 +27,21 @@ class InitRestRequestSegment(
         writer.writeIndention().write(env.requestContext()).write(" request=context.requestStep(")
             .write(StringLiteral(step.name))
             .write(");").newLine()
-        writer.write(
-            Statement(
-                MethodCall(
-                    Reference("request"),
-                    MethodRef.withName("url"),
-                    listOf(StringLiteral(step.createUrl(env.baseUrl)))
-                )
-            )
+
+        var initRequest = MethodCall(
+            Reference("request"),
+            MethodRef.withName("url"),
+            listOf(StringLiteral(step.createUrl(env.baseUrl)))
         )
 
+        if (step.baseMethod.httpMethod == SuuRestMethod.HttpMethod.POST ||
+            step.baseMethod.httpMethod == SuuRestMethod.HttpMethod.PUT
+        ) {
+            initRequest = initRequest.chain("request", StringLiteral(step.request.content!!))
+        }
+
+
+        writer.write(Statement(initRequest))
         return writer
     }
 

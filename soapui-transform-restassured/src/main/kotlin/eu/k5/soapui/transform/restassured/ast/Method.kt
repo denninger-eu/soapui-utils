@@ -10,6 +10,8 @@ class Method(
     private val returnType: String = "void"
 ) : MethodRef, Writable {
 
+    val annotations = Annotations()
+
     val imports: List<String>
         get() {
             val list = ArrayList(body.imports)
@@ -17,7 +19,6 @@ class Method(
             return list
         }
 
-    val annotations = Annotations()
 
     override fun write(writer: ModelWriter): ModelWriter {
         writer.write(annotations)
@@ -31,6 +32,5 @@ class Method(
         writer.newLine()
         return writer
     }
-
 
 }

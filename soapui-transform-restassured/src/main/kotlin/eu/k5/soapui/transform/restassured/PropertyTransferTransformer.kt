@@ -14,15 +14,22 @@ class PropertyTransferTransformer(
 
 
     override fun transform(step: SuuTestStepPropertyTransfers) {
+        val fieldName = BaseTransformer.escapeVariableName(step.name)
+
         val body = PropertyTransfersMethod(step.name)
         for (transfer in step.transfers) {
             body.addTransfer(transfer)
         }
-        val method = Method(step.name, body, Visibility.PUBLIC)
+        val method = Method(fieldName, body, Visibility.PUBLIC)
         method.annotations.add(environment.test)
         method.annotations.add(environment.displayName(step.name))
-        method.annotations.add(environment.dependsOn(step.name))
+        if (environment.lastStep != null) {
+            method.annotations.add(environment.dependsOn(environment.lastStep!!))
+        }
         scenario.addMethod(method)
+
+        environment.lastStep = fieldName
+
     }
 
 }
