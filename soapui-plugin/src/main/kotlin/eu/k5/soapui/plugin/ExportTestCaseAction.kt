@@ -17,6 +17,9 @@ import eu.k5.soapui.plugin.karate.KarateExporterView*/
 class ExportTestCaseAction : AbstractSoapUIAction<TestCase>("Export Karate", "Synchronize with folder") {
 
     override fun perform(testCase: TestCase?, p1: Any?) {
+
+
+
 /*        println("Do export")
         //   val testSuiteDirect = TestSuiteDirect(testCase as WsdlTestSuite).testCases[0]
         val testSuiteDirect = TestCaseDirect(testCase as WsdlTestCase)

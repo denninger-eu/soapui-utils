@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>soapui-client-swing</artifactId>
+    <artifactId>soapui-client-fx</artifactId>
 
     <packaging>jar</packaging>
 
@@ -122,9 +122,24 @@
             <artifactId>soapui-streams</artifactId>
             <groupId>eu.k5.soapui</groupId>
         </dependency>
+
         <dependency>
             <groupId>eu.k5.soapui</groupId>
-            <artifactId>soapui-streams-karate</artifactId>
+            <artifactId>soapui-transform-base</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>eu.k5.soapui</groupId>
+            <artifactId>soapui-transform-karate</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>eu.k5.soapui</groupId>
+            <artifactId>soapui-transform-restassured</artifactId>
+        </dependency>
+
+
+        <dependency>
+            <groupId>no.tornado</groupId>
+            <artifactId>tornadofx</artifactId>
         </dependency>
 
         <dependency>
@@ -153,6 +168,12 @@
             <artifactId>javafx-base</artifactId>
             <version>11</version>
         </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+
 
     </dependencies>
 
