@@ -5,8 +5,7 @@ import eu.k5.soapui.transform.restassured.ast.Method
 import eu.k5.soapui.transform.restassured.ast.Statement
 import eu.k5.soapui.transform.restassured.ast.Visibility
 import eu.k5.soapui.transform.restassured.ast.expression.MethodCall
-import eu.k5.soapui.transform.restassured.model.Environment
-import eu.k5.soapui.transform.restassured.model.Scenario
+import eu.k5.soapui.transform.restassured.segment.Scenario
 import eu.k5.soapui.transform.restassured.segment.InitRestRequestSegment
 import eu.k5.soapui.transform.restassured.segment.RestRequestSegment
 

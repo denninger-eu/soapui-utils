@@ -1,9 +1,8 @@
 package eu.k5.soapui.transform.restassured
 
 import eu.k5.soapui.streams.model.test.SuuTestStepPropertyTransfers
-import eu.k5.soapui.transform.restassured.model.Environment
 import eu.k5.soapui.transform.restassured.segment.PropertyTransfersMethod
-import eu.k5.soapui.transform.restassured.model.Scenario
+import eu.k5.soapui.transform.restassured.segment.Scenario
 import eu.k5.soapui.transform.restassured.ast.Method
 import eu.k5.soapui.transform.restassured.ast.Visibility
 

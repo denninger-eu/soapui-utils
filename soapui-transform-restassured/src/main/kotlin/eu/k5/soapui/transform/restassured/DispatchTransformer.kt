@@ -9,7 +9,7 @@ import eu.k5.soapui.transform.restassured.ast.expression.Assignment
 import eu.k5.soapui.transform.restassured.ast.expression.ConstructorCall
 import eu.k5.soapui.transform.restassured.ast.expression.FieldAccess
 import eu.k5.soapui.transform.restassured.ast.expression.Reference
-import eu.k5.soapui.transform.restassured.model.*
+import eu.k5.soapui.transform.restassured.segment.Scenario
 
 class DispatchTransformer(
     private val testCase: SuuTestCase

@@ -1,26 +1,31 @@
 package eu.k5.soapui.transform.client
 
+import javafx.collections.FXCollections
 import tornadofx.Controller
-
-fun main(args: Array<String>) {
-    println("testxx".matches(Regex("test.*")))
-    println("test\n\r".matches(Regex("test.*",RegexOption.MULTILINE)))
-    println("test\n".matches(Regex("test.*",RegexOption.DOT_MATCHES_ALL)))
-
-}
-
-class ArtifactsController : Controller() {
+import java.io.File
+import java.nio.charset.StandardCharsets
+import java.nio.file.Files
 
 
-    val selectedArtifact = ArtifactsModel()
+class ArtifactsController(
+
+) : Controller() {
+    private val model: ArtifactsModel by inject()
 
     fun saveAsZip() {
-        "".matches(Regex("22", RegexOption.MULTILINE))
-        TODO("Not yet implemented")
     }
 
-    fun saveInFolder() {
-        TODO("Not yet implemented")
+    fun saveInDirectory(target: File?) {
+        if (target == null) {
+            return
+        }
+
+        val root = target.toPath()
+        for (artifact in model.artifacts) {
+            Files.newOutputStream(root.resolve(artifact.nameProperty.get())).use {
+                it.write(artifact.contentProperty.get().toByteArray(StandardCharsets.UTF_8))
+            }
+        }
     }
 
 

@@ -3,7 +3,7 @@ package eu.k5.soapui.transform.restassured.segment
 import eu.k5.soapui.transform.ModelWriter
 import eu.k5.soapui.transform.restassured.ast.Segment
 import eu.k5.soapui.transform.restassured.ast.literal.StringLiteral
-import eu.k5.soapui.transform.restassured.model.Environment
+import eu.k5.soapui.transform.restassured.Environment
 
 class PropertiesMethod(
     private val environment: Environment,

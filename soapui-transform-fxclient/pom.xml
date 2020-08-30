@@ -14,6 +14,28 @@
 
 
     <dependencies>
+        <dependency>
+            <groupId>eu.k5.soapui</groupId>
+            <artifactId>soapui-transform-base</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>eu.k5.soapui</groupId>
+            <artifactId>soapui-transform-restassured</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>eu.k5.soapui</groupId>
+            <artifactId>soapui-transform-karate</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>eu.k5.soapui</groupId>
+            <artifactId>soapui-streams-test</artifactId>
+            <scope>test</scope>
+        </dependency>
 
         <dependency>
             <groupId>org.openjfx</groupId>

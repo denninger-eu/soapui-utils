@@ -7,7 +7,11 @@ import tornadofx.property
 
 class Artifact(name: String, content: String) {
 
+    constructor() : this("", "")
+
     val nameProperty = SimpleStringProperty(name)
-  //  var name by nameProperty
+    val typeProperty = SimpleStringProperty("")
+    val contentProperty = SimpleStringProperty(content)
+    //  var name by nameProperty
 
 }

@@ -1,4 +1,4 @@
-package eu.k5.soapui.transform.restassured.model
+package eu.k5.soapui.transform.restassured
 
 import eu.k5.soapui.transform.restassured.ast.Annotations
 import eu.k5.soapui.transform.restassured.ast.expression.Reference

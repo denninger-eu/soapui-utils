@@ -5,8 +5,7 @@ import eu.k5.soapui.transform.restassured.ast.Method
 import eu.k5.soapui.transform.restassured.ast.Statement
 import eu.k5.soapui.transform.restassured.ast.expression.MethodCall
 import eu.k5.soapui.transform.restassured.ast.literal.StringLiteral
-import eu.k5.soapui.transform.restassured.model.Environment
-import eu.k5.soapui.transform.restassured.model.Scenario
+import eu.k5.soapui.transform.restassured.segment.Scenario
 import eu.k5.soapui.transform.restassured.segment.ScriptSegment
 
 class ScriptTransformer(

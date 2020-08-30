@@ -13,7 +13,7 @@ import eu.k5.soapui.transform.restassured.ast.expression.MethodCall
 import eu.k5.soapui.transform.restassured.ast.expression.Reference
 import eu.k5.soapui.transform.restassured.ast.literal.IntVarArgLiteral
 import eu.k5.soapui.transform.restassured.ast.literal.StringLiteral
-import eu.k5.soapui.transform.restassured.model.Environment
+import eu.k5.soapui.transform.restassured.Environment
 
 
 class RestRequestSegment(
