@@ -23,9 +23,9 @@ class GeneratorController(
         val transform = generator.transform(event.suuTestCase)
 
         val scope = ArtifactsScope()
-        scope.artifacts.add(Artifact("main", transform.main))
+        scope.model.artifacts.add(Artifact("main", transform.main))
         for (artifact in transform.artifacts) {
-            scope.artifacts.add(Artifact(artifact.name, artifact.content))
+            scope.model.artifacts.add(Artifact(artifact.name, artifact.content))
         }
         val view = find<ArtifactsView>(scope)
         val tab = Tab(event.suuTestCase.name)

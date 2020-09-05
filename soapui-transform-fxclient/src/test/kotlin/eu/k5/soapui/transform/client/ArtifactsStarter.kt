@@ -3,22 +3,33 @@ package eu.k5.soapui.transform.client
 import eu.k5.soapui.test.AbstractTest
 import eu.k5.soapui.transform.Generator
 import tornadofx.App
+import tornadofx.find
 
 fun main(args: Array<String>) {
     tornadofx.launch<ArtifactsStarter>(*args)
 }
 
-class ArtifactsStarter : App(ArtifactsView::class) {
+class ArtifactsStarter : App(ArtifactStarterView::class) {
 
-    val model: ArtifactsModel by inject()
+    val view: ArtifactStarterView by inject()
 
     init {
 
+
         val generator = Generator.byName("karate")
+
 
         val testCase = AbstractTest.loadFromBox("runnable2").testSuites[0].testCases[0]
 
-        val result = generator.transform(testCase)
+        val transform = generator.transform(testCase)
+        val scope = ArtifactsScope()
+        scope.model.artifacts.add(Artifact("main", transform.main))
+        for (artifact in transform.artifacts) {
+            scope.model.artifacts.add(Artifact(artifact.name, artifact.content))
+        }
+        val artifactsView = find<ArtifactsView>(scope)
+
+        view.root.center = artifactsView.root
 
 /*
         model.artifacts.add(Artifact("main", result.main))

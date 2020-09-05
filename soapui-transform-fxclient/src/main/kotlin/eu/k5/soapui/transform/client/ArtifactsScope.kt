@@ -4,7 +4,6 @@ import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import tornadofx.Scope
 
-class ArtifactsScope(
-    val artifacts: ObservableList<Artifact> = FXCollections.observableArrayList()
-
-) : Scope()
+class ArtifactsScope() : Scope() {
+    val model = ArtifactsModel()
+}

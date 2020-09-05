@@ -8,7 +8,7 @@ import tornadofx.ItemViewModel
 import tornadofx.ScopedInstance
 
 class ArtifactsModel : Component(), ScopedInstance {
-
+    val artifacts: ObservableList<Artifact> = FXCollections.observableArrayList()
     val selected = ArtifactModel(Artifact())
 
 

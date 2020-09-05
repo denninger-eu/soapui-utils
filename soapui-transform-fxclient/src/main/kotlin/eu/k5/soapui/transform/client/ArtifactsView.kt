@@ -10,13 +10,13 @@ class ArtifactsView(
     override val scope = super.scope as ArtifactsScope
 
     private val controller: ArtifactsController by inject()
-    private val model: ArtifactsModel by inject()
+    private val model = scope.model
 
     override val root =
         borderpane {
             center {
                 splitpane(Orientation.HORIZONTAL) {
-                    tableview(scope.artifacts) {
+                    tableview(model.artifacts) {
                         column("Name", Artifact::nameProperty).remainingWidth()
                         column("Type", Artifact::typeProperty)
                         smartResize()

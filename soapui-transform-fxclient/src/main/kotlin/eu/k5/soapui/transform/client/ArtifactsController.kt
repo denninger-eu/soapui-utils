@@ -12,7 +12,7 @@ class ArtifactsController(
 
 ) : Controller() {
     override val scope = super.scope as ArtifactsScope
-    private val model: ArtifactsModel by inject()
+    private val model = scope.model
 
 
     fun saveAsZip() {
@@ -24,7 +24,7 @@ class ArtifactsController(
         }
 
         val root = target.toPath()
-        for (artifact in scope.artifacts) {
+        for (artifact in model.artifacts) {
             Files.newOutputStream(root.resolve(artifact.nameProperty.get())).use {
                 it.write(artifact.contentProperty.get().toByteArray(StandardCharsets.UTF_8))
             }
