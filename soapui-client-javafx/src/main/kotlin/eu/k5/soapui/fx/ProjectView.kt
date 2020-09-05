@@ -1,15 +1,15 @@
 package eu.k5.soapui.fx
 
-import com.eviware.soapui.support.ExtensionFileFilter
-import javafx.scene.Parent
+import eu.k5.soapui.transform.client.GeneratorController
+import javafx.beans.property.SimpleBooleanProperty
 import javafx.stage.FileChooser
 import tornadofx.*
-import java.util.prefs.Preferences
 
 class ProjectView : View() {
 
     private val model: ProjectModel by inject()
     private val controller: ProjectController by inject()
+    private val moduleController: GeneratorController by inject()
 
     override val root = vbox {
 
@@ -32,17 +32,25 @@ class ProjectView : View() {
                     mode = FileChooserMode.Single
                 )
                 controller.openProject(files)
-
+                moduleController.test()
             }
             button() {
                 graphic = Graphics.REMOVE.image
+                enableWhen() { SimpleBooleanProperty(false) }
+            }
+
+            button() {
+                graphic = Graphics.REFRESH.image
+                enableWhen() { SimpleBooleanProperty(false) }
             }
         }
         tableview(model.projects) {
             column(title = "Name", ProjectModel.Project::name).remainingWidth()
             column("Loading", ProjectModel.Project::loading)
             smartResize()
-            
+            onSelectionChange {
+                model.selected.value = it
+            }
         }
 
         label {}
@@ -50,18 +58,28 @@ class ProjectView : View() {
             text = "Testcases"
         }
         buttonbar {
-            button() {
-                graphic = Graphics.REFRESH.image
-            }
+
             button("Karate") {
+                enableWhen() { model.testcase.isNotNull }
+            }.action {
+                controller.generateKarate()
 
             }
             button("Restassured") {
+                enableWhen() { model.testcase.isNotNull }
+            }.action {
+                controller.generateRestassured()
 
             }
         }
         tableview(model.testcases) {
+            column(title = "Project", ProjectModel.Testcase::projectName)
+            column(title = "Suite", ProjectModel.Testcase::testSuiteName)
+            column(title = "Case", ProjectModel.Testcase::testCaseName)
 
+            onSelectionChange {
+                model.testcase.value = it
+            }
         }
     }
 

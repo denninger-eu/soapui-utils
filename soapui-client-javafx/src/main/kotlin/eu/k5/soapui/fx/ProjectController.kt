@@ -2,18 +2,18 @@ package eu.k5.soapui.fx
 
 import eu.k5.soapui.streams.direct.DirectLoader
 import eu.k5.soapui.streams.model.SuProject
+import eu.k5.soapui.transform.client.GenerateTestcaseEvent
 import tornadofx.Controller
 import java.io.File
 import java.nio.file.Files
 import java.util.concurrent.Executors
 import java.util.prefs.Preferences
-import javax.swing.tree.DefaultMutableTreeNode
-import javax.swing.tree.MutableTreeNode
 
 class ProjectController : Controller() {
 
     private val model: ProjectModel by inject()
     private val executor = Executors.newSingleThreadExecutor()
+
 
     fun getOpenProjectFolder(): File? {
         val prefs: Preferences = Preferences.userNodeForPackage(ProjectView::class.java)
@@ -26,7 +26,7 @@ class ProjectController : Controller() {
         }
     }
 
-    fun updateOpenProjectFolder(file: File) {
+    private fun updateOpenProjectFolder(file: File) {
         val prefs: Preferences = Preferences.userNodeForPackage(ProjectView::class.java)
         prefs.put("projectFolder", file.canonicalPath.toString())
     }
@@ -54,28 +54,41 @@ class ProjectController : Controller() {
             val suProject: SuProject = Files.newInputStream(project.path.value).use { DirectLoader().direct(it) }
             project.name.set(suProject.name)
             project.suuProject.value = suProject
-
             project.loading.value = ProjectModel.Loading.LOADED
-
-/*            var structures = ArrayList<MutableTreeNode>()
-
-            for (testSuite in suProject.testSuites) {
-                val suiteNode = DefaultMutableTreeNode(MainModel.TestSuiteModel(testSuite))
-                for (testCase in testSuite.testCases) {
-                    suiteNode.add(DefaultMutableTreeNode(MainModel.TestCaseModel(testCase)))
-                }
-                structures.add(suiteNode)
-            }
-            println("project loaded")
-            project.structures.update(structures)*/
         } catch (exception: Throwable) {
-            println("Unalbe to load project" + exception.toString())
+            println("Unable to load project$exception")
             exception.printStackTrace()
-
             project.loading.value = ProjectModel.Loading.FAILED
-            throw exception
         }
 
 
+    }
+
+    fun generateKarate() {
+        val testcase = model.testcase.get()
+        println("event karate")
+
+        if (testcase != null) {
+
+            val event = GenerateTestcaseEvent(testcase.suuTestcase, "karate") { fire(NewTabEvent(it)) }
+            fire(event)
+
+        } else {
+            println("null karate")
+        }
+
+    }
+
+    fun generateRestassured() {
+        val testcase = model.testcase.get()
+
+        println("event restassured")
+        if (testcase != null) {
+            val event = GenerateTestcaseEvent(testcase.suuTestcase, "restassured") { fire(NewTabEvent(it)) }
+            fire(event)
+
+        } else {
+            println("null ra")
+        }
     }
 }

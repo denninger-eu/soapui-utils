@@ -7,6 +7,8 @@ import tornadofx.*
 class ArtifactsView(
 
 ) : View() {
+    override val scope = super.scope as ArtifactsScope
+
     private val controller: ArtifactsController by inject()
     private val model: ArtifactsModel by inject()
 
@@ -14,7 +16,7 @@ class ArtifactsView(
         borderpane {
             center {
                 splitpane(Orientation.HORIZONTAL) {
-                    tableview(model.artifacts) {
+                    tableview(scope.artifacts) {
                         column("Name", Artifact::nameProperty).remainingWidth()
                         column("Type", Artifact::typeProperty)
                         smartResize()

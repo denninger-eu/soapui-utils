@@ -155,7 +155,11 @@
                 <artifactId>soapui-transform-base</artifactId>
                 <version>${project.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>eu.k5.soapui</groupId>
+                <artifactId>soapui-transform-fxclient</artifactId>
+                <version>${project.version}</version>
+            </dependency>
             <dependency>
                 <groupId>eu.k5.soapui</groupId>
                 <artifactId>soapui-transform-karate</artifactId>

@@ -129,6 +129,10 @@
         </dependency>
         <dependency>
             <groupId>eu.k5.soapui</groupId>
+            <artifactId>soapui-transform-fxclient</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>eu.k5.soapui</groupId>
             <artifactId>soapui-transform-karate</artifactId>
         </dependency>
         <dependency>

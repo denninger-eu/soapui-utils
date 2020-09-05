@@ -20,10 +20,12 @@ class ArtifactsStarter : App(ArtifactsView::class) {
 
         val result = generator.transform(testCase)
 
+/*
         model.artifacts.add(Artifact("main", result.main))
         for (artifact in result.artifacts) {
             model.artifacts.add(Artifact(artifact.name, artifact.content))
         }
+*/
 
 /*
             this.model.artifacts.add(Artifact("test", "test"))
