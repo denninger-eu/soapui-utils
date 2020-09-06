@@ -1,16 +1,17 @@
 package eu.k5.soapui.transform.client
 
+import eu.k5.soapui.fx.SoapUiModule
 import eu.k5.soapui.transform.Generator
 import javafx.scene.control.Tab
+import tornadofx.Component
 import tornadofx.Controller
 import tornadofx.find
 
-class GeneratorController(
+class GeneratorModule() : Component(), SoapUiModule {
 
-) : Controller() {
+    override val name: String = "generator"
 
-    init {
-        println("Subscribe")
+    override fun init() {
         subscribe<GenerateTestcaseEvent> {
             generate(it)
         }
@@ -33,6 +34,5 @@ class GeneratorController(
         event.tabConsumer(tab)
     }
 
-    fun test() {
-    }
+
 }

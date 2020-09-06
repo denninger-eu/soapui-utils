@@ -5,6 +5,8 @@ import eu.k5.soapui.streams.box.Box
 import eu.k5.soapui.streams.box.BoxImpl
 import eu.k5.soapui.streams.box.rest.RestServiceBox
 import eu.k5.soapui.streams.box.test.TestSuiteBox
+import eu.k5.soapui.streams.model.wsdl.SuuWsdlDefinition
+import eu.k5.soapui.streams.model.wsdl.SuuWsdlDefinitionPart
 import eu.k5.soapui.streams.model.wsdl.SuuWsdlOperation
 import eu.k5.soapui.streams.model.wsdl.SuuWsdlService
 
@@ -39,6 +41,8 @@ class WsdlServiceBox(
         box.findSubFolderBox { it.fileName.toString() == WsdlOperationBox.FILE_NAME }.map { WsdlOperationBox(it) }
             .toMutableList()
     }
+    override val definition: SuuWsdlDefinition
+        get() = TODO("Not yet implemented")
 
     override fun createOperation(name: String): SuuWsdlOperation {
         val init = operations

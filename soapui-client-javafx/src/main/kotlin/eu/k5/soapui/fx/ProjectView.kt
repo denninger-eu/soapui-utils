@@ -1,6 +1,5 @@
 package eu.k5.soapui.fx
 
-import eu.k5.soapui.transform.client.GeneratorController
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.stage.FileChooser
 import tornadofx.*
@@ -9,7 +8,6 @@ class ProjectView : View() {
 
     private val model: ProjectModel by inject()
     private val controller: ProjectController by inject()
-    private val moduleController: GeneratorController by inject()
 
     override val root = vbox {
 
@@ -32,55 +30,95 @@ class ProjectView : View() {
                     mode = FileChooserMode.Single
                 )
                 controller.openProject(files)
-                moduleController.test()
             }
             button() {
                 graphic = Graphics.REMOVE.image
-                enableWhen() { SimpleBooleanProperty(false) }
+                enableWhen(SimpleBooleanProperty(false))
             }
 
             button() {
                 graphic = Graphics.REFRESH.image
-                enableWhen() { SimpleBooleanProperty(false) }
+                enableWhen(SimpleBooleanProperty(false))
             }
         }
         tableview(model.projects) {
             column(title = "Name", ProjectModel.Project::name).remainingWidth()
-            column("Loading", ProjectModel.Project::loading)
+            column("State", ProjectModel.Project::state)
             smartResize()
             onSelectionChange {
                 model.selected.value = it
             }
         }
 
-        label {}
-        label {
-            text = "Testcases"
+        tabpane {
+            tab<Testcases>()
+            tab<Webservices>()
         }
-        buttonbar {
+    }
 
-            button("Karate") {
-                enableWhen() { model.testcase.isNotNull }
-            }.action {
-                controller.generateKarate()
+    class Testcases : View() {
+        private val model: ProjectModel by inject()
+        private val controller: ProjectController by inject()
 
+        override val root = vbox {
+            title = "Testcases"
+            closeableWhen() { SimpleBooleanProperty(false) }
+            model.testcases.onChange { visibleProperty().set(!model.testcases.isEmpty()) }
+
+            buttonbar {
+
+                button("Karate") {
+                    enableWhen() { model.testcase.isNotNull }
+                }.action {
+                    controller.generateKarate()
+
+                }
+                button("Restassured") {
+                    enableWhen(model.testcase.isNotNull)
+                }.action {
+                    controller.generateRestassured()
+
+                }
             }
-            button("Restassured") {
-                enableWhen() { model.testcase.isNotNull }
-            }.action {
-                controller.generateRestassured()
+            tableview(model.testcases) {
+                column(title = "Project", ProjectModel.Testcase::projectName)
+                column(title = "Suite", ProjectModel.Testcase::testSuiteName)
+                column(title = "Case", ProjectModel.Testcase::testCaseName)
 
+                onSelectionChange {
+                    model.testcase.value = it
+                }
+            }
+
+        }
+    }
+
+    class Webservices : View() {
+        private val model: ProjectModel by inject()
+        private val controller: ProjectController by inject()
+
+        override val root = vbox {
+            title = "Webservices"
+            closeableWhen() { SimpleBooleanProperty(false) }
+
+            buttonbar {
+                button("Repair") {
+                    enableWhen(model.webservice.isNotNull)
+                }.action {
+                    controller.startRepair()
+                }
+            }
+
+            tableview(model.webservices) {
+                column(title = "Project", ProjectModel.Webservice::projectName)
+                column(title = "Wsdl", ProjectModel.Webservice::wsdlServiceName).remainingWidth()
+                smartResize()
+                onSelectionChange {
+                    model.webservice.value = it
+                }
             }
         }
-        tableview(model.testcases) {
-            column(title = "Project", ProjectModel.Testcase::projectName)
-            column(title = "Suite", ProjectModel.Testcase::testSuiteName)
-            column(title = "Case", ProjectModel.Testcase::testCaseName)
 
-            onSelectionChange {
-                model.testcase.value = it
-            }
-        }
     }
 
 

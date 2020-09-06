@@ -3,6 +3,7 @@ package eu.k5.soapui.fx
 import eu.k5.soapui.streams.direct.DirectLoader
 import eu.k5.soapui.streams.model.SuProject
 import eu.k5.soapui.transform.client.GenerateTestcaseEvent
+import eu.k5.tolerantxml.client.repair.CreateTolerantConverter
 import tornadofx.Controller
 import java.io.File
 import java.nio.file.Files
@@ -49,19 +50,17 @@ class ProjectController : Controller() {
     private fun loadProject(project: ProjectModel.Project) {
         println("Loading soapui project")
         try {
-            project.loading.value = ProjectModel.Loading.LOADING
+            project.state.value = ProjectModel.State.LOADING
 
             val suProject: SuProject = Files.newInputStream(project.path.value).use { DirectLoader().direct(it) }
             project.name.set(suProject.name)
             project.suuProject.value = suProject
-            project.loading.value = ProjectModel.Loading.LOADED
+            project.state.value = ProjectModel.State.LOADED
         } catch (exception: Throwable) {
             println("Unable to load project$exception")
             exception.printStackTrace()
-            project.loading.value = ProjectModel.Loading.FAILED
+            project.state.value = ProjectModel.State.FAILED
         }
-
-
     }
 
     fun generateKarate() {
@@ -81,7 +80,6 @@ class ProjectController : Controller() {
 
     fun generateRestassured() {
         val testcase = model.testcase.get()
-
         println("event restassured")
         if (testcase != null) {
             val event = GenerateTestcaseEvent(testcase.suuTestcase, "restassured") { fire(NewTabEvent(it)) }
@@ -90,5 +88,22 @@ class ProjectController : Controller() {
         } else {
             println("null ra")
         }
+    }
+
+    fun startRepair() {
+        val definition = model.webservice.value?.suuWsdlService?.definition
+        if (definition == null) {
+            println("No definition")
+            return
+        }
+
+        val event = CreateTolerantConverter(
+            model.webservice.value?.wsdlServiceName?.get() ?: "unknown",
+            "main"
+        )
+        for (part in definition.parts) {
+            event.xsds[part.url] = part.content
+        }
+        fire(event)
     }
 }

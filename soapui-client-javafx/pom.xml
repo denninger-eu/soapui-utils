@@ -142,6 +142,12 @@
 
 
         <dependency>
+            <artifactId>tolerant-fxclient</artifactId>
+            <groupId>eu.k5.tolerant</groupId>
+            <version>0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
             <groupId>no.tornado</groupId>
             <artifactId>tornadofx</artifactId>
         </dependency>

@@ -4,6 +4,7 @@ import com.eviware.soapui.impl.wsdl.WsdlInterface
 import com.eviware.soapui.impl.wsdl.WsdlOperation
 import com.ibm.wsdl.BindingOperationImpl
 import com.ibm.wsdl.OperationImpl
+import eu.k5.soapui.streams.model.wsdl.SuuWsdlDefinition
 import eu.k5.soapui.streams.model.wsdl.SuuWsdlOperation
 import eu.k5.soapui.streams.model.wsdl.SuuWsdlService
 import javax.wsdl.Operation
@@ -40,4 +41,7 @@ class WsdlServiceDirect(
     override val operations: List<SuuWsdlOperation>
         get() = wsdlInterface.operationList.filterIsInstance<WsdlOperation>().map { WsdlOperationDirect(it) }
 
+
+    override val definition: SuuWsdlDefinition
+        get() = WsdlDefinitionDirect(wsdlInterface.definitionContext)
 }

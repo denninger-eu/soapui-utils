@@ -7,6 +7,8 @@ interface SuuWsdlService {
 
     val operations: List<SuuWsdlOperation>
 
+    val definition: SuuWsdlDefinition
+
     fun getOperation(name: String): SuuWsdlOperation? = operations.firstOrNull { it.name == name }
 
     fun createOperation(name: String): SuuWsdlOperation
