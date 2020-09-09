@@ -99,10 +99,10 @@ class ProjectController : Controller() {
 
         val event = CreateTolerantConverter(
             model.webservice.value?.wsdlServiceName?.get() ?: "unknown",
-            definition.parts[0].url
+            definition.parts[0].url.replace('\\', '/')
         )
         for (part in definition.parts) {
-            event.xsds[part.url] = part.content
+            event.xsds[part.url.replace('\\', '/')] = part.content
         }
         fire(event)
     }
