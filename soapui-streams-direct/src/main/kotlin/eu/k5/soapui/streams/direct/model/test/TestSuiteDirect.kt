@@ -32,7 +32,7 @@ class TestSuiteDirect(
     override val testCases: List<TestCaseDirect>
         get() = testSuite.testCaseList.filterIsInstance<WsdlTestCase>().map {
             TestCaseDirect(
-                it
+                it, this
             )
         }.filter { !it.isLostAndFound() }
 
