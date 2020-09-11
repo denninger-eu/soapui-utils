@@ -18,6 +18,7 @@ abstract class TestClass(
 
     val annotations = Annotations()
 
+    var extendsFrom: String? = null
 
     fun allImports(): List<String> {
         val importSet = HashSet(imports)

@@ -4,6 +4,7 @@ import eu.k5.soapui.streams.model.rest.SuuRestMethod
 import eu.k5.soapui.streams.model.test.SuuTestStepRestRequest
 import eu.k5.soapui.transform.ModelWriter
 import eu.k5.soapui.transform.extensions.createUrl
+import eu.k5.soapui.transform.restassured.BaseTransformer
 import eu.k5.soapui.transform.restassured.ast.MethodRef
 import eu.k5.soapui.transform.restassured.ast.Segment
 import eu.k5.soapui.transform.restassured.ast.Statement
@@ -36,7 +37,15 @@ class InitRestRequestSegment(
         if (step.baseMethod.httpMethod == SuuRestMethod.HttpMethod.POST ||
             step.baseMethod.httpMethod == SuuRestMethod.HttpMethod.PUT
         ) {
-            initRequest = initRequest.chain("request", StringLiteral(step.request.content!!))
+            if (step.request.content!!.length > 30) {
+                val name = BaseTransformer.escapeVariableName(step.name) + ".json"
+                writer.addArtifact(name, step.request.content!!)
+                initRequest = initRequest.chain(
+                    "request", MethodCall(Reference("context"), MethodRef.withName("read"), listOf(StringLiteral(name)))
+                )
+            } else {
+                initRequest = initRequest.chain("request", StringLiteral(step.request.content!!))
+            }
         }
 
 

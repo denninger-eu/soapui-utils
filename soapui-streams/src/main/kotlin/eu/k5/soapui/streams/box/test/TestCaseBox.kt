@@ -10,7 +10,8 @@ import eu.k5.soapui.streams.model.rest.SuuRestService
 import eu.k5.soapui.streams.model.test.*
 
 class TestCaseBox(
-    private val box: Box
+    private val box: Box,
+    override val suite: TestSuiteBox
 ) : SuuTestCase {
 
 
@@ -140,14 +141,14 @@ class TestCaseBox(
             return type.cast(stepFactory[type]!!(parent, name))
         }
 
-        fun create(parent: Box, name: String): TestCaseBox {
+        fun create(parent: Box, name: String, suite: TestSuiteBox): TestCaseBox {
 
             val box = parent.createFolder(name, FILE_NAME)
             val testCase = TestCaseBox.TestCaseYaml()
             testCase.name = name
             testCase.enabled = true
             box.write(TestCaseBox.TestCaseYaml::class.java, testCase)
-            return TestCaseBox(box)
+            return TestCaseBox(box, suite)
         }
     }
 }

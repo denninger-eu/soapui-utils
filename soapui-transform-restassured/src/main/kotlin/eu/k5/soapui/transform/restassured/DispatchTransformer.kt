@@ -1,14 +1,8 @@
 package eu.k5.soapui.transform.restassured
 
 import eu.k5.soapui.streams.model.test.*
-import eu.k5.soapui.transform.restassured.ast.Field
-import eu.k5.soapui.transform.restassured.ast.Method
-import eu.k5.soapui.transform.restassured.ast.Statement
-import eu.k5.soapui.transform.restassured.ast.StatementList
-import eu.k5.soapui.transform.restassured.ast.expression.Assignment
-import eu.k5.soapui.transform.restassured.ast.expression.ConstructorCall
-import eu.k5.soapui.transform.restassured.ast.expression.FieldAccess
-import eu.k5.soapui.transform.restassured.ast.expression.Reference
+import eu.k5.soapui.transform.restassured.ast.*
+import eu.k5.soapui.transform.restassured.ast.expression.*
 import eu.k5.soapui.transform.restassured.segment.Scenario
 
 class DispatchTransformer(
@@ -40,7 +34,23 @@ class DispatchTransformer(
         return scenario
     }
 
+    private fun readExtendsFrom(): String? {
+        return listOf(
+            testCase.properties.byName("RestassuredExtends"),
+            testCase.suite.properties.byName("RestassuredExtends")
+        ).firstOrNull { it != null }?.value
+    }
+
+    private fun readInitMethod(): String? {
+        return listOf(
+            testCase.properties.byName("RestassuredInitMethod"),
+            testCase.suite.properties.byName("RestassuredInitMethod")
+        ).firstOrNull { it != null }?.value
+    }
+
     private fun addContext() {
+
+        scenario.extendsFrom = readExtendsFrom()
         scenario.imports.add(environment.contextFqn())
         scenario.fields.add(Field("context", environment.context()))
 
@@ -52,11 +62,22 @@ class DispatchTransformer(
         method.annotations.annotations.add(scenario.environment.beforeAll)
         scenario.addMethod(method)
 
+        val init = if (readInitMethod() == null) {
+            ConstructorCall(environment.context(), listOf(Reference("this")))
+        } else {
+            MethodCall(
+                Reference("super"), MethodRef.withName(readInitMethod()!!),
+                listOf(
+                    ConstructorCall(environment.context(), listOf(Reference("this")))
+                )
+            )
+        }
+
         scenario.init.add(
             Statement(
                 Assignment(
                     FieldAccess("context"),
-                    ConstructorCall(environment.context(), listOf(Reference("this")))
+                    init
                 )
             )
         )

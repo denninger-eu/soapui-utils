@@ -7,6 +7,8 @@ import eu.k5.soapui.streams.model.rest.SuuRestService
 
 interface SuuTestCase {
 
+    val suite: SuuTestSuite
+
     var name: String
 
     var enabled: Boolean
@@ -32,7 +34,7 @@ interface SuuTestCase {
 
     fun createScriptStep(name: String): SuuTestStepScript
 
-    fun createWsdlRequestStep(name: String, operation: String) : SuuTestStepWsdlRequest
+    fun createWsdlRequestStep(name: String, operation: String): SuuTestStepWsdlRequest
 
 
     fun reorderSteps(): Boolean

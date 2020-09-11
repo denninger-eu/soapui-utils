@@ -26,7 +26,11 @@ class Scenario(
         writer.newLine()
 
         writer.write(annotations)
-        writer.write(visibility.keyword).write(" class ").write(name).write("Test").write(" {")
+        writer.write(visibility.keyword).write(" class ").write(name).write("Test")
+        if (extendsFrom != null) {
+            writer.write(" extends ").write(extendsFrom!!)
+        }
+        writer.write(" {")
         writer.newLine()
         writer.incIndent()
 

@@ -12,12 +12,12 @@ import static io.restassured.RestAssured.*;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ExtendWith(Dependent.DependsOnTestWatcher.class)
 @TestMethodOrder(Dependent.DependsOnMethodOrder.class)
-public class caseTest {
+public class caseTest extends AbstractIntegrationTest {
     private SoapuiContext context;
 
     @BeforeAll
     public void init(){
-        this.context = new SoapuiContext(this);
+        this.context = super.init(new SoapuiContext(this));
         initcreateResource();
     }
 
@@ -31,6 +31,7 @@ public class caseTest {
     public void createResource(){
         RestRequestContext request = context.requestStep("createResource");
         Response response = given()
+                .queryParam("queryParam", context.expand("${#Project#value}"))
                 .header("headerP", "headerV")
                 .header("Accept", "application/json")
                 .header("Content-Type", "application/json")

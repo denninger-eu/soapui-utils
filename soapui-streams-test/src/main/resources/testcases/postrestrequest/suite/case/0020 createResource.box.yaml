@@ -23,6 +23,7 @@ baseResources:
   parameters:
   - location: RESOURCE
     name: queryParam
+    value: ${#Project#value}
     override: false
     style: QUERY
   path: /resource

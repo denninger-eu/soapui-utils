@@ -10,7 +10,8 @@ import eu.k5.soapui.streams.model.rest.SuuRestService
 import eu.k5.soapui.streams.model.test.*
 
 class TestCaseJaxb(
-    private val element: TestCaseElement
+    private val element: TestCaseElement,
+    override val suite: TestSuiteJaxb
 ) : SuuTestCase {
 
     override var name: String

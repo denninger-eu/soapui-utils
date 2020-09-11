@@ -1,2 +1,7 @@
 !testSuite
 name: suite
+properties:
+  - name: RestassuredExtends
+    value: AbstractIntegrationTest
+  - name: RestassuredInitMethod
+    value: init

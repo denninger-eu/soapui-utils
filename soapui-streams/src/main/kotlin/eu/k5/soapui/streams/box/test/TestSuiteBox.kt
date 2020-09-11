@@ -40,13 +40,13 @@ class TestSuiteBox(
         get() = allTestCase.filter { !it.isLostAndFound() }.toList()
 
     private val allTestCase: MutableList<TestCaseBox> by lazy {
-        box.findSubFolderBox { it.fileName.toString() == TestCaseBox.FILE_NAME }.map { TestCaseBox(it) }
+        box.findSubFolderBox { it.fileName.toString() == TestCaseBox.FILE_NAME }.map { TestCaseBox(it, this) }
             .toMutableList()
     }
 
     override fun createTestCase(name: String): SuuTestCase {
         val init = allTestCase
-        val newTestCase = TestCaseBox.create(box, name)
+        val newTestCase = TestCaseBox.create(box, name, this)
         init.add(newTestCase)
         return newTestCase
     }

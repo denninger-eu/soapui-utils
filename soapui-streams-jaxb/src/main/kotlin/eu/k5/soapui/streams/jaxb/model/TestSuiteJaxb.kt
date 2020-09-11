@@ -24,7 +24,7 @@ class TestSuiteJaxb(
     override val properties: SuuProperties
         get() = PropertiesJaxb(element.properties ?: PropertiesElement())
     override val testCases: List<SuuTestCase>
-        get() = element.testCases?.map { TestCaseJaxb(it) } ?: emptyList()
+        get() = element.testCases?.map { TestCaseJaxb(it, this) } ?: emptyList()
 
     override fun createTestCase(name: String): SuuTestCase {
         TODO("Not yet implemented")

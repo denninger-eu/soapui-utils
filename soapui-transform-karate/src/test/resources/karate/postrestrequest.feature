@@ -8,6 +8,7 @@ Scenario: case
 	# createResource
 	Given url createResource.url()
 	  And request createResource.request()
+	  And param queryParam = ctx.expand("${#Project#value}")
 	  And header headerP = "headerV"
 	  And header Accept = "application/json"
 	  And header Content-Type = "application/json"

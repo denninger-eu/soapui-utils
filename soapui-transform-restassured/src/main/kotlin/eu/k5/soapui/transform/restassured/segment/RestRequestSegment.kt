@@ -3,8 +3,10 @@ package eu.k5.soapui.transform.restassured.segment
 import eu.k5.soapui.streams.model.assertion.SuuAssertionJsonPathExists
 import eu.k5.soapui.streams.model.assertion.SuuAssertionValidStatus
 import eu.k5.soapui.streams.model.rest.SuuRestMethod
+import eu.k5.soapui.streams.model.rest.SuuRestParameter
 import eu.k5.soapui.streams.model.test.SuuTestStepRestRequest
 import eu.k5.soapui.transform.ModelWriter
+import eu.k5.soapui.transform.restassured.BaseTransformer
 import eu.k5.soapui.transform.restassured.ast.MethodRef
 import eu.k5.soapui.transform.restassured.ast.Segment
 import eu.k5.soapui.transform.restassured.ast.Statement
@@ -40,16 +42,38 @@ class RestRequestSegment(
         var call = MethodCall("given")
 
 
-
-        for (header in step.request.allHeaders()) {
-            for (value in header.value) {
-                call = call.chain("header", StringLiteral(header.key), StringLiteral(value), indent = 1)
+        for (parameter in step.allParameters().values) {
+            if (parameter.value.isNullOrEmpty()) {
+                continue
+            }
+            if (parameter.style == SuuRestParameter.Style.QUERY) {
+                call = call.chain(
+                    "queryParam",
+                    StringLiteral(parameter.name),
+                    BaseTransformer.propertyFromContext(parameter.value),
+                    indent = 1
+                )
+            } else if (parameter.style == SuuRestParameter.Style.HEADER) {
+                call = call.chain(
+                    "header",
+                    StringLiteral(parameter.name),
+                    BaseTransformer.propertyFromContext(parameter.value),
+                    indent = 1
+                )
             }
         }
 
-        for (parameter in step.request.parameters.allParameters) {
-
+        for (header in step.request.allHeaders()) {
+            for (value in header.value) {
+                call = call.chain(
+                    "header",
+                    StringLiteral(header.key),
+                    BaseTransformer.propertyFromContext(value),
+                    indent = 1
+                )
+            }
         }
+
         if (step.baseMethod.httpMethod == SuuRestMethod.HttpMethod.POST ||
             step.baseMethod.httpMethod == SuuRestMethod.HttpMethod.PUT
         ) {
