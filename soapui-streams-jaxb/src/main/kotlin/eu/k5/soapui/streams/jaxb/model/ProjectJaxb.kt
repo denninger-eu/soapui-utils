@@ -2,6 +2,7 @@ package eu.k5.soapui.streams.jaxb.model
 
 import eu.k5.soapui.streams.jaxb.element.ProjectElement
 import eu.k5.soapui.streams.jaxb.element.PropertiesElement
+import eu.k5.soapui.streams.jaxb.element.RestServiceElement
 import eu.k5.soapui.streams.model.SuProject
 import eu.k5.soapui.streams.model.SuuProperties
 import eu.k5.soapui.streams.model.rest.SuuRestService
@@ -22,8 +23,10 @@ class ProjectJaxb(
         set(value) {}
     override val properties: SuuProperties
         get() = PropertiesJaxb(element.properties ?: PropertiesElement())
+
     override val restServices: List<SuuRestService>
-        get() = TODO("Not yet implemented")
+        get() = element.interfaces?.filterIsInstance<RestServiceElement>()
+            ?.map { RestServiceJaxb(it) }.orEmpty()
 
     override fun createRestService(name: String): SuuRestService = throw UnsupportedOperationException()
 

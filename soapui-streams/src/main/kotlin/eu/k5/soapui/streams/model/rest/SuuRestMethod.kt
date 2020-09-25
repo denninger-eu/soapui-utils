@@ -15,6 +15,10 @@ interface SuuRestMethod {
     fun createRequest(name: String): SuuRestRequest
 
     enum class HttpMethod {
-        GET, POST, PUT, DELETE, HEAD, PATCH, OPTIONS, TRACE,
+        GET, POST, PUT, DELETE, HEAD, PATCH, OPTIONS, TRACE;
+
+        companion object {
+            fun forName(name: String): HttpMethod? = values().firstOrNull { it.name == name }
+        }
     }
 }

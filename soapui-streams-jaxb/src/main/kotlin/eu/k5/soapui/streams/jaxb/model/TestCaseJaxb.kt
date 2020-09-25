@@ -80,10 +80,17 @@ class TestCaseJaxb(
                 return TestStepScriptJaxb(testStep)
             } else if (testStep.type == "transfer") {
                 return TestStepPropertyTransfersJaxb(testStep)
-            }
-            return TestStepDelayJaxb(testStep)
+            } else if (testStep.type == "properties") {
+                return TestStepPropertiesJaxb(testStep)
+            } else if (testStep.type == "restrequest") {
+                return TestStepRestRequestJaxb(testStep)
+            } else if (testStep.type == "jdbc") {
+                return TestStepDelayJaxb(testStep)
 
-//            TODO("unsupported")
+            } else if (testStep.type == "goto") {
+                return TestStepGotoJaxb(testStep)
+            }
+            TODO("unsupported " + testStep.type)
         }
     }
 

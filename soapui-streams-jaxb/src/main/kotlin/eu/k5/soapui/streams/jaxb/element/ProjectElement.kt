@@ -13,7 +13,8 @@ class ProjectElement {
     var name: String? = null
 
 
-    val interfaces: List<InterfaceElement>? = ArrayList()
+    @XmlElement(name = "interface", namespace = NAMESPACE)
+    var interfaces: List<InterfaceElement>? = ArrayList()
 
     @XmlElement(name = "properties", namespace = NAMESPACE)
     var properties: PropertiesElement? = null
