@@ -16,11 +16,19 @@ class TransformRestRequest(
 ) : Transformer<SuuTestStepRestRequest> {
 
 
-    override fun header(step: SuuTestStepRestRequest): Statement {
+    override fun transform(scenario: Scenario, step: SuuTestStepRestRequest) {
+        scenario.inits.add(header(step))
+        scenario.bodies.add(body(step))
+    }
+
+
+    private fun header(step: SuuTestStepRestRequest): Statement {
         val block = Block()
         var methodCall = MethodCallExpression(
             environment.ctx, environment.createRequestStep, listOf(StringLiteral(step.name))
         ).chain("url", listOf(StringLiteral(step.createUrl(environment.baseUrl))))
+
+
 
         if (step.baseMethod.httpMethod == SuuRestMethod.HttpMethod.POST
             || step.baseMethod.httpMethod == SuuRestMethod.HttpMethod.PUT
@@ -40,10 +48,19 @@ class TransformRestRequest(
                             )
                         )
                     )
+
                 )
                 methodCall = methodCall.chain("request", listOf(artifact.variable))
             }
 
+        }
+        for (parameter in step.allParameters()) {
+            if (parameter.value.style == SuuRestParameter.Style.TEMPLATE) {
+                methodCall = methodCall.chain(
+                    "property",
+                    listOf(StringLiteral(parameter.value.name), StringLiteral(parameter.value.value))
+                )
+            }
         }
 
         val stepVariable = environment.getVariableForStep(step.name)
@@ -54,17 +71,17 @@ class TransformRestRequest(
     }
 
 
-
-    override fun body(step: SuuTestStepRestRequest): Statement {
+    fun body(step: SuuTestStepRestRequest): Statement {
 
         var stepVariable = environment.getVariableForStep(step.name)
 
         val block = RequestBlock(step.name)
-        block.Given.expressions.add(DefaultAssignment.exp("url", MethodCallExpression(stepVariable, "url")))
+        block.blockComments.add(Comment(step.baseMethod.httpMethod.toString() + " " + step.createUrl(environment.baseUrl)))
+        block.given.expressions.add(DefaultAssignment.exp("url", MethodCallExpression(stepVariable, "url")))
         if (step.baseMethod.httpMethod == SuuRestMethod.HttpMethod.POST
             || step.baseMethod.httpMethod == SuuRestMethod.HttpMethod.PUT
         ) {
-            block.Given.expressions.add(
+            block.given.expressions.add(
                 DefaultAssignment.exp(
                     "request",
                     MethodCallExpression(stepVariable, "request")
@@ -77,7 +94,7 @@ class TransformRestRequest(
                 continue
             }
             if (parameter.style == SuuRestParameter.Style.QUERY) {
-                block.Given.expressions.add(
+                block.given.expressions.add(
                     DefaultAssignment.exp(
                         "param",
                         Assignment(
@@ -87,7 +104,7 @@ class TransformRestRequest(
                     )
                 )
             } else if (parameter.style == SuuRestParameter.Style.HEADER) {
-                block.Given.expressions.add(
+                block.given.expressions.add(
                     DefaultAssignment.exp(
                         "header",
                         Assignment(
@@ -102,7 +119,7 @@ class TransformRestRequest(
 
         for (header in step.request.headers) {
             for (value in header.value) {
-                block.Given.expressions.add(
+                block.given.expressions.add(
                     DefaultAssignment.exp(
                         "header",
                         Assignment(
@@ -114,31 +131,31 @@ class TransformRestRequest(
             }
         }
         block.When.expressions.add(DefaultCall.method(step.baseMethod.httpMethod!!.name))
-        block.Then.expressions.add(
-            DefaultAssignment(
-                "print", MethodCallExpression(stepVariable, "response", listOf(ConstantLiteral("response")))
-            )
-        )
+
+        var responseAssign = MethodCallExpression(stepVariable, "response", listOf(ConstantLiteral("response")))
+        responseAssign = MethodCallExpression(responseAssign, "status", listOf(ConstantLiteral("responseStatus")))
+        block.then.methodCall(responseAssign)
+
         for (assertion in step.assertions.assertions) {
             if (assertion is SuuAssertionValidStatus) {
                 val codes = assertion.statusCodes.split(" ")
                 if (codes.size == 1) {
-                    block.Then.expressions.add(
+                    block.then.expressions.add(
                         DefaultAssignment.exp(
                             "status",
                             ConstantLiteral(codes[0])
                         )
                     )
+                } else {
+                    block.then.methodCall(MethodCallExpression(stepVariable, ""))
                 }
             } else if (assertion is SuuAssertionJsonPathExists) {
-                block.Then.expressions.add(
-                    MatchStatement(
-                        MethodCallExpression(
-                            stepVariable,
-                            "assertJsonExists",
-                            listOf(StringLiteral(assertion.expression ?: ""))
-                        ), ConstantLiteral(
-                            assertion.expectedContent ?: ""
+                block.then.methodCall(
+                    MethodCallExpression(
+                        stepVariable,
+                        "assertJsonPathExists",
+                        listOf(
+                            StringLiteral(assertion.expression ?: ""), StringLiteral(assertion.expectedContent ?: "")
                         )
                     )
                 )

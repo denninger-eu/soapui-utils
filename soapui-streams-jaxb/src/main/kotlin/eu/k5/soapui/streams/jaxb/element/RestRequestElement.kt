@@ -16,4 +16,8 @@ class RestRequestElement {
 
     @XmlElement(name = "description", namespace = NAMESPACE)
     var description: String? = null
+
+    @XmlElement(name = "assertion", namespace = NAMESPACE)
+    var assertions: List<AssertionElement>? = ArrayList()
+
 }

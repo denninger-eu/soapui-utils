@@ -1,8 +1,11 @@
 package eu.k5.soapui.transform.karate.model.statements
 
 import eu.k5.soapui.transform.ModelWriter
+import eu.k5.soapui.transform.karate.model.DefaultAssignment
 import eu.k5.soapui.transform.karate.model.Expression
+import eu.k5.soapui.transform.karate.model.MethodCallExpression
 import eu.k5.soapui.transform.karate.model.Statement
+import kotlin.math.exp
 
 class PrefixBlock(
     val name: String,
@@ -26,6 +29,10 @@ class PrefixBlock(
         }
         // writer.decIndent()
         return writer
+    }
+
+    fun methodCall(call: MethodCallExpression) {
+        expressions.add(DefaultAssignment("if (true)", call))
     }
 
     companion object {

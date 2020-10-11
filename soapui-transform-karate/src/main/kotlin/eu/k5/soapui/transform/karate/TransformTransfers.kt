@@ -2,9 +2,11 @@ package eu.k5.soapui.transform.karate
 
 import eu.k5.soapui.streams.model.test.SuuPropertyTransfer
 import eu.k5.soapui.streams.model.test.SuuTestStepPropertyTransfers
+import eu.k5.soapui.streams.model.test.SuuTestStepRestRequest
 import eu.k5.soapui.transform.extensions.asEntity
 import eu.k5.soapui.transform.karate.model.Block
 import eu.k5.soapui.transform.karate.model.MethodCallExpression
+import eu.k5.soapui.transform.karate.model.Scenario
 import eu.k5.soapui.transform.karate.model.Statement
 import eu.k5.soapui.transform.karate.model.literals.StringLiteral
 import eu.k5.soapui.transform.karate.model.statements.Blank
@@ -12,11 +14,12 @@ import eu.k5.soapui.transform.karate.model.statements.Blank
 class TransformTransfers(
     private val environment: Environment
 ) : Transformer<SuuTestStepPropertyTransfers> {
-    override fun header(step: SuuTestStepPropertyTransfers): Statement {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
+    override fun transform(scenario: Scenario, step: SuuTestStepPropertyTransfers) {
+        scenario.bodies.add(body(step))
     }
 
-    override fun body(step: SuuTestStepPropertyTransfers): Statement {
+    private fun body(step: SuuTestStepPropertyTransfers): Statement {
 
         val block = Block(step.name)
         for (transfer in step.transfers) {

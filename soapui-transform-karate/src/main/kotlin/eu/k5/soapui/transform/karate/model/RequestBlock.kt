@@ -7,16 +7,22 @@ import eu.k5.soapui.transform.karate.model.statements.PrefixBlock
 class RequestBlock(
     name: String
 ) : Statement() {
-    val Comment = Comment(name)
-    val Given = PrefixBlock.Given()
+    val blockComments = ArrayList<Comment>()
+    val given = PrefixBlock.Given()
     val When = PrefixBlock.When()
-    val Then = PrefixBlock.Then()
+    val then = PrefixBlock.Then()
+
+    init {
+        blockComments.add(Comment(name))
+    }
 
     override fun write(writer: ModelWriter): ModelWriter {
-        Comment.write(writer)
-        Given.write(writer)
+        for(comment in blockComments){
+            comment.write(writer)
+        }
+        given.write(writer)
         When.write(writer)
-        Then.write(writer)
+        then.write(writer)
         Blank().write(writer)
         return writer
     }

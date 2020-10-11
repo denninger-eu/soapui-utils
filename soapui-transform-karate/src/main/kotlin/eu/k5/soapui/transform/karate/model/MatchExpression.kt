@@ -3,7 +3,7 @@ package eu.k5.soapui.transform.karate.model
 import eu.k5.soapui.transform.ModelWriter
 
 
-class MatchStatement(
+class MatchExpression(
     private val left: Expression,
     private val right: Expression
 ) : Expression {
@@ -12,4 +12,5 @@ class MatchStatement(
         return writer.write("match ").write(left).write(" == ").write(right)
     }
 
+    
 }

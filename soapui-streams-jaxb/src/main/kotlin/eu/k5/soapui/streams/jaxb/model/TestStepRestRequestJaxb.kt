@@ -1,7 +1,7 @@
 package eu.k5.soapui.streams.jaxb.model
 
+import eu.k5.soapui.streams.jaxb.element.ConfigRestRequestStepElement
 import eu.k5.soapui.streams.jaxb.element.TestStepElement
-import eu.k5.soapui.streams.model.assertion.SuuAssertions
 import eu.k5.soapui.streams.model.rest.SuuRestMethod
 import eu.k5.soapui.streams.model.rest.SuuRestRequest
 import eu.k5.soapui.streams.model.rest.SuuRestResource
@@ -9,8 +9,11 @@ import eu.k5.soapui.streams.model.rest.SuuRestService
 import eu.k5.soapui.streams.model.test.SuuTestStepRestRequest
 
 class TestStepRestRequestJaxb(
-    testStep: TestStepElement
-) : TestStepJaxb(testStep), SuuTestStepRestRequest {
+    element: TestStepElement
+) : TestStepJaxb(element), SuuTestStepRestRequest {
+
+    private val config: ConfigRestRequestStepElement = element.config as ConfigRestRequestStepElement
+
 
     override val baseService: SuuRestService
         get() = TODO("Not yet implemented")
@@ -22,8 +25,8 @@ class TestStepRestRequestJaxb(
         get() = TODO("Not yet implemented")
         set(value) {}
     override val request: SuuRestRequest
-        get() = TODO("Not yet implemented")
-    override val assertions: SuuAssertions
-        get() = TODO("Not yet implemented")
+        get() = RestRequestJaxb(config.restRequest!!)
+
+    override val assertions = AssertionsJaxb(config.restRequest?.assertions.orEmpty())
 
 }

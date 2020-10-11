@@ -29,7 +29,6 @@ class ReadRestServiceJaxbTest : AbstractJaxbTest() {
         Assertions.assertEquals("resourceName", restResource.name)
         Assertions.assertEquals("resourcePath", restResource.path)
 
-        restResource.parameters.
 
         Assertions.assertEquals(1, restResource.methods.size)
 

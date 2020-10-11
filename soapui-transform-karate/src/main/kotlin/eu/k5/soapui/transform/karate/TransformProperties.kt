@@ -4,10 +4,8 @@ import eu.k5.soapui.streams.model.SuuProperties
 import eu.k5.soapui.streams.model.test.SuuPropertyTransfer
 import eu.k5.soapui.streams.model.test.SuuTestStepProperties
 import eu.k5.soapui.streams.model.test.SuuTestStepPropertyTransfers
-import eu.k5.soapui.transform.karate.model.Block
-import eu.k5.soapui.transform.karate.model.Declaration
-import eu.k5.soapui.transform.karate.model.MethodCallExpression
-import eu.k5.soapui.transform.karate.model.Statement
+import eu.k5.soapui.streams.model.test.SuuTestStepScript
+import eu.k5.soapui.transform.karate.model.*
 import eu.k5.soapui.transform.karate.model.literals.StringLiteral
 import eu.k5.soapui.transform.karate.model.literals.VariableLiteral
 import eu.k5.soapui.transform.karate.model.statements.Blank
@@ -18,9 +16,11 @@ class TransformProperties(
     private val environment: Environment
 ) : Transformer<SuuTestStepProperties> {
 
-    override fun body(step: SuuTestStepProperties): Statement = NoOpStatement()
+    override fun transform(scenario: Scenario, step: SuuTestStepProperties) {
+        scenario.inits.add(header(step))
+    }
 
-    override fun header(step: SuuTestStepProperties): Statement {
+    private fun header(step: SuuTestStepProperties): Statement {
         val block = Block()
         val stepVariable = environment.getVariableForStep(step.name)
         block.statements.add(

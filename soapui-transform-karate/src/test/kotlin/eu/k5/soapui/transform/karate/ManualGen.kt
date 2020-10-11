@@ -22,16 +22,16 @@ class ManualGen {
 
     fun scenario(): Scenario {
         val scenario = Scenario("create and retrieve cat")
-        scenario.statements.add(request())
+        scenario.bodies.add(request())
         return scenario
     }
 
     private fun request(): RequestBlock {
         val block = RequestBlock("Test")
-        block.Given.expressions?.add(DefaultAssignment.url("http://myhost.com/v1/cats"))
-        block.Given.expressions?.add(DefaultAssignment.request("{'x':'y'}"))
+        block.given.expressions?.add(DefaultAssignment.url("http://myhost.com/v1/cats"))
+        block.given.expressions?.add(DefaultAssignment.request("{'x':'y'}"))
         block.When.expressions.add(DefaultCall.method("POST"))
-        block.Then.expressions.add(Match.status("201"))
+        block.then.expressions.add(Match.status("201"))
         return block
     }
 

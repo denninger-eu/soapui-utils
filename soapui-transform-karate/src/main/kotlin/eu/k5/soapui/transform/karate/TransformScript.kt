@@ -2,17 +2,22 @@ package eu.k5.soapui.transform.karate
 
 import eu.k5.soapui.streams.model.test.SuuTestStepScript
 import eu.k5.soapui.transform.karate.model.*
-import eu.k5.soapui.transform.karate.model.literals.MultiLineStringLiteral
 import eu.k5.soapui.transform.karate.model.literals.StringLiteral
-import eu.k5.soapui.transform.karate.model.literals.VariableLiteral
 import eu.k5.soapui.transform.karate.model.statements.Blank
 import eu.k5.soapui.transform.karate.model.statements.Star
 
 class TransformScript(
-    private val environment: Environment
+    private val environment: Environment,
 ) : Transformer<SuuTestStepScript> {
 
-    override fun header(step: SuuTestStepScript): Statement {
+
+    override fun transform(scenario: Scenario, step: SuuTestStepScript) {
+        scenario.inits.add(header(step))
+        scenario.bodies.add(body(step))
+    }
+
+
+    private fun header(step: SuuTestStepScript): Statement {
         val block = Block("Script " + step.name)
         val temp = environment.getTempFeatureVariable()
 
@@ -48,18 +53,20 @@ class TransformScript(
         return block
     }
 
-    override fun body(step: SuuTestStepScript): Statement {
+    private fun body(step: SuuTestStepScript): Block {
         val block = Block("Script " + step.name)
         val stepVariable = environment.getVariableForStep(step.name)
 
+        val tempVariable = environment.getTempFeatureVariable()
         block.statements.add(
             Star(
                 Declaration.assign(
-                    environment.getTempFeatureVariable(),
+                    tempVariable,
                     MethodCallExpression(stepVariable, "execute")
                 )
             )
         )
+        block.statements.add(Star(DefaultAssignment.exp("print", tempVariable)))
         block.statements.add(Blank())
         return block
     }

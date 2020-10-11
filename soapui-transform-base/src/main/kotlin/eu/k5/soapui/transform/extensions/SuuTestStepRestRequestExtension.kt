@@ -11,9 +11,10 @@ fun SuuTestStepRestRequest.createUrl(baseUrl: String): String {
         }
         path += resource.path
     }
+
     for (parameter in this.allParameters()) {
         if (parameter.value.style == SuuRestParameter.Style.TEMPLATE) {
-            path = path.replace("{" + parameter.value.name + "}", parameter.value.value)
+            path = path.replace("{" + parameter.value.name + "}", "\${" + parameter.value.name + "}")
         }
     }
     return path

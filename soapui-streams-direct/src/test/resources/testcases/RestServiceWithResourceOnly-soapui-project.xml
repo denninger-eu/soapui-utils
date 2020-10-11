@@ -1,2 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<con:soapui-project id="ffb97780-9212-47f9-bb9b-55c8fb5b2fbe" activeEnvironment="Default" name="RestServiceWithResourceOnly" resourceRoot="" soapui-version="5.5.0" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:RestService" id="b2e0ab38-051f-4799-918b-2645a1c5940e" wadlVersion="http://wadl.dev.java.net/2009/02" name="RestServiceName" type="rest" basePath="basePathValue" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:description>DescriptionValue</con:description><con:settings/><con:definitionCache type="TEXT" rootPart=""/><con:endpoints/><con:resource name="resourceName" path="resourcePath" id="63afd638-88da-403f-ab69-200e40234af6"><con:description>resourceDescription</con:description><con:settings/><con:parameters/></con:resource></con:interface><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/><con:oAuth1ProfileContainer/><con:sensitiveInformation/></con:soapui-project>
+<con:soapui-project id="ffb97780-9212-47f9-bb9b-55c8fb5b2fbe" activeEnvironment="Default"
+                    name="RestServiceWithResourceOnly" resourceRoot="" soapui-version="5.5.0" abortOnError="false"
+                    runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config">
+    <con:settings/>
+    <con:interface xsi:type="con:RestService" id="b2e0ab38-051f-4799-918b-2645a1c5940e"
+                   wadlVersion="http://wadl.dev.java.net/2009/02" name="RestServiceName" type="rest"
+                   basePath="basePathValue" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <con:description>DescriptionValue</con:description>
+        <con:settings/>
+        <con:definitionCache type="TEXT" rootPart=""/>
+        <con:endpoints/>
+        <con:resource name="resourceName" path="resourcePath" id="63afd638-88da-403f-ab69-200e40234af6">
+            <con:description>resourceDescription</con:description>
+            <con:settings/>
+            <con:parameters/>
+        </con:resource>
+    </con:interface>
+    <con:properties/>
+    <con:wssContainer/>
+    <con:oAuth2ProfileContainer/>
+    <con:oAuth1ProfileContainer/>
+    <con:sensitiveInformation/>
+</con:soapui-project>

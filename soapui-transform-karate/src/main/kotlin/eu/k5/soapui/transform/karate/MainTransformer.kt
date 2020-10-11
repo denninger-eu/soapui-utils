@@ -5,6 +5,7 @@ import eu.k5.soapui.transform.karate.model.*
 import eu.k5.soapui.transform.karate.model.literals.IntLiteral
 import eu.k5.soapui.transform.karate.model.literals.VariableLiteral
 import eu.k5.soapui.transform.karate.model.statements.Blank
+import eu.k5.soapui.transform.karate.model.statements.Star
 
 class MainTransformer(
     private val env: Environment
@@ -13,20 +14,24 @@ class MainTransformer(
     fun transform(testCase: SuuTestCase): Scenario {
         val scenario = Scenario(testCase.name)
 
-        val ctx = transformHeader(scenario, testCase)
+        scenario.inits.add(Star(Declaration.loadClass(VariableLiteral("Context"), env.contextClassName)))
+        scenario.inits.add(Star(Declaration.assign(env.ctx, Expression.newInstance(VariableLiteral("Context")))))
+
+
+
+
 
         for (step in testCase.steps) {
             if (!step.enabled) {
                 continue;
             }
             when (step) {
-                is SuuTestStepRestRequest -> scenario.statements.add(env.restRequestTransformer.body(step))
-                is SuuTestStepPropertyTransfers -> scenario.statements.add(env.transferTransformer.body(step))
-                is SuuTestStepDelay -> scenario.statements.add(delay(step, ctx))
-                is SuuTestStepProperties -> scenario.statements.add(env.propertiesTransformer.body(step))
-                is SuuTestStepScript -> scenario.statements.add(env.scriptTransformer.body(step))
-                is SuuTestStepProperties -> {
-                }
+                is SuuTestStepRestRequest -> env.restRequestTransformer.transform(scenario, step)
+                is SuuTestStepPropertyTransfers -> env.transferTransformer.transform(scenario, step)
+                is SuuTestStepDelay -> scenario.bodies.add(delay(step, env.ctx))
+                is SuuTestStepProperties -> env.propertiesTransformer.transform(scenario, step)
+                is SuuTestStepScript -> env.scriptTransformer.transform(scenario, step)
+                is SuuTestStepProperties -> env.propertiesTransformer.transform(scenario, step)
             }
         }
         return scenario
@@ -43,12 +48,11 @@ class MainTransformer(
         return block
     }
 
+/*
     private fun transformHeader(scenario: Scenario, testCase: SuuTestCase): VariableLiteral {
 
-        scenario.addStar(Declaration.loadClass(VariableLiteral("Context"), env.contextClassName))
-        scenario.addStar(Declaration.assign(env.ctx, Expression.newInstance(VariableLiteral("Context"))))
 
-        scenario.statements.add(Blank())
+        scenario.bodies.add(Blank())
 
         var created = false
         for (step in testCase.steps) {
@@ -56,22 +60,23 @@ class MainTransformer(
                 continue
             }
             if (step is SuuTestStepRestRequest) {
-                scenario.statements.add(env.restRequestTransformer.header(step))
+                scenario.bodies.add(env.restRequestTransformer.header(step))
                 created = true
             } else if (step is SuuTestStepProperties) {
-                scenario.statements.add(env.propertiesTransformer.header(step))
+                scenario.bodies.add(env.propertiesTransformer.header(step))
                 created = true
             } else if (step is SuuTestStepScript) {
-                scenario.statements.add(env.scriptTransformer.header(step));
+                scenario.bodies.add(env.scriptTransformer.header(step));
             }
         }
 
         if (created) {
-            scenario.statements.add(Blank())
+            scenario.bodies.add(Blank())
         }
         return env.ctx
     }
 
+*/
 
 /*
     private fun asVariable(target: SuuPropertyTransfer.Transfer): VariableLiteral {

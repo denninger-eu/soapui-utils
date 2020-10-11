@@ -24,4 +24,9 @@ interface SuuRestParameter {
         HEADER, QUERY, TEMPLATE
     }
 
+    companion object {
+        fun style(name: String?): Style = Style.values().firstOrNull { it.name == name } ?: Style.QUERY
+    }
+
+
 }
