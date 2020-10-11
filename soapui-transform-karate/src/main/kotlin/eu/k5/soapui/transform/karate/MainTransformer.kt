@@ -53,6 +53,7 @@ class MainTransformer(
                 result.add(testCase.properties.byName(String.format(name + "_%02d", index))?.value ?: "")
                 index++
             }
+            return result
         }
 
         if (testCase.suite.properties.hasProperty(name)) {
@@ -65,6 +66,7 @@ class MainTransformer(
                 result.add(testCase.suite.properties.byName(String.format(name + "_%02d", index))?.value ?: "")
                 index++
             }
+            return result
         }
         return emptyList()
     }
