@@ -34,34 +34,39 @@ class MainTransformer(
             }
         }
         return scenario
-
     }
-
 
     private fun additionals(testCase: SuuTestCase, scenario: Scenario) {
-        val tags = property(testCase, "KARATE_TAGS")
-        if (tags != null) {
-            scenario.tags.addAll(tags.split("\n"))
-        }
-
-        val background = property(testCase, "KARATE_BACKGROUND")
-        if (background != null) {
-            scenario.postbackground.addAll(background.split("\n"))
-        }
-        val postexecute = property(testCase, "KARATE_POST")
-        if (postexecute != null) {
-            scenario.postexecute.addAll(postexecute.split("\n"))
-        }
+        scenario.tags.addAll(property(testCase, "KARATE_TAGS"))
+        scenario.postbackground.addAll(property(testCase, "KARATE_BACKGROUND"))
+        scenario.postexecute.addAll(property(testCase, "KARATE_POST"))
     }
 
-    private fun property(testCase: SuuTestCase, name: String): String? {
+    private fun property(testCase: SuuTestCase, name: String): List<String> {
         if (testCase.properties.hasProperty(name)) {
-            return testCase.properties.byName(name)?.value
+            return testCase.properties.byName(name)!!.value!!.split("%n")
         }
+        if (testCase.properties.hasProperty(name + "_01")) {
+            var index = 1
+            val result = ArrayList<String>()
+            while (testCase.properties.hasProperty(String.format(name + "_%02d", index))) {
+                result.add(testCase.properties.byName(String.format(name + "_%02d", index))?.value ?: "")
+                index++
+            }
+        }
+
         if (testCase.suite.properties.hasProperty(name)) {
-            return testCase.suite.properties.byName(name)?.value
+            return testCase.suite.properties.byName(name)!!.value!!.split("%n")
         }
-        return null
+        if (testCase.suite.properties.hasProperty(name + "_01")) {
+            var index = 1
+            val result = ArrayList<String>()
+            while (testCase.suite.properties.hasProperty(String.format(name + "_%02d", index))) {
+                result.add(testCase.suite.properties.byName(String.format(name + "_%02d", index))?.value ?: "")
+                index++
+            }
+        }
+        return emptyList()
     }
 
     private fun delay(step: SuuTestStepDelay, ctx: VariableLiteral): Statement {
