@@ -21,13 +21,13 @@ class MainTransformer(
 
 
         for (step in testCase.steps) {
-            if (!step.enabled) {
-                continue;
-            }
+
             when (step) {
                 is SuuTestStepRestRequest -> env.restRequestTransformer.transform(scenario, step)
                 is SuuTestStepPropertyTransfers -> env.transferTransformer.transform(scenario, step)
-                is SuuTestStepDelay -> scenario.bodies.add(delay(step, env.ctx))
+                is SuuTestStepDelay -> if (step.enabled) {
+                    scenario.bodies.add(delay(step, env.ctx))
+                }
                 is SuuTestStepProperties -> env.propertiesTransformer.transform(scenario, step)
                 is SuuTestStepScript -> env.scriptTransformer.transform(scenario, step)
                 is SuuTestStepProperties -> env.propertiesTransformer.transform(scenario, step)

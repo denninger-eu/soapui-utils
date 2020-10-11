@@ -16,7 +16,9 @@ class TransformTransfers(
 ) : Transformer<SuuTestStepPropertyTransfers> {
 
     override fun transform(scenario: Scenario, step: SuuTestStepPropertyTransfers) {
-        scenario.bodies.add(body(step))
+        if (step.enabled) {
+            scenario.bodies.add(body(step))
+        }
     }
 
     private fun body(step: SuuTestStepPropertyTransfers): Statement {

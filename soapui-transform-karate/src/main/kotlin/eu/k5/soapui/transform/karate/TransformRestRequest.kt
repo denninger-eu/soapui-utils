@@ -18,7 +18,9 @@ class TransformRestRequest(
 
     override fun transform(scenario: Scenario, step: SuuTestStepRestRequest) {
         scenario.inits.add(header(step))
-        scenario.bodies.add(body(step))
+        if (step.enabled) {
+            scenario.bodies.add(body(step))
+        }
     }
 
 
