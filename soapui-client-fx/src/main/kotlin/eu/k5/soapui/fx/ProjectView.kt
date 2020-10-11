@@ -11,6 +11,8 @@ class ProjectView : View() {
 
     override val root = vbox {
 
+
+
         label {
             text = "Projects"
         }
@@ -80,11 +82,12 @@ class ProjectView : View() {
 
                 }
             }
+
             tableview(model.testcases) {
                 column(title = "Project", ProjectModel.Testcase::projectName)
                 column(title = "Suite", ProjectModel.Testcase::testSuiteName)
-                column(title = "Case", ProjectModel.Testcase::testCaseName)
-
+                column(title = "Case", ProjectModel.Testcase::testCaseName).remainingWidth()
+                smartResize()
                 onSelectionChange {
                     model.testcase.value = it
                 }

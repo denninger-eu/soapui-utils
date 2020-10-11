@@ -276,6 +276,9 @@
             <id>smartbear</id>
             <name>smartbear repository</name>
             <url>http://smartbearsoftware.com/repository/maven2</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
         </repository>
     </repositories>
 
