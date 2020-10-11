@@ -40,7 +40,10 @@ class ArtifactsView(
                         controller.saveAsZip()
                     }
                     button("Save in folder ").action {
-                        var directory = chooseDirectory()
+
+                        val initDirectory = controller.getOpenSaveInFolderFolder()
+
+                        var directory = chooseDirectory(initialDirectory = initDirectory)
                         if (directory != null) {
                             controller.saveInDirectory(directory)
                         }

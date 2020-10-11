@@ -76,7 +76,7 @@ class TransformRestRequest(
         var stepVariable = environment.getVariableForStep(step.name)
 
         val block = RequestBlock(step.name)
-        block.blockComments.add(Comment(step.baseMethod.httpMethod.toString() + " " + step.createUrl(environment.baseUrl)))
+        block.blockComments.add(Comment(step.baseMethod.httpMethod.toString() + " " + step.createUrl("")))
         block.given.expressions.add(DefaultAssignment.exp("url", MethodCallExpression(stepVariable, "url")))
         if (step.baseMethod.httpMethod == SuuRestMethod.HttpMethod.POST
             || step.baseMethod.httpMethod == SuuRestMethod.HttpMethod.PUT
@@ -147,7 +147,13 @@ class TransformRestRequest(
                         )
                     )
                 } else {
-                    block.then.methodCall(MethodCallExpression(stepVariable, ""))
+                    block.then.methodCall(
+                        MethodCallExpression(
+                            stepVariable,
+                            "assertStatus",
+                            listOf(StringLiteral(assertion.statusCodes ?: ""))
+                        )
+                    )
                 }
             } else if (assertion is SuuAssertionJsonPathExists) {
                 block.then.methodCall(

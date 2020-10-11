@@ -1,7 +1,8 @@
 package eu.k5.soapui.transform
 
 class TransformationResult(
-    val main: String
+    val main: String,
+    val mainName: String,
 ) {
     val artifacts: MutableList<Artifact> = ArrayList()
 

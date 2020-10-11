@@ -6,6 +6,7 @@ import tornadofx.Scope
 import java.io.File
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
+import java.util.prefs.Preferences
 
 
 class ArtifactsController(
@@ -22,6 +23,7 @@ class ArtifactsController(
         if (target == null) {
             return
         }
+        updateOpenProjectFolder(target)
 
         val root = target.toPath()
         for (artifact in model.artifacts) {
@@ -31,5 +33,20 @@ class ArtifactsController(
         }
     }
 
+    fun getOpenSaveInFolderFolder(): File? {
+        val prefs: Preferences = Preferences.userNodeForPackage(ArtifactsController::class.java)
+        val value = prefs.get("saveInFolder", "")
+        val folder = File(value)
+        if (folder.exists()) {
+            return folder
+        } else {
+            return null
+        }
+    }
+
+    private fun updateOpenProjectFolder(file: File) {
+        val prefs: Preferences = Preferences.userNodeForPackage(ArtifactsController::class.java)
+        prefs.put("saveInFolder", file.canonicalPath.toString())
+    }
 
 }

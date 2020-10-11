@@ -11,7 +11,7 @@ class RestAssuredGenerator : Generator {
     override fun transform(testCase: SuuTestCase): TransformationResult {
         val scenario = DispatchTransformer(testCase).transform()
         val modelWriter = ModelWriter().write(scenario)
-        val result = TransformationResult(modelWriter.mainContent())
+        val result = TransformationResult(modelWriter.mainContent(), scenario.name + ".java")
         return result
     }
 }

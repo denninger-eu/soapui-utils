@@ -14,11 +14,10 @@ class MainTransformer(
     fun transform(testCase: SuuTestCase): Scenario {
         val scenario = Scenario(testCase.name)
 
-        scenario.inits.add(Star(Declaration.loadClass(VariableLiteral("Context"), env.contextClassName)))
-        scenario.inits.add(Star(Declaration.assign(env.ctx, Expression.newInstance(VariableLiteral("Context")))))
+        additionals(testCase, scenario)
 
-
-
+        scenario.backgrounds.add(Star(Declaration.loadClass(VariableLiteral("Context"), env.contextClassName)))
+        scenario.backgrounds.add(Star(Declaration.assign(env.ctx, Expression.newInstance(VariableLiteral("Context")))))
 
 
         for (step in testCase.steps) {
@@ -38,6 +37,32 @@ class MainTransformer(
 
     }
 
+
+    private fun additionals(testCase: SuuTestCase, scenario: Scenario) {
+        val tags = property(testCase, "KARATE_TAGS")
+        if (tags != null) {
+            scenario.tags.addAll(tags.split("\n"))
+        }
+
+        val background = property(testCase, "KARATE_BACKGROUND")
+        if (background != null) {
+            scenario.postbackground.addAll(background.split("\n"))
+        }
+        val postexecute = property(testCase, "KARATE_POST")
+        if (postexecute != null) {
+            scenario.postexecute.addAll(postexecute.split("\n"))
+        }
+    }
+
+    private fun property(testCase: SuuTestCase, name: String): String? {
+        if (testCase.properties.hasProperty(name)) {
+            return testCase.properties.byName(name)?.value
+        }
+        if (testCase.suite.properties.hasProperty(name)) {
+            return testCase.suite.properties.byName(name)?.value
+        }
+        return null
+    }
 
     private fun delay(step: SuuTestStepDelay, ctx: VariableLiteral): Statement {
         val block = Block("Delay")

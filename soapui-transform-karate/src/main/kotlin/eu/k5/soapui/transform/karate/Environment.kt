@@ -13,6 +13,7 @@ class Environment {
     private val steps = HashMap<String, VariableLiteral>()
 
     private var mainDocument: String? = null
+    private var mainName: String = "main.feature"
 
     val ctx: VariableLiteral = VariableLiteral("ctx")
 
@@ -41,7 +42,7 @@ class Environment {
     }
 
     fun getResult(): TransformationResult {
-        val result = TransformationResult(mainDocument ?: "")
+        val result = TransformationResult(mainDocument ?: "", mainName)
         for (artifact in artifacts) {
             result.artifacts.add(TransformationResult.Artifact(artifact.value.name, artifact.value.content))
         }
@@ -50,6 +51,7 @@ class Environment {
 
     fun write(scenario: Scenario) {
         val writer = ModelWriter()
+        mainName = base.escapeVariableName(scenario.description) + ".feature"
         scenario.write(writer)
         mainDocument = writer.mainContent()
     }
