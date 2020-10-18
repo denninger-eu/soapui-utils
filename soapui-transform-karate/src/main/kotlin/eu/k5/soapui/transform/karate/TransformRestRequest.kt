@@ -1,6 +1,8 @@
 package eu.k5.soapui.transform.karate
 
+import eu.k5.soapui.streams.model.assertion.SuuAssertionInvalidStatus
 import eu.k5.soapui.streams.model.assertion.SuuAssertionJsonPathExists
+import eu.k5.soapui.streams.model.assertion.SuuAssertionJsonPathMatch
 import eu.k5.soapui.streams.model.assertion.SuuAssertionValidStatus
 import eu.k5.soapui.streams.model.rest.SuuRestMethod
 import eu.k5.soapui.streams.model.rest.SuuRestParameter
@@ -149,28 +151,55 @@ class TransformRestRequest(
                         )
                     )
                 } else {
-                    block.then.methodCall(
-                        MethodCallExpression(
-                            stepVariable,
-                            "assertStatus",
-                            listOf(StringLiteral(assertion.statusCodes ?: ""))
-                        )
-                    )
+                    block.then.methodCall(assertStatus(stepVariable, assertion))
                 }
+            } else if (assertion is SuuAssertionInvalidStatus) {
+                block.then.methodCall(assertInvalidStatus(stepVariable, assertion))
             } else if (assertion is SuuAssertionJsonPathExists) {
                 block.then.methodCall(
-                    MethodCallExpression(
-                        stepVariable,
-                        "assertJsonPathExists",
-                        listOf(
-                            StringLiteral(assertion.expression ?: ""), StringLiteral(assertion.expectedContent ?: "")
-                        )
-                    )
+                    assertJsonPathExists(stepVariable, assertion)
                 )
+            } else if (assertion is SuuAssertionJsonPathMatch){
+
             }
         }
 
         return block
+    }
+
+    private fun assertStatus(
+        variable: Expression,
+        assertion: SuuAssertionValidStatus
+    ): MethodCallExpression {
+        return MethodCallExpression(
+            variable,
+            "assertStatus",
+            listOf(StringLiteral(assertion.statusCodes ?: ""))
+        )
+    }
+
+    private fun assertInvalidStatus(
+        variable: Expression,
+        assertion: SuuAssertionInvalidStatus
+    ): MethodCallExpression {
+        return MethodCallExpression(
+            variable,
+            "assertInvalidStatus",
+            listOf(StringLiteral(assertion.statusCodes ?: ""))
+        )
+    }
+
+    private fun assertJsonPathExists(
+        variable: Expression,
+        assertion: SuuAssertionJsonPathExists
+    ): MethodCallExpression {
+        return MethodCallExpression(
+            variable,
+            "assertJsonPathExists",
+            listOf(
+                StringLiteral(assertion.expression ?: ""), StringLiteral(assertion.expectedContent ?: "")
+            )
+        )
     }
 
 }

@@ -12,11 +12,8 @@ class ProjectView : View() {
     override val root = vbox {
 
 
-
-        label {
-            text = "Projects"
-        }
         buttonbar {
+            label("Projects ")
             button() {
                 graphic = Graphics.ADD.image
             }.action {
@@ -66,7 +63,8 @@ class ProjectView : View() {
             title = "Testcases"
             closeableWhen() { SimpleBooleanProperty(false) }
             model.testcases.onChange { visibleProperty().set(!model.testcases.isEmpty()) }
-
+            val label = label("Project")
+            model.selected.onChange { label.text = it?.name?.get() ?: "" }
             buttonbar {
 
                 button("Karate") {
@@ -83,8 +81,8 @@ class ProjectView : View() {
                 }
             }
 
+
             tableview(model.testcases) {
-                column(title = "Project", ProjectModel.Testcase::projectName)
                 column(title = "Suite", ProjectModel.Testcase::testSuiteName)
                 column(title = "Case", ProjectModel.Testcase::testCaseName).remainingWidth()
                 smartResize()

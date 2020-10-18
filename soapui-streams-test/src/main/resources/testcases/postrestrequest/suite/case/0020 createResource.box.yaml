@@ -37,6 +37,9 @@ assertions:
 - !validStatus
   name: Valid HTTP Status Codes.
   statusCodes: '200'
+- !invalidStatus
+  name: Valid HTTP Status Codes.
+  statusCodes: '200'
 - !jsonPathExists
   expectedValue: 'true'
   expression: $.id

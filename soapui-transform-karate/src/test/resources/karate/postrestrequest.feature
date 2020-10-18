@@ -1,11 +1,15 @@
-Scenario: case
+Feature: case
+
+Background:
 	* def Context = Java.type('eu.k5.dread.soapui.SoapuiContext')
 	* def ctx = new Context()
 
+Scenario: case
 	* def createResourceRequest = read("createResourceRequest.txt")
 	* def createResource = ctx.requestStep("createResource").url("${#TestCase#baseUrl}/resource").request(createResourceRequest)
 
 	# createResource
+	# POST /resource
 	Given url createResource.url()
 	  And request createResource.request()
 	  And param queryParam = ctx.expand("${#Project#value}")
@@ -13,7 +17,8 @@ Scenario: case
 	  And header Accept = "application/json"
 	  And header Content-Type = "application/json"
 	When  method POST
-	Then  print createResource.response(response)
+	Then  if (true) createResource.response(response).status(responseStatus)
 	  And status 200
-	  And match createResource.assertJsonExists("$.id") == true
+	  And if (true) createResource.assertInvalidStatus("200")
+	  And if (true) createResource.assertJsonPathExists("$.id","true")
 
