@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlAccessorType
 import javax.xml.bind.annotation.XmlAnyElement
 import javax.xml.bind.annotation.XmlSeeAlso
 
-@XmlSeeAlso(ConfigPropertyTransfersStepElement::class)
+@XmlSeeAlso(ConfigPropertyTransfersStepElement::class, ConfigRestRequestStepElement::class)
 @XmlAccessorType(XmlAccessType.NONE)
 open class ConfigElement {
 

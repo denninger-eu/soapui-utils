@@ -5,6 +5,7 @@ import eu.k5.soapui.transform.karate.model.*
 import java.io.StringWriter
 
 
+@Suppress("UNUSED_PARAMETER")
 fun main(args: Array<String>) {
     ManualGen().gen()
 }
@@ -28,8 +29,8 @@ class ManualGen {
 
     private fun request(): RequestBlock {
         val block = RequestBlock("Test")
-        block.given.expressions?.add(DefaultAssignment.url("http://myhost.com/v1/cats"))
-        block.given.expressions?.add(DefaultAssignment.request("{'x':'y'}"))
+        block.given.expressions.add(DefaultAssignment.url("http://myhost.com/v1/cats"))
+        block.given.expressions.add(DefaultAssignment.request("{'x':'y'}"))
         block.When.expressions.add(DefaultCall.method("POST"))
         block.then.expressions.add(Match.status("201"))
         return block
