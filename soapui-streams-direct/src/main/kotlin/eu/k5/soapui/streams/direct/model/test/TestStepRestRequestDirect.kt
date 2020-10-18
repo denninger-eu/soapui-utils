@@ -15,7 +15,6 @@ import eu.k5.soapui.streams.model.rest.SuuRestRequest
 import eu.k5.soapui.streams.model.rest.SuuRestResource
 import eu.k5.soapui.streams.model.rest.SuuRestService
 import eu.k5.soapui.streams.model.test.SuuTestStepRestRequest
-import java.util.*
 import kotlin.collections.ArrayList
 
 class TestStepRestRequestDirect(
@@ -33,7 +32,7 @@ class TestStepRestRequestDirect(
     override val baseService: SuuRestService
         get() = RestServiceDirect(resolveRestService())
     override val baseResources: List<SuuRestResource>
-        get() = resolveRestResources().map { ResourceDirect(it) }
+        get() = resolveRestResources()
     override val baseMethod: SuuRestMethod
         get() = RestMethodDirect(restRequestStep.testRequest.restMethod)
 
@@ -44,14 +43,23 @@ class TestStepRestRequestDirect(
         return resource.service
     }
 
-    private fun resolveRestResources(): List<RestResource> {
+    private fun resolveRestResources(): List<ResourceDirect> {
         val method = restRequestStep.testRequest.restMethod
         val resources = ArrayList<RestResource>()
         resources.add(method.resource)
         while (resources[0].parentResource != null) {
             resources.add(0, resources[0].parentResource)
         }
-        return resources
+
+        val result = ArrayList<ResourceDirect>()
+        var parent: ResourceDirect? = null
+
+        for (resource in resources) {
+            val newResource = ResourceDirect(resource, parent)
+            result.add(newResource)
+            parent = newResource
+        }
+        return result
     }
 
 
