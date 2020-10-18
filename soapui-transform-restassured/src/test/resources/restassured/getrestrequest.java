@@ -22,8 +22,9 @@ public class caseTest {
     }
 
     private void initget_Resource(){
-        RestRequestContext request=context.requestStep("get Resource");
-        request.url("${#TestCase#baseUrl}/resource/${#Project#projectProperty}");
+        RestRequestContext request = context.requestStep("get Resource");
+        request.url("${#TestCase#baseUrl}/resource/${template}");
+        request.property("template", "${#Project#projectProperty}");
     }
 
     @Test

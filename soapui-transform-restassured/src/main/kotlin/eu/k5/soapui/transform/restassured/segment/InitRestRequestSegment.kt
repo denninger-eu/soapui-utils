@@ -1,6 +1,7 @@
 package eu.k5.soapui.transform.restassured.segment
 
 import eu.k5.soapui.streams.model.rest.SuuRestMethod
+import eu.k5.soapui.streams.model.rest.SuuRestParameter
 import eu.k5.soapui.streams.model.test.SuuTestStepRestRequest
 import eu.k5.soapui.transform.ModelWriter
 import eu.k5.soapui.transform.extensions.createUrl
@@ -24,7 +25,7 @@ class InitRestRequestSegment(
 
     override fun write(writer: ModelWriter): ModelWriter {
 
-        writer.writeIndention().write(env.requestContext()).write(" request=context.requestStep(")
+        writer.writeIndention().write(env.requestContext()).write(" request = context.requestStep(")
             .write(StringLiteral(step.name))
             .write(");").newLine()
 
@@ -48,8 +49,29 @@ class InitRestRequestSegment(
             }
         }
 
-
         writer.write(Statement(initRequest))
+
+        var initTemplateProperties: MethodCall? = null
+
+        for (parameter in step.allParameters()) {
+            if (parameter.value.style == SuuRestParameter.Style.TEMPLATE) {
+
+                if (initTemplateProperties == null) {
+                    initTemplateProperties = MethodCall(
+                        Reference("request"),
+                        MethodRef.withName("property"),
+                        listOf(StringLiteral(parameter.value.name), StringLiteral(parameter.value.value))
+                    )
+                } else {
+                    initTemplateProperties = initTemplateProperties.chain(
+                        "property", StringLiteral(parameter.value.name), StringLiteral(parameter.value.value)
+                    )
+                }
+            }
+        }
+        if (initTemplateProperties != null) {
+            writer.write(Statement(initTemplateProperties))
+        }
         return writer
     }
 

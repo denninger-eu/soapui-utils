@@ -22,7 +22,7 @@ public class caseTest extends AbstractIntegrationTest {
     }
 
     private void initcreateResource(){
-        RestRequestContext request=context.requestStep("createResource");
+        RestRequestContext request = context.requestStep("createResource");
         request.url("${#TestCase#baseUrl}/resource").request("{ \"value\": \"${=\"String\"x}\"}\n");
     }
 
