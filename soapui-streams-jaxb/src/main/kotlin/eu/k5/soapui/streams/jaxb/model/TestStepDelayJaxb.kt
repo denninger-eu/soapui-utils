@@ -4,7 +4,7 @@ import eu.k5.soapui.streams.jaxb.element.TestStepElement
 import eu.k5.soapui.streams.model.test.SuuTestStepDelay
 
 class TestStepDelayJaxb(
-    private val element: TestStepElement
+    element: TestStepElement
 ) : TestStepJaxb(element), SuuTestStepDelay {
 
     override var delay: Int

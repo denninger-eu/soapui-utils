@@ -9,14 +9,15 @@ import eu.k5.soapui.streams.model.rest.SuuRestService
 import eu.k5.soapui.streams.model.test.SuuTestStepRestRequest
 
 class TestStepRestRequestJaxb(
-    element: TestStepElement
+    element: TestStepElement,
+    val project: ProjectJaxb
 ) : TestStepJaxb(element), SuuTestStepRestRequest {
 
     private val config: ConfigRestRequestStepElement = element.config as ConfigRestRequestStepElement
 
 
     override val baseService: SuuRestService
-        get() = TODO("Not yet implemented")
+        get() = project.getRestService(config.service ?: "")!!
     override val baseResources: List<SuuRestResource>
         get() = TODO("Not yet implemented")
     override val baseMethod: SuuRestMethod

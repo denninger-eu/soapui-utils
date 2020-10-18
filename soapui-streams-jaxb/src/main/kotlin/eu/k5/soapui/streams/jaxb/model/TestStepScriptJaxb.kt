@@ -4,7 +4,7 @@ import eu.k5.soapui.streams.jaxb.element.TestStepElement
 import eu.k5.soapui.streams.model.test.SuuTestStepScript
 
 class TestStepScriptJaxb(
-    private val element: TestStepElement
+    element: TestStepElement
 ) : TestStepJaxb(element), SuuTestStepScript {
 
     override var script: String?

@@ -31,7 +31,7 @@ class ProjectJaxb(
     override fun createRestService(name: String): SuuRestService = throw UnsupportedOperationException()
 
     override val testSuites: List<SuuTestSuite>
-        get() = element.testSuites?.map { TestSuiteJaxb(it) } ?: ArrayList()
+        get() = element.testSuites?.map { TestSuiteJaxb(it, this) } ?: ArrayList()
 
     override fun createTestSuite(name: String): SuuTestSuite = throw UnsupportedOperationException()
 

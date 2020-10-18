@@ -16,13 +16,13 @@ class AssertionElement {
 
     @XmlAnyElement
     @XmlElementWrapper(name = "configuration", namespace = NAMESPACE)
-    var configurations: List<JAXBElement<*>>? = ArrayList()
+    var configurations: List<org.w3c.dom.Element>? = ArrayList()
 
 
     val options: Map<String, String> by lazy {
         val result = HashMap<String, String>()
         for (element in configurations.orEmpty()) {
-            result[element.name.localPart] = element.value?.toString() ?: ""
+            result[element.localName] = element.textContent?.toString() ?: ""
         }
         result
     }

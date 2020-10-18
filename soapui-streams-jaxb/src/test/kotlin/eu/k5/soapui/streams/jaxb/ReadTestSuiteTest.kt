@@ -97,9 +97,11 @@ class ReadTestSuiteTest : AbstractJaxbTest() {
 
 
     private fun assertTestStepRestRequest(restRequest: SuuTestStepRestRequest) {
-        if (true) return // FIXME do implement rest of restrequest step
 
         val request = restRequest.request
+
+        assertEquals("RestService", restRequest.baseService.name)
+
 
 
         val invalidCodes = restRequest.assertions.getAssertion("invalidCodes") as SuuAssertionInvalidStatus

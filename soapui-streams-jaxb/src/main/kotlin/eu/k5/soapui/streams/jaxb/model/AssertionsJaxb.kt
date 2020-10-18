@@ -86,12 +86,152 @@ class AssertionsJaxb(
     class AssertionValidStatusJaxb(
         element: AssertionElement
     ) : AssertionJaxb(element), SuuAssertionValidStatus {
-
         override var statusCodes: String
             get() = element.options["codes"] ?: ""
             set(value) {}
     }
 
+
+    class AssertionScriptJaxb(
+        element: AssertionElement
+    ) : AssertionJaxb(element), SuuAssertionScript {
+
+        override var script: String?
+            get() = element.options["scriptText"] ?: ""
+            set(value) {}
+
+    }
+
+    class AssertionDurationJaxb(
+        element: AssertionElement
+    ) : AssertionJaxb(element), SuuAssertionDuration {
+
+        override var time: String?
+            get() = element.options["SLA"] ?: ""
+            set(value) {}
+
+    }
+
+
+    class AssertionContainsJaxb(
+        element: AssertionElement
+    ) : AssertionJaxb(element), SuuAssertionContains {
+
+        override var content: String?
+            get() = element.options["token"] ?: ""
+            set(value) {}
+        override var regexp: Boolean
+            get() = element.options["useRegEx"].toBoolean()
+            set(value) {}
+        override var caseSensitive: Boolean
+            get() = element.options["ignoreCase"].toBoolean().not()
+            set(value) {}
+
+    }
+
+    class AssertionNotContainsJaxb(
+        element: AssertionElement
+    ) : AssertionJaxb(element), SuuAssertionNotContains {
+
+        override var content: String?
+            get() = element.options["token"] ?: ""
+            set(value) {}
+        override var regexp: Boolean
+            get() = element.options["useRegEx"].toBoolean()
+            set(value) {}
+        override var caseSensitive: Boolean
+            get() = element.options["ignoreCase"].toBoolean().not()
+            set(value) {}
+
+    }
+
+    class AssertionJsonPathMatchJaxb(
+        element: AssertionElement
+    ) : AssertionJaxb(element), SuuAssertionJsonPathMatch {
+
+        override var expression: String?
+            get() = element.options["path"] ?: ""
+            set(value) {}
+        override var expectedContent: String?
+            get() = element.options["content"] ?: ""
+            set(value) {}
+
+    }
+
+    class AssertionJsonPathCountJaxb(
+        element: AssertionElement
+    ) : AssertionJaxb(element), SuuAssertionJsonPathCount {
+
+        override var expression: String?
+            get() = element.options["path"] ?: ""
+            set(value) {}
+        override var expectedContent: String?
+            get() = element.options["content"] ?: ""
+            set(value) {}
+
+    }
+
+    class AssertionJsonPathRegExJaxb(
+        element: AssertionElement
+    ) : AssertionJaxb(element), SuuAssertionJsonPathRegEx {
+
+        override var expression: String?
+            get() = element.options["path"] ?: ""
+            set(value) {}
+        override var expectedContent: String?
+            get() = element.options["content"] ?: ""
+            set(value) {}
+        override var regularExpression: String?
+            get() = element.options["regEx"] ?: ""
+            set(value) {}
+
+    }
+
+    class AssertionXPathJaxb(
+        element: AssertionElement
+    ) : AssertionJaxb(element), SuuAssertionXPath {
+
+        override var expression: String?
+            get() = element.options["path"] ?: ""
+            set(value) {}
+        override var expectedContent: String?
+            get() = element.options["content"] ?: ""
+            set(value) {}
+
+        override var allowWildcards: Boolean
+            get() = element.options["allowWildcards"].toBoolean()
+            set(value) {}
+        override var ignoreNamespaceDifferences: Boolean
+            get() = element.options["ignoreNamspaceDifferences"].toBoolean()
+            set(value) {}
+        override var ignoreComments: Boolean
+            get() = element.options["ignoreComments"].toBoolean()
+            set(value) {}
+
+    }
+
+    class AssertionXQueryJaxb(
+        element: AssertionElement
+    ) : AssertionJaxb(element), SuuAssertionXQuery {
+
+        override var expression: String?
+            get() = element.options["path"] ?: ""
+            set(value) {}
+        override var expectedContent: String?
+            get() = element.options["content"] ?: ""
+            set(value) {}
+
+        override var allowWildcards: Boolean
+            get() = element.options["allowWildcards"].toBoolean()
+            set(value) {}
+        override var ignoreNamespaceDifferences: Boolean
+            get() = element.options["ignoreNamspaceDifferences"].toBoolean()
+            set(value) {}
+        override var ignoreComments: Boolean
+            get() = element.options["ignoreComments"].toBoolean()
+            set(value) {}
+
+    }
 
     companion object {
 
@@ -100,8 +240,29 @@ class AssertionsJaxb(
                 return AssertionInvalidStatusJaxb(element)
             } else if (element.type == "Valid HTTP Status Codes") {
                 return AssertionValidStatusJaxb(element)
+            } else if (element.type == "GroovyScriptAssertion") {
+                return AssertionScriptJaxb(element)
+            } else if (element.type == "Response SLA Assertion") {
+                return AssertionDurationJaxb(element)
+            } else if (element.type == "Simple Contains") {
+                return AssertionContainsJaxb(element)
+            } else if (element.type == "Simple NotContains") {
+                return AssertionNotContainsJaxb(element)
+            } else if (element.type == "JsonPath Match") {
+                return AssertionJsonPathMatchJaxb(element)
+            } else if (element.type == "JsonPath Count") {
+                return AssertionJsonPathCountJaxb(element)
+            } else if (element.type == "JsonPath RegEx Match") {
+                return AssertionJsonPathRegExJaxb(element)
+            } else if (element.type == "XPath Match") {
+                return AssertionXPathJaxb(element)
+            } else if (element.type == "XQuery Match") {
+                return AssertionXQueryJaxb(element)
             }
-            return AssertionJaxb((element))
+
+            TODO("Missing support for assertion :" + element.type)
+
+
         }
     }
 }

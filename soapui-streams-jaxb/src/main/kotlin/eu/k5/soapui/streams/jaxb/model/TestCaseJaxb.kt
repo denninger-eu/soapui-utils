@@ -32,7 +32,7 @@ class TestCaseJaxb(
             supported(
                 it
             )
-        }?.mapIndexed { index, step -> mapTestStep(this, step) } ?: ArrayList()
+        }?.mapIndexed { index, step -> mapTestStep(this, step, suite.project) } ?: ArrayList()
 
     override fun <T : SuuTestStep> createStep(name: String, java: Class<T>): T {
         TODO("Not yet implemented")
@@ -73,7 +73,7 @@ class TestCaseJaxb(
             return true
         }
 
-        fun mapTestStep(testCaseJaxb: TestCaseJaxb, testStep: TestStepElement): TestStepJaxb {
+        fun mapTestStep(testCaseJaxb: TestCaseJaxb, testStep: TestStepElement, project: ProjectJaxb): TestStepJaxb {
             if (testStep.type == "delay") {
                 return TestStepDelayJaxb(testStep)
             } else if (testStep.type == "groovy") {
@@ -83,7 +83,7 @@ class TestCaseJaxb(
             } else if (testStep.type == "properties") {
                 return TestStepPropertiesJaxb(testStep)
             } else if (testStep.type == "restrequest") {
-                return TestStepRestRequestJaxb(testStep)
+                return TestStepRestRequestJaxb(testStep, project)
             } else if (testStep.type == "jdbc") {
                 return TestStepDelayJaxb(testStep)
 

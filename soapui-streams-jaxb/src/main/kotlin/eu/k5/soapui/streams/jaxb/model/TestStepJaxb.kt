@@ -4,7 +4,7 @@ import eu.k5.soapui.streams.jaxb.element.TestStepElement
 import eu.k5.soapui.streams.model.test.SuuTestStep
 
 abstract class TestStepJaxb(
-    private val element: TestStepElement
+     val element: TestStepElement
 ) : SuuTestStep {
     override var name: String
         get() = element.name ?: ""

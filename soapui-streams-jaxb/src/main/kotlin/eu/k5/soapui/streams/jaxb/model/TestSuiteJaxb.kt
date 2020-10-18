@@ -7,7 +7,8 @@ import eu.k5.soapui.streams.model.test.SuuTestCase
 import eu.k5.soapui.streams.model.test.SuuTestSuite
 
 class TestSuiteJaxb(
-    private val element: TestSuiteElement
+    private val element: TestSuiteElement,
+    val project: ProjectJaxb
 ) : SuuTestSuite {
 
     override var name: String
