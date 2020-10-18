@@ -34,8 +34,8 @@ interface Box {
 
     fun <T> load(type: Class<T>): T
 
-    fun <T> load(type: Class<T>, section: String): T?
+    fun <T> load(type: Class<T>, sectionName: String): T?
 
-    fun loadSection(section: String): String?
+    fun loadSection(sectionName: String): String?
 
 }

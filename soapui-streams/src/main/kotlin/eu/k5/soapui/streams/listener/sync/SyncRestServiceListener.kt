@@ -28,7 +28,7 @@ class SyncRestServiceListener(
 
 
     override fun enter(restService: SuuRestService): VisitResult {
-        referenceRestService = referenceProject.getRestService(restService.name!!)
+        referenceRestService = referenceProject.getRestService(restService.name)
         if (referenceRestService == null) {
             return VisitResult.TERMINATE
         }

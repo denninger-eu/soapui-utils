@@ -1,7 +1,6 @@
 package eu.k5.soapui.streams.box
 
 import org.yaml.snakeyaml.DumperOptions
-import org.yaml.snakeyaml.Yaml
 import java.io.IOException
 import java.lang.StringBuilder
 import java.nio.charset.StandardCharsets
@@ -44,20 +43,17 @@ class BoxImpl(
         return path.toAbsolutePath().toString()
     }
 
-    private fun <T> load(section: String, type: Class<T>): T {
-
+    private fun <T> load(sectionName: String, type: Class<T>): T {
         val yaml = YamlContext.YAML_LOAD
-
-
-        val section = extractSection(section)
-        if (section != null) {
-            return yaml.load(section)
+        val sectionContent = extractSection(sectionName)
+        if (sectionContent != null) {
+            return yaml.load(sectionContent)
         }
         return yaml.load("")
     }
 
-    override fun loadSection(section: String): String? {
-        return extractSection(section)
+    override fun loadSection(sectionName: String): String? {
+        return extractSection(sectionName)
     }
 
     override fun write(instance: Any): Box {
@@ -214,11 +210,11 @@ class BoxImpl(
     }
 
 
-    override fun <T> load(type: Class<T>, section: String): T? {
+    override fun <T> load(type: Class<T>, sectionName: String): T? {
 
-        val section = extractSection(section)
-        if (section != null) {
-            return type.cast(yamlLoader.load(section))
+        val sectionContent = extractSection(sectionName)
+        if (sectionContent != null) {
+            return type.cast(yamlLoader.load(sectionContent))
         }
         return null
     }
@@ -277,14 +273,14 @@ class BoxImpl(
             return ESCAPE_PATTERN.matcher(fileName).replaceAll("_")
         }
 
-        inline fun changed(original: String?, update: String?): Boolean {
+        fun changed(original: String?, update: String?): Boolean {
             if (original.isNullOrEmpty() && update.isNullOrEmpty()) {
                 return false
             }
             return original != update
         }
 
-        inline fun changed(original: Boolean?, update: Boolean?, default: Boolean = true): Boolean {
+        fun changed(original: Boolean?, update: Boolean?, default: Boolean = true): Boolean {
             if (default) {
                 if (trueOrNull(original) && trueOrNull(update)) {
                     return false
@@ -298,12 +294,12 @@ class BoxImpl(
             }
         }
 
-        inline fun trueOrNull(value: Boolean?): Boolean {
+        fun trueOrNull(value: Boolean?): Boolean {
             return value == null || value
         }
 
 
-        inline fun falseOrNull(value: Boolean?): Boolean {
+        fun falseOrNull(value: Boolean?): Boolean {
             return value == null || !value
         }
 

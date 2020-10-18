@@ -91,7 +91,7 @@ class SyncListener(
             val missing = ArrayList<String>()
             for (targetProperty in target.properties) {
                 if (!reference.hasProperty(targetProperty.name)) {
-                    missing.add(targetProperty.name!!)
+                    missing.add(targetProperty.name)
                 }
             }
             missing.forEach { target.remove(it) }

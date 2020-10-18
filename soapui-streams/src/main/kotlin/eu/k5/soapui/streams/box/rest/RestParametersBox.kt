@@ -16,7 +16,7 @@ class RestParametersBox(
         get() {
             val allParams = yaml.map { RestParameter(it) }.toMutableList()
             if (parent != null) {
-                for (parentParam in parent!!.allParameters) {
+                for (parentParam in parent.allParameters) {
                     if (allParams.firstOrNull { it.name == parentParam.name } == null) {
                         allParams.add(parentParam)
                     }

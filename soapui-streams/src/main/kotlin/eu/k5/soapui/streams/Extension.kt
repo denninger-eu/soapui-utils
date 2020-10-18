@@ -11,7 +11,6 @@ import eu.k5.soapui.streams.model.SuListener
 import eu.k5.soapui.streams.model.assertion.*
 import eu.k5.soapui.streams.model.test.*
 import eu.k5.soapui.streams.model.wsdl.SuuWsdlOperation
-import eu.k5.soapui.streams.model.wsdl.SuuWsdlRequest
 import eu.k5.soapui.streams.model.wsdl.SuuWsdlService
 import eu.k5.soapui.streams.model.wsdl.SuuWsdlServiceListener
 
@@ -131,17 +130,17 @@ fun SuuTestCase.apply(listener: SuuTestSuiteListener) {
         } else if (step is SuuTestStepProperties) {
             testStepListener.properties(step)
         } else if (step is SuuTestStepRestRequest) {
-            val result = testStepListener.enterRestRequest(step)
-            if (result != VisitResult.TERMINATE) {
-                handleAssertions(step.assertions, step, testStepListener)
+            val restRequestStepResult = testStepListener.enterRestRequest(step)
+            if (restRequestStepResult != VisitResult.TERMINATE) {
+                handleAssertions(step.assertions, testStepListener)
                 testStepListener.exitRestRequest(step)
             }
         } else if (step is SuuTestStepScript) {
             testStepListener.script(step)
         } else if (step is SuuTestStepWsdlRequest) {
-            val result = testStepListener.enterWsdlRequest(step)
-            if (result != VisitResult.TERMINATE) {
-                handleAssertions(step.assertions, step, testStepListener)
+            val wsdlRequestStepResult = testStepListener.enterWsdlRequest(step)
+            if (wsdlRequestStepResult != VisitResult.TERMINATE) {
+                handleAssertions(step.assertions, testStepListener)
                 testStepListener.exitWsdlRequest(step)
             }
         }
@@ -152,7 +151,6 @@ fun SuuTestCase.apply(listener: SuuTestSuiteListener) {
 
 private fun handleAssertions(
     assertions: SuuAssertions,
-    step: SuuTestStep,
     testStepListener: SuuTestStepListener
 ) {
     if (assertions.isEmpty()) {
@@ -184,7 +182,7 @@ private fun handleAssertions(
             assertionListener.xpath(assertion)
         } else if (assertion is SuuAssertionXQuery) {
             assertionListener.xquery(assertion)
-        } else if(assertion is SuuAssertionSoapResponse){
+        } else if (assertion is SuuAssertionSoapResponse) {
             assertionListener.soapResponse(assertion)
         } else {
             TODO(assertion.javaClass.toString())

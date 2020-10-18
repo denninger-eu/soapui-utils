@@ -27,7 +27,7 @@ class SyncMisc {
         val missing = ArrayList<String>()
         for (targetParameter in targetParams) {
             if (!source.hasParameter(targetParameter.name)) {
-                missing.add(targetParameter.name!!)
+                missing.add(targetParameter.name)
             }
         }
         missing.forEach { target.remove(it) }
