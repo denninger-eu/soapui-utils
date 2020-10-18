@@ -44,10 +44,10 @@ class RestServiceDirect(
 
     override fun createResource(name: String, path: String): SuuRestResource {
         val newResource = restService.addNewResource(name, path)
-        return ResourceDirect(newResource)
+        return ResourceDirect(newResource, null)
     }
 
     override val resources: List<SuuRestResource>
-        get() = restService.resourceList.map { ResourceDirect(it) }
+        get() = restService.resourceList.map { ResourceDirect(it,null) }
 
 }

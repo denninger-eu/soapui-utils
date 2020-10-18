@@ -7,7 +7,8 @@ import eu.k5.soapui.streams.model.rest.SuuRestMethod
 import eu.k5.soapui.streams.model.rest.SuuRestParameters
 
 class ResourceDirect(
-    private val resource: RestResource
+    private val resource: RestResource,
+    private val parentResource: ResourceDirect?
 ) : SuuRestResource {
 
 
@@ -40,13 +41,14 @@ class ResourceDirect(
         }
 
     override val childResources: List<SuuRestResource>
-        get() = resource.childResourceList.map { ResourceDirect(it) }
+        get() = resource.childResourceList.map { ResourceDirect(it, this) }
+
+    override val parent: SuuRestResource?
+        get() = parentResource
 
     override fun getChildResource(name: String): SuuRestResource? {
         return resource.childResourceList.filter { it.name == name }.map {
-            ResourceDirect(
-                it
-            )
+            ResourceDirect(it, this)
         }.firstOrNull()
     }
 
@@ -66,7 +68,7 @@ class ResourceDirect(
 
     override fun createChildResource(name: String, path: String): SuuRestResource {
         val childResource = resource.addNewChildResource(name, path)
-        return ResourceDirect(childResource)
+        return ResourceDirect(childResource, this)
     }
 
 
