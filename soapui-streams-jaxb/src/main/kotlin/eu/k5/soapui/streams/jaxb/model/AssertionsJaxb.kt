@@ -67,10 +67,14 @@ class AssertionsJaxb(
     ) : SuuAssertion {
         override var name: String
             get() = element.name ?: ""
-            set(value) {}
+            set(value) {
+                TODO("Not yet implemented: $value")
+            }
         override var enabled: Boolean
             get() = true
-            set(value) {}
+            set(value) {
+                TODO("Not yet implemented: $value")
+            }
 
     }
 
@@ -80,7 +84,9 @@ class AssertionsJaxb(
 
         override var statusCodes: String
             get() = element.options["codes"] ?: ""
-            set(value) {}
+            set(value) {
+                TODO("Not yet implemented: $value")
+            }
     }
 
     class AssertionValidStatusJaxb(
@@ -88,7 +94,9 @@ class AssertionsJaxb(
     ) : AssertionJaxb(element), SuuAssertionValidStatus {
         override var statusCodes: String
             get() = element.options["codes"] ?: ""
-            set(value) {}
+            set(value) {
+                TODO("Not yet implemented: $value")
+            }
     }
 
 
@@ -98,7 +106,9 @@ class AssertionsJaxb(
 
         override var script: String?
             get() = element.options["scriptText"] ?: ""
-            set(value) {}
+            set(value) {
+                TODO("Not yet implemented: $value")
+            }
 
     }
 
@@ -108,7 +118,9 @@ class AssertionsJaxb(
 
         override var time: String?
             get() = element.options["SLA"] ?: ""
-            set(value) {}
+            set(value) {
+                TODO("Not yet implemented: $value")
+            }
 
     }
 
@@ -119,13 +131,19 @@ class AssertionsJaxb(
 
         override var content: String?
             get() = element.options["token"] ?: ""
-            set(value) {}
+            set(value) {
+                TODO("Not yet implemented: $value")
+            }
         override var regexp: Boolean
             get() = element.options["useRegEx"].toBoolean()
-            set(value) {}
+            set(value) {
+                TODO("Not yet implemented: $value")
+            }
         override var caseSensitive: Boolean
             get() = element.options["ignoreCase"].toBoolean().not()
-            set(value) {}
+            set(value) {
+                TODO("Not yet implemented: $value")
+            }
 
     }
 
@@ -135,14 +153,19 @@ class AssertionsJaxb(
 
         override var content: String?
             get() = element.options["token"] ?: ""
-            set(value) {}
+            set(value) {
+                TODO("Not yet implemented: $value")
+            }
         override var regexp: Boolean
             get() = element.options["useRegEx"].toBoolean()
-            set(value) {}
+            set(value) {
+                TODO("Not yet implemented: $value")
+            }
         override var caseSensitive: Boolean
             get() = element.options["ignoreCase"].toBoolean().not()
-            set(value) {}
-
+            set(value) {
+                TODO("Not yet implemented: $value")
+            }
     }
 
     class AssertionJsonPathMatchJaxb(
@@ -151,10 +174,14 @@ class AssertionsJaxb(
 
         override var expression: String?
             get() = element.options["path"] ?: ""
-            set(value) {}
+            set(value) {
+                TODO("Not yet implemented: $value")
+            }
         override var expectedContent: String?
             get() = element.options["content"] ?: ""
-            set(value) {}
+            set(value) {
+                TODO("Not yet implemented: $value")
+            }
 
     }
 
@@ -165,10 +192,14 @@ class AssertionsJaxb(
 
         override var expression: String?
             get() = element.options["path"] ?: ""
-            set(value) {}
+            set(value) {
+                TODO("Not yet implemented: $value")
+            }
         override var expectedContent: String?
             get() = element.options["content"] ?: ""
-            set(value) {}
+            set(value) {
+                TODO("Not yet implemented: $value")
+            }
 
     }
 
@@ -178,10 +209,14 @@ class AssertionsJaxb(
 
         override var expression: String?
             get() = element.options["path"] ?: ""
-            set(value) {}
+            set(value) {
+                TODO("Not yet implemented: $value")
+            }
         override var expectedContent: String?
             get() = element.options["content"] ?: ""
-            set(value) {}
+            set(value) {
+                TODO("Not yet implemented: $value")
+            }
 
     }
 
@@ -191,13 +226,19 @@ class AssertionsJaxb(
 
         override var expression: String?
             get() = element.options["path"] ?: ""
-            set(value) {}
+            set(value) {
+                TODO("Not yet implemented: $value")
+            }
         override var expectedContent: String?
             get() = element.options["content"] ?: ""
-            set(value) {}
+            set(value) {
+                TODO("Not yet implemented: $value")
+            }
         override var regularExpression: String?
             get() = element.options["regEx"] ?: ""
-            set(value) {}
+            set(value) {
+                TODO("Not yet implemented: $value")
+            }
 
     }
 
@@ -207,20 +248,30 @@ class AssertionsJaxb(
 
         override var expression: String?
             get() = element.options["path"] ?: ""
-            set(value) {}
+            set(value) {
+                TODO("Not yet implemented: $value")
+            }
         override var expectedContent: String?
             get() = element.options["content"] ?: ""
-            set(value) {}
+            set(value) {
+                TODO("Not yet implemented: $value")
+            }
 
         override var allowWildcards: Boolean
             get() = element.options["allowWildcards"].toBoolean()
-            set(value) {}
+            set(value) {
+                TODO("Not yet implemented: $value")
+            }
         override var ignoreNamespaceDifferences: Boolean
             get() = element.options["ignoreNamspaceDifferences"].toBoolean()
-            set(value) {}
+            set(value) {
+                TODO("Not yet implemented: $value")
+            }
         override var ignoreComments: Boolean
             get() = element.options["ignoreComments"].toBoolean()
-            set(value) {}
+            set(value) {
+                TODO("Not yet implemented: $value")
+            }
 
     }
 
@@ -230,20 +281,30 @@ class AssertionsJaxb(
 
         override var expression: String?
             get() = element.options["path"] ?: ""
-            set(value) {}
+            set(value) {
+                TODO("Not yet implemented: $value")
+            }
         override var expectedContent: String?
             get() = element.options["content"] ?: ""
-            set(value) {}
+            set(value) {
+                TODO("Not yet implemented: $value")
+            }
 
         override var allowWildcards: Boolean
             get() = element.options["allowWildcards"].toBoolean()
-            set(value) {}
+            set(value) {
+                TODO("Not yet implemented: $value")
+            }
         override var ignoreNamespaceDifferences: Boolean
             get() = element.options["ignoreNamspaceDifferences"].toBoolean()
-            set(value) {}
+            set(value) {
+                TODO("Not yet implemented: $value")
+            }
         override var ignoreComments: Boolean
             get() = element.options["ignoreComments"].toBoolean()
-            set(value) {}
+            set(value) {
+                TODO("Not yet implemented: $value")
+            }
 
     }
 
