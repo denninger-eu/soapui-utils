@@ -141,6 +141,12 @@
 
             <dependency>
                 <groupId>eu.k5.soapui</groupId>
+                <artifactId>soapui-streams-jaxb</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>eu.k5.soapui</groupId>
                 <artifactId>soapui-streams-karate</artifactId>
                 <version>${project.version}</version>
             </dependency>

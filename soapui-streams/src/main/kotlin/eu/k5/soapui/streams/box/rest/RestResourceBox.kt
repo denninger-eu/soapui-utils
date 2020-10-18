@@ -13,6 +13,9 @@ class RestResourceBox(
 
     private val yaml by lazy { box.load(RestResourceYaml::class.java) }
 
+    override val parent: SuuRestResource?
+        get() = parentResource
+
     override var name: String
         get() = yaml.name ?: ""
         set(value) {

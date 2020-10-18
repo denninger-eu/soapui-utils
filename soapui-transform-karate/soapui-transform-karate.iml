@@ -37,6 +37,7 @@
     <orderEntry type="library" name="Maven: org.yaml:snakeyaml:1.25" level="project" />
     <orderEntry type="module" module-name="soapui-streams-test" scope="TEST" />
     <orderEntry type="module" module-name="soapui-transform-base" />
+    <orderEntry type="module" module-name="soapui-streams-jaxb" scope="TEST" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.10.1" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.10.1" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.10.1" level="project" />

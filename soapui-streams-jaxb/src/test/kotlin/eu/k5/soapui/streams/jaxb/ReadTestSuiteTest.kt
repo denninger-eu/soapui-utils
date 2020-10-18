@@ -2,6 +2,7 @@ package eu.k5.soapui.streams.jaxb
 
 import eu.k5.soapui.streams.jaxb.model.TestStepDelayJaxb
 import eu.k5.soapui.streams.model.assertion.*
+import eu.k5.soapui.streams.model.rest.SuuRestMethod
 import eu.k5.soapui.streams.model.test.*
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
@@ -62,10 +63,21 @@ class ReadTestSuiteTest : AbstractJaxbTest() {
 
         assertTestStepPropertyTransfer(testCase.getStep("PropertyTransferName") as SuuTestStepPropertyTransfers)
         assertTestStepRestRequest(testCase.getStep("restRequestStep") as SuuTestStepRestRequest)
-        /*     assertTestStepProperties(testCase.getStep("PropertiesStepName") as SuuTestStepProperties)
-     */
+        val withTemplate = testCase.getStep("childWithTermplate") as SuuTestStepRestRequest?
+        assertEquals(2, withTemplate!!.baseResources.size)
+        assertEquals("/uri/{template}", withTemplate!!.baseResources.last().fullPath)
+        assertTestStepProperties(testCase.getStep("PropertiesStepName") as SuuTestStepProperties)
+
         val script = testCase.getStep("groovyScript") as SuuTestStepScript
         assertEquals("groovyScriptValue", script.script)
+    }
+
+    private fun assertTestStepProperties(step: SuuTestStepProperties) {
+        assertEquals("PropertiesStepDescription", step.description)
+
+        val property = step.properties.byName("propertyName")
+        assertNotNull(property)
+        assertEquals("propertyValue", property.value)
     }
 
     private fun assertTestStepPropertyTransfer(propertyTransfer: SuuTestStepPropertyTransfers) {
@@ -103,7 +115,28 @@ class ReadTestSuiteTest : AbstractJaxbTest() {
         assertEquals("RestService", restRequest.baseService.name)
 
 
+        val resources = restRequest.baseResources
+        assertEquals(1, resources.size)
+        assertEquals("Uri", resources[0].name)
+        assertEquals("/uri", resources[0].path)
 
+        assertEquals(SuuRestMethod.HttpMethod.POST, restRequest.baseMethod.httpMethod)
+
+
+        val parameters = restRequest.allParameters()
+
+
+        assertAssertions(restRequest)
+
+
+/*        val jsonPathExists = restRequest.assertions.getAssertion("jsonPathExists") as SuuAssertionJsonPathExists
+        assertTrue(jsonPathExists.enabled)
+        assertEquals("jsonPathExistsExpressionValue", jsonPathExists.expression)
+        assertEquals("jsonPathExistsExpectedResultValue", jsonPathExists.expectedContent)*/
+
+    }
+
+    private fun assertAssertions(restRequest: SuuTestStepRestRequest) {
         val invalidCodes = restRequest.assertions.getAssertion("invalidCodes") as SuuAssertionInvalidStatus
         assertTrue(invalidCodes.enabled)
         assertEquals("400", invalidCodes.statusCodes)
@@ -166,12 +199,5 @@ class ReadTestSuiteTest : AbstractJaxbTest() {
         assertTrue(xquery.allowWildcards)
         assertTrue(xquery.ignoreComments)
         assertTrue(xquery.ignoreNamespaceDifferences)
-
-
-/*        val jsonPathExists = restRequest.assertions.getAssertion("jsonPathExists") as SuuAssertionJsonPathExists
-        assertTrue(jsonPathExists.enabled)
-        assertEquals("jsonPathExistsExpressionValue", jsonPathExists.expression)
-        assertEquals("jsonPathExistsExpectedResultValue", jsonPathExists.expectedContent)*/
-
     }
 }

@@ -28,6 +28,8 @@ class ProjectJaxb(
         get() = element.interfaces?.filterIsInstance<RestServiceElement>()
             ?.map { RestServiceJaxb(it) }.orEmpty()
 
+    override fun getRestService(name: String): RestServiceJaxb? = restServices.firstOrNull { it.name == name } as RestServiceJaxb?
+
     override fun createRestService(name: String): SuuRestService = throw UnsupportedOperationException()
 
     override val testSuites: List<SuuTestSuite>

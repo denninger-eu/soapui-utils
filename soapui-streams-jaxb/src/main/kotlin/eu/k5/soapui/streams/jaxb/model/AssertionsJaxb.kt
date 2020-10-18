@@ -158,6 +158,20 @@ class AssertionsJaxb(
 
     }
 
+
+    class AssertionJsonPathExistsJaxb(
+        element: AssertionElement
+    ) : AssertionJaxb(element), SuuAssertionJsonPathExists {
+
+        override var expression: String?
+            get() = element.options["path"] ?: ""
+            set(value) {}
+        override var expectedContent: String?
+            get() = element.options["content"] ?: ""
+            set(value) {}
+
+    }
+
     class AssertionJsonPathCountJaxb(
         element: AssertionElement
     ) : AssertionJaxb(element), SuuAssertionJsonPathCount {
@@ -248,6 +262,8 @@ class AssertionsJaxb(
                 return AssertionContainsJaxb(element)
             } else if (element.type == "Simple NotContains") {
                 return AssertionNotContainsJaxb(element)
+            } else if (element.type == "JsonPath Existence Match") {
+                return AssertionJsonPathExistsJaxb(element)
             } else if (element.type == "JsonPath Match") {
                 return AssertionJsonPathMatchJaxb(element)
             } else if (element.type == "JsonPath Count") {

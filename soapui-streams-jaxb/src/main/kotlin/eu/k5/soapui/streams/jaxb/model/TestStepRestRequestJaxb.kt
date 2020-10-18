@@ -16,12 +16,15 @@ class TestStepRestRequestJaxb(
     private val config: ConfigRestRequestStepElement = element.config as ConfigRestRequestStepElement
 
 
-    override val baseService: SuuRestService
+    override val baseService: RestServiceJaxb
         get() = project.getRestService(config.service ?: "")!!
+
     override val baseResources: List<SuuRestResource>
-        get() = TODO("Not yet implemented")
+        get() = baseService.getResourceByPath(config.resourcePath ?: "")?.getResourcePath().orEmpty()
+
     override val baseMethod: SuuRestMethod
-        get() = TODO("Not yet implemented")
+        get() = baseService.getResourceByPath(config.resourcePath ?: "")?.getMethod(config.methodName ?: "")!!
+
     override var requestPath: SuuTestStepRestRequest.RequestPath
         get() = TODO("Not yet implemented")
         set(value) {}

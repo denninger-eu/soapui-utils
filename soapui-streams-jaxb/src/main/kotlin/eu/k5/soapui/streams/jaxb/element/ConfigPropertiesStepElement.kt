@@ -6,8 +6,8 @@ import javax.xml.bind.annotation.XmlElement
 import javax.xml.bind.annotation.XmlType
 
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = "PropertyTransfersStep", namespace = NAMESPACE)
-class ConfigPropertyTransferStepElement : ConfigElement() {
-
-
+@XmlType(name = "PropertiesStep", namespace = NAMESPACE)
+class ConfigPropertiesStepElement : ConfigElement() {
+    @XmlElement(name = "properties", namespace = NAMESPACE)
+    var properties: PropertiesElement? = null
 }

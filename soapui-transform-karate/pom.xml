@@ -33,6 +33,13 @@
         </dependency>
 
         <dependency>
+            <groupId>eu.k5.soapui</groupId>
+            <artifactId>soapui-streams-jaxb</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+
+        <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
         </dependency>

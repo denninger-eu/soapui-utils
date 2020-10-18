@@ -1,10 +1,7 @@
 package eu.k5.soapui.streams.jaxb.element
 
 import eu.k5.soapui.streams.model.rest.SuuRestMethod
-import javax.xml.bind.annotation.XmlAccessType
-import javax.xml.bind.annotation.XmlAccessorType
-import javax.xml.bind.annotation.XmlAttribute
-import javax.xml.bind.annotation.XmlElement
+import javax.xml.bind.annotation.*
 
 @XmlAccessorType(XmlAccessType.NONE)
 class RestMethodElement {
@@ -18,4 +15,8 @@ class RestMethodElement {
 
     @XmlElement(name = "request", namespace = NAMESPACE)
     val requests: List<RestRequestElement>? = ArrayList()
+
+    @XmlElementWrapper(name = "parameters", namespace = NAMESPACE)
+    @XmlElement(name = "parameter", namespace = NAMESPACE)
+    var parameters: List<ParameterElement>? = ArrayList()
 }

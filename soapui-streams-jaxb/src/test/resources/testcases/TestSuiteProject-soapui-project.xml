@@ -72,6 +72,39 @@
                     </con:request>
                 </con:method>
             </con:resource>
+            <con:resource name="childWithTemplate" path="{template}" id="a5b7bd2f-a288-46f2-a192-db2adaccf2a5">
+                <con:settings/>
+                <con:parameters>
+                    <con:parameter>
+                        <con:name>template</con:name>
+                        <con:value/>
+                        <con:style>TEMPLATE</con:style>
+                        <con:default/>
+                        <con:description xsi:nil="true"/>
+                    </con:parameter>
+                </con:parameters>
+                <con:method name="GET" id="d25d6d3f-e817-4e36-b10e-0ae9c1eea8a7" method="GET">
+                    <con:settings/>
+                    <con:parameters/>
+                    <con:request name="Get" id="56118d9c-abc3-4f41-b3f9-af1097ba3867" mediaType="application/json">
+                        <con:settings>
+                            <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+                        </con:settings>
+                        <con:endpoint>http://example.com</con:endpoint>
+                        <con:request/>
+                        <con:credentials>
+                            <con:authType>No Authorization</con:authType>
+                        </con:credentials>
+                        <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+                        <con:jmsPropertyConfig/>
+                        <con:parameters/>
+                        <con:parameterOrder>
+                            <con:entry>resourceParameterName</con:entry>
+                            <con:entry>template</con:entry>
+                        </con:parameterOrder>
+                    </con:request>
+                </con:method>
+            </con:resource>
             <con:method name="PostMethod" id="5d8b542e-b953-447e-8503-b30412bebf6e" method="POST">
                 <con:settings/>
                 <con:parameters/>
@@ -337,6 +370,28 @@
                 <con:settings/>
                 <con:config>
                     <script>groovyScriptValue</script>
+                </con:config>
+            </con:testStep>
+            <con:testStep type="restrequest" name="childWithTermplate" id="c39a2138-ff0f-44de-a538-e41cc3948daa">
+                <con:settings/>
+                <con:config service="RestService" resourcePath="/uri/{template}" methodName="GET"
+                            xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                    <con:restRequest name="childWithTermplate" id="56118d9c-abc3-4f41-b3f9-af1097ba3867"
+                                     mediaType="application/json">
+                        <con:settings/>
+                        <con:endpoint>http://example.com</con:endpoint>
+                        <con:request/>
+                        <con:credentials>
+                            <con:authType>No Authorization</con:authType>
+                        </con:credentials>
+                        <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+                        <con:jmsPropertyConfig/>
+                        <con:parameters/>
+                        <con:parameterOrder>
+                            <con:entry>resourceParameterName</con:entry>
+                            <con:entry>template</con:entry>
+                        </con:parameterOrder>
+                    </con:restRequest>
                 </con:config>
             </con:testStep>
             <con:testStep type="jdbc" name="jdbcRequest" id="46deef25-d144-41f5-9485-6cfc1d463d49">

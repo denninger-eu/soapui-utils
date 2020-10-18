@@ -2,6 +2,7 @@ package eu.k5.soapui.streams.jaxb.model
 
 import eu.k5.soapui.streams.jaxb.element.RestMethodElement
 import eu.k5.soapui.streams.model.rest.SuuRestMethod
+import eu.k5.soapui.streams.model.rest.SuuRestParameter
 import eu.k5.soapui.streams.model.rest.SuuRestParameters
 import eu.k5.soapui.streams.model.rest.SuuRestRequest
 
@@ -10,7 +11,7 @@ class RestMethodJaxb(
 ) : SuuRestMethod {
 
     override val parameters: SuuRestParameters
-        get() = TODO("Not yet implemented")
+        get() = ParametersJaxb(element.parameters.orEmpty(), SuuRestParameter.Location.METHOD)
     override var name: String
         get() = element.name ?: ""
         set(value) {}

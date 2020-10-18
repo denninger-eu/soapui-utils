@@ -5,12 +5,13 @@ import eu.k5.soapui.streams.model.rest.SuuRestParameter
 import eu.k5.soapui.streams.model.rest.SuuRestParameters
 
 class ParametersJaxb(
-    private val elements: List<ParameterElement>
+    private val elements: List<ParameterElement>,
+    private val location: SuuRestParameter.Location
 ) : SuuRestParameters {
 
 
     override val allParameters: List<SuuRestParameter>
-        get() = TODO("Not yet implemented")
+        get() = elements.map { ParameterJaxb(it, location) }
 
     override fun remove(name: String) {
         TODO("Not yet implemented")

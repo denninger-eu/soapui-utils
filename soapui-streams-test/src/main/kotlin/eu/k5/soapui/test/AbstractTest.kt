@@ -13,8 +13,8 @@ abstract class AbstractTest {
 
         fun loadTestcase(name: String): ProjectBox = loadBox(name, "testcases")
 
-
         fun loadFromBox(name: String): ProjectBox = loadBox(name, "examples")
+
 
 
         private fun loadBox(name: String, scope: String): ProjectBox {
@@ -24,7 +24,7 @@ abstract class AbstractTest {
             return ProjectBox(BoxImpl(path))
         }
 
-        private fun searchRoot(): Path {
+        fun searchRoot(): Path {
             var path: Path? = Paths.get(".").toAbsolutePath()
 
 

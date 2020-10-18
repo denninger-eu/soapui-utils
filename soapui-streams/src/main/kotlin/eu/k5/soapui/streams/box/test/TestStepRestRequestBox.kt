@@ -236,6 +236,8 @@ class TestStepRestRequestBox(
         override val methods: List<SuuRestMethod> by lazy { throw UnsupportedOperationException("Not supported in TestStep") }
         override val childResources: List<SuuRestResource>
             get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+        override val parent: SuuRestResource?
+            get() = parentResource
 
         override fun createMethod(name: String): SuuRestMethod =
             throw UnsupportedOperationException("Not supported in TestStep")

@@ -25,7 +25,7 @@ class RestServiceJaxb(
 
         }
     override val resources: List<SuuRestResource>
-        get() = element.resources?.map { RestResourceJaxb(it) }.orEmpty()
+        get() = element.resources?.map { RestResourceJaxb(it, null) }.orEmpty()
 
     override val endpoints: List<String>
         get() = TODO("Not yet implemented")

@@ -13,4 +13,16 @@ interface SuuRestService {
     fun getResource(name: String): SuuRestResource? = resources.firstOrNull { it.name == name }
 
     fun createResource(name: String, path: String): SuuRestResource
+
+
+    val allResources: List<SuuRestResource>
+        get() {
+            val result = ArrayList<SuuRestResource>(resources)
+            resources.forEach { result.addAll(it.allChildResources) }
+            return result
+        }
+
+
+    fun getResourceByPath(path: String): SuuRestResource? = allResources.firstOrNull { it.fullPath == path }
+
 }
