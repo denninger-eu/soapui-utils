@@ -24,7 +24,7 @@ class GeneratorModule() : Component(), SoapUiModule {
         val transform = generator.transform(event.suuTestCase)
 
         val scope = ArtifactsScope()
-        scope.model.artifacts.add(Artifact(transform.mainName, transform.main))
+        //scope.model.artifacts.add(Artifact(transform.mainName, transform.main))
         for (artifact in transform.artifacts) {
             scope.model.artifacts.add(Artifact(artifact.name, artifact.content))
         }

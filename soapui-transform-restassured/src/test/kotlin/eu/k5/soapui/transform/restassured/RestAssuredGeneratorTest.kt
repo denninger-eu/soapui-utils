@@ -15,7 +15,7 @@ class RestAssuredGeneratorTest : AbstractTest() {
         val transformer = RestAssuredGenerator()
         val result = transformer.transform(testCase)
 
-        ClasspathContentAssert.equals("restassured/properties.java", result.main)
+        ClasspathContentAssert.equals("restassured/properties.java", result.getMainDocument())
     }
 
     @Test
@@ -25,7 +25,7 @@ class RestAssuredGeneratorTest : AbstractTest() {
         val transformer = RestAssuredGenerator()
         val result = transformer.transform(testCase)
 
-        ClasspathContentAssert.equals("restassured/propertytransfers.java", result.main)
+        ClasspathContentAssert.equals("restassured/propertytransfers.java", result.getMainDocument())
     }
 
     @Test
@@ -35,7 +35,7 @@ class RestAssuredGeneratorTest : AbstractTest() {
         val transformer = RestAssuredGenerator()
         val result = transformer.transform(testCase)
 
-        ClasspathContentAssert.equals("restassured/getrestrequest.java", result.main)
+        ClasspathContentAssert.equals("restassured/getrestrequest.java", result.getMainDocument())
     }
 
     @Test
@@ -45,7 +45,7 @@ class RestAssuredGeneratorTest : AbstractTest() {
         val transformer = RestAssuredGenerator()
         val result = transformer.transform(testCase)
 
-        ClasspathContentAssert.equals("restassured/postrestrequest.java", result.main)
+        ClasspathContentAssert.equals("restassured/postrestrequest.java", result.getMainDocument())
     }
 
     @Test
@@ -55,6 +55,6 @@ class RestAssuredGeneratorTest : AbstractTest() {
         val transformer = RestAssuredGenerator()
         val result = transformer.transform(testCase)
 
-        ClasspathContentAssert.equals("restassured/script.java", result.main)
+        ClasspathContentAssert.equals("restassured/script.java", result.getMainDocument())
     }
 }

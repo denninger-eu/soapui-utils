@@ -1,19 +1,20 @@
 package eu.k5.soapui.streams.box.test
 
 import eu.k5.soapui.streams.box.Box
-import eu.k5.soapui.streams.box.BoxImpl
 import eu.k5.soapui.streams.box.BoxImpl.Companion.changed
+import eu.k5.soapui.streams.box.ProjectBox
 import eu.k5.soapui.streams.box.PropertiesBox
+import eu.k5.soapui.streams.model.SuProject
 import eu.k5.soapui.streams.model.SuuProperties
 import eu.k5.soapui.streams.model.test.SuuTestCase
 import eu.k5.soapui.streams.model.test.SuuTestSuite
 
 class TestSuiteBox(
-    private val box: Box
+    private val box: Box,
+    override val project: ProjectBox
 ) : SuuTestSuite {
 
     private val yaml: TestSuiteYaml = box.load(TestSuiteYaml::class.java)
-
 
     override var name: String
         get() = yaml.name ?: ""
@@ -64,14 +65,14 @@ class TestSuiteBox(
 
     companion object {
 
-        fun create(parent: Box, name: String): TestSuiteBox {
+        fun create(parent: Box, name: String, project: ProjectBox): TestSuiteBox {
 
             val box = parent.createFolder(name, TestSuiteBox.FILE_NAME)
             val testSuite = TestSuiteBox.TestSuiteYaml()
             testSuite.name = name
             testSuite.enabled = true
             box.write(TestSuiteBox.TestSuiteYaml::class.java, testSuite)
-            return TestSuiteBox(box)
+            return TestSuiteBox(box, project)
         }
 
         const val FILE_NAME = "testsuite.box.yaml"

@@ -23,7 +23,7 @@ class ArtifactsStarter : App(ArtifactStarterView::class) {
 
         val transform = generator.transform(testCase)
         val scope = ArtifactsScope()
-        scope.model.artifacts.add(Artifact("main", transform.main))
+        scope.model.artifacts.add(Artifact("main", transform.getMainDocument()))
         for (artifact in transform.artifacts) {
             scope.model.artifacts.add(Artifact(artifact.name, artifact.content))
         }

@@ -5,7 +5,9 @@ import com.beust.jcommander.Parameter
 import eu.k5.soapui.streams.jaxb.JaxbLoader
 import eu.k5.soapui.streams.model.test.SuuTestCase
 import eu.k5.soapui.streams.model.test.SuuTestSuite
+import eu.k5.soapui.transform.TransformationResult
 import eu.k5.soapui.transform.karate.KarateGenerator
+import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.nio.file.Paths
 
@@ -20,10 +22,10 @@ fun main(args: Array<String>) {
 
 class GenerateKarate {
 
-    @Parameter(names = ["input"], required = true)
+    @Parameter(names = ["-input"], required = true)
     var input: String? = null
 
-    @Parameter(names = ["target"], required = true)
+    @Parameter(names = ["-target"], required = true)
     var output: String? = null
 
     @Parameter(names = ["suiteFilter"])
@@ -45,7 +47,23 @@ class GenerateKarate {
 
     private fun generate(testCase: SuuTestCase) {
         val result = KarateGenerator().transform(testCase)
-        result.artifacts
+        println("Writing " + result.testSuite + ":" + result.testCase)
+        writeResult(result)
+    }
+
+    private fun writeResult(result: TransformationResult) {
+        val path = Paths.get(output).resolve(escapePath(result.testSuite)).resolve(escapePath(result.testCase))
+        Files.createDirectories(path)
+        for (artifact in result.artifacts) {
+            val artifactPath = path.resolve(artifact.name)
+            println("Writing ${artifactPath.toAbsolutePath()}")
+            Files.write(artifactPath, artifact.content.toByteArray(StandardCharsets.UTF_8))
+        }
+
+    }
+
+    private fun escapePath(path: String): String {
+        return path
     }
 
     private fun accept(suite: SuuTestSuite): Boolean {

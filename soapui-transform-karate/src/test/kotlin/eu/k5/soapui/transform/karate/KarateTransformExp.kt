@@ -17,7 +17,7 @@ class KarateTransformExp : AbstractTest() {
         val testCase = project.testSuites[0].testCases[0]
         val result = KarateGenerator().transform(testCase)
 
-        println(result.main)
+        println(result.getMainDocument())
     }
 
 

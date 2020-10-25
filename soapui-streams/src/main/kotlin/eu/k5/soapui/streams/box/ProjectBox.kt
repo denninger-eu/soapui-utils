@@ -53,13 +53,13 @@ class ProjectBox(
     }
 
     override val testSuites: MutableList<TestSuiteBox> by lazy {
-        box.findSubFolderBox { it.fileName.toString() == TestSuiteBox.FILE_NAME }.map { TestSuiteBox(it) }
+        box.findSubFolderBox { it.fileName.toString() == TestSuiteBox.FILE_NAME }.map { TestSuiteBox(it, this) }
             .toMutableList()
     }
 
     override fun createTestSuite(name: String): SuuTestSuite {
         val init = testSuites
-        val newTestSuite = TestSuiteBox.create(box, name)
+        val newTestSuite = TestSuiteBox.create(box, name, this)
         init.add(newTestSuite)
         return newTestSuite
     }

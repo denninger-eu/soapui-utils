@@ -15,7 +15,31 @@ class KarateGenerator : Generator {
 
         environment.write(scenario)
 
-        return environment.getResult()
+        return getResult(testCase, environment)
     }
 
+
+    private fun getResult(testCase: SuuTestCase, environment: Environment): TransformationResult {
+
+        val result =
+            TransformationResult(testCase.suite.project.name, testCase.suite.name, testCase.name, environment.mainName)
+        result.artifacts.add(
+            TransformationResult.Artifact(
+                environment.mainName,
+                TransformationResult.ArtifactType.KARATE,
+                environment.mainDocument ?: ""
+            )
+        )
+        for (artifact in environment.artifacts.values) {
+            result.artifacts.add(
+                TransformationResult.Artifact(
+                    artifact.name,
+                    TransformationResult.ArtifactType.TEXT,
+                    artifact.content
+                )
+            )
+        }
+        return result
+
+    }
 }

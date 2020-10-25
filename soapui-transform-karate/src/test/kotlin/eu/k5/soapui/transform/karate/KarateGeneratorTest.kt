@@ -14,7 +14,7 @@ class KarateGeneratorTest {
         val transformer = KarateGenerator()
         val result = transformer.transform(testCase)
 
-        ClasspathContentAssert.equals("karate/properties.feature", result.main)
+        ClasspathContentAssert.equals("karate/properties.feature", result.getMainDocument())
     }
 
     @Test
@@ -25,7 +25,7 @@ class KarateGeneratorTest {
         val transformer = KarateGenerator()
         val result = transformer.transform(testCase)
 
-        ClasspathContentAssert.equals("karate/propertytransfers.feature", result.main)
+        ClasspathContentAssert.equals("karate/propertytransfers.feature", result.getMainDocument())
     }
 
     @Test
@@ -36,7 +36,7 @@ class KarateGeneratorTest {
         val transformer = KarateGenerator()
         val result = transformer.transform(testCase)
 
-        ClasspathContentAssert.equals("karate/getrestrequest.feature", result.main)
+        ClasspathContentAssert.equals("karate/getrestrequest.feature", result.getMainDocument())
     }
 
 
@@ -48,7 +48,7 @@ class KarateGeneratorTest {
         val transformer = KarateGenerator()
         val result = transformer.transform(testCase)
 
-        ClasspathContentAssert.equals("karate/postrestrequest.feature", result.main)
+        ClasspathContentAssert.equals("karate/postrestrequest.feature", result.getMainDocument())
     }
 
     @Test
@@ -59,6 +59,6 @@ class KarateGeneratorTest {
         val transformer = KarateGenerator()
         val result = transformer.transform(testCase)
 
-        ClasspathContentAssert.equals("karate/script.feature", result.main)
+        ClasspathContentAssert.equals("karate/script.feature", result.getMainDocument())
     }
 }

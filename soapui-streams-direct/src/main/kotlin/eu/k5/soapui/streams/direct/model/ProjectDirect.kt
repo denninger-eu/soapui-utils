@@ -63,7 +63,7 @@ class ProjectDirect(
         val wsdl =
             "<definitions name=\"Minimal\"  xmlns:soap=\"http://schemas.xmlsoap.org/wsdl/soap/\"  xmlns=\"http://schemas.xmlsoap.org/wsdl/\"/>\n"
         val tempFile = Files.createTempFile("minimal", ".wsdl")
-        Files.write(tempFile,wsdl.toByteArray(StandardCharsets.UTF_8))
+        Files.write(tempFile, wsdl.toByteArray(StandardCharsets.UTF_8))
         newWsdlInterface.setDefinition(tempFile.toAbsolutePath().toString(), true)
         newWsdlInterface.bindingName = QName("http://example.com", "Minimal")
         newWsdlInterface.soapVersion = SoapVersion.Soap12
@@ -73,13 +73,13 @@ class ProjectDirect(
     override val testSuites: List<TestSuiteDirect>
         get() = wsdlProject.testSuiteList.filterIsInstance<WsdlTestSuite>().map {
             TestSuiteDirect(
-                it
+                it, this
             )
         }
 
     override fun createTestSuite(name: String): SuuTestSuite {
         val newTestSuite = wsdlProject.addNewTestSuite(name)
-        return TestSuiteDirect(newTestSuite)
+        return TestSuiteDirect(newTestSuite, this)
     }
 
 

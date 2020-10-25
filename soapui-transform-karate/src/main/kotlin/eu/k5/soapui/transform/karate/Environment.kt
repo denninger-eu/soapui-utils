@@ -1,5 +1,6 @@
 package eu.k5.soapui.transform.karate
 
+import eu.k5.soapui.streams.model.test.SuuTestCase
 import eu.k5.soapui.transform.ModelWriter
 import eu.k5.soapui.transform.TransformationResult
 import eu.k5.soapui.transform.karate.model.Scenario
@@ -9,11 +10,11 @@ import java.io.StringWriter
 class Environment {
 
     private var featureVariable: Int = 0
-    private val artifacts = HashMap<String, Artifact>()
+    val artifacts = HashMap<String, Artifact>()
     private val steps = HashMap<String, VariableLiteral>()
 
-    private var mainDocument: String? = null
-    private var mainName: String = "main.feature"
+    var mainDocument: String? = null
+    var mainName: String = "main.feature"
 
     val ctx: VariableLiteral = VariableLiteral("ctx")
 
@@ -41,13 +42,6 @@ class Environment {
         return artifact
     }
 
-    fun getResult(): TransformationResult {
-        val result = TransformationResult(mainDocument ?: "", mainName)
-        for (artifact in artifacts) {
-            result.artifacts.add(TransformationResult.Artifact(artifact.value.name, artifact.value.content))
-        }
-        return result
-    }
 
     fun write(scenario: Scenario) {
         val writer = ModelWriter()

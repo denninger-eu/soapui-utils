@@ -2,13 +2,15 @@ package eu.k5.soapui.streams.direct.model.test
 
 import com.eviware.soapui.impl.wsdl.WsdlTestSuite
 import com.eviware.soapui.impl.wsdl.testcase.WsdlTestCase
+import eu.k5.soapui.streams.direct.model.ProjectDirect
 import eu.k5.soapui.streams.direct.model.PropertiesDirect
 import eu.k5.soapui.streams.model.SuuProperties
 import eu.k5.soapui.streams.model.test.SuuTestCase
 import eu.k5.soapui.streams.model.test.SuuTestSuite
 
 class TestSuiteDirect(
-    private val testSuite: WsdlTestSuite
+    private val testSuite: WsdlTestSuite,
+    override val project: ProjectDirect
 ) : SuuTestSuite {
 
     override var name: String
