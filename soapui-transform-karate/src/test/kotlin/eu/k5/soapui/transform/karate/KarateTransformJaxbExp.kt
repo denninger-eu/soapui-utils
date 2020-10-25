@@ -22,7 +22,7 @@ class KarateTransformJaxbExp : AbstractTest() {
             .resolve("RestResources-soapui-project.xml")
 
 
-        val project = Files.newInputStream(runnable).use { JaxbLoader().jaxb(it) }
+        val project = Files.newInputStream(runnable).use { JaxbLoader().load(it) }
         val testCase = project.testSuites[0].testCases[0]
         val result = KarateGenerator().transform(testCase)
 

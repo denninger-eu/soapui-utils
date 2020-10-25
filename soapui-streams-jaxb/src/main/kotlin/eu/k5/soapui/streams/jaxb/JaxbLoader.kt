@@ -1,6 +1,6 @@
 package eu.k5.soapui.streams.jaxb
 
-import eu.k5.soapui.streams.Loader
+import eu.k5.soapui.streams.SuLoader
 import eu.k5.soapui.streams.jaxb.element.ProjectElement
 import eu.k5.soapui.streams.jaxb.model.ProjectJaxb
 import eu.k5.soapui.streams.model.SuListener
@@ -9,9 +9,13 @@ import java.io.InputStream
 import java.io.Reader
 import javax.xml.bind.JAXBContext
 
-class JaxbLoader : Loader {
+class JaxbLoader : SuLoader {
 
-    fun jaxb(inputStream: InputStream): ProjectJaxb {
+    override fun getName(): String = "jaxb"
+
+
+
+    override fun load(inputStream: InputStream): ProjectJaxb {
 
         val result: Any? = context.createUnmarshaller().unmarshal(inputStream)
         if (result is ProjectElement) {
@@ -20,21 +24,6 @@ class JaxbLoader : Loader {
         throw IllegalArgumentException("Unsupported type: " + result?.javaClass)
     }
 
-    override fun bind(inputStream: InputStream): SuProject {
-        TODO("Not yet implemented")
-    }
-
-    override fun load(reader: Reader) {
-        TODO("Not yet implemented")
-    }
-
-    override fun load(inputStream: InputStream) {
-        TODO("Not yet implemented")
-    }
-
-    override fun stream(inputStream: InputStream, handler: SuListener) {
-        TODO("Not yet implemented")
-    }
 
     companion object {
 

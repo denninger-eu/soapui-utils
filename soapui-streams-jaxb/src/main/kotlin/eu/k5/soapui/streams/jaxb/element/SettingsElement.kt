@@ -12,7 +12,6 @@ class SettingsElement {
 
 
     fun entries(): List<FragmentEntry> {
-        println(setting)
         val fragment = fragmentContext.createUnmarshaller().unmarshal(StringReader(setting))
         if (fragment is XmlFragment) {
             return fragment.entries ?: emptyList()
@@ -47,7 +46,7 @@ class SettingsElement {
 
     companion object {
 
-        val fragmentContext = JAXBContext.newInstance(XmlFragment::class.java, FragmentEntry::class.java)
+        private val fragmentContext = JAXBContext.newInstance(XmlFragment::class.java, FragmentEntry::class.java)
 
     }
 }

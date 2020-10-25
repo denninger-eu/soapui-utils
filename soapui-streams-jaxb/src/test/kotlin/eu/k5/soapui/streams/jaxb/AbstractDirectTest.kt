@@ -28,7 +28,7 @@ abstract class AbstractJaxbTest {
 
 
         fun testProject(name: String): ProjectJaxb {
-            return openTestProjectInputStream(name).use { JaxbLoader().jaxb(it) }
+            return openTestProjectInputStream(name).use { JaxbLoader().load(it) }
         }
 
         fun openTestProjectInputStream(name: String): InputStream {

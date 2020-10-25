@@ -22,7 +22,7 @@ class DirectLoaderTest {
     fun test() {
 
         val inputStream = Files.newInputStream(Paths.get("src", "test", "resources", "restproject-soapui-project.xml"))
-        DirectLoader().bind(inputStream)
+      // DirectLoader().bind(inputStream)
 
 
     }
@@ -31,7 +31,7 @@ class DirectLoaderTest {
     fun `sync RestService`() {
 
         getTestProject("RestServiceOnly").use {
-            val source = DirectLoader().bind(it)
+           // val source = DirectLoader().bind(it)
 
 /*            val listener = SyncListener(source)
             target.apply(listener)
@@ -142,7 +142,7 @@ class DirectLoaderTest {
     @Disabled("Remove usage of Project")
     fun `sync ChildResource`() {
         getTestProject("RestServiceWithChildResource").use {
-            val source = DirectLoader().bind(it)
+            val source = DirectLoader().load(it)
             val target = Project()
 
             val listener = SyncListener(source)
@@ -167,7 +167,7 @@ class DirectLoaderTest {
     @Disabled("Remove usage of Project")
     fun `sync Method`() {
         getTestProject("RestServiceWithMethodOnly").use {
-            val source = DirectLoader().bind(it)
+            val source = DirectLoader().load(it)
             val target = Project()
 
             val listener = SyncListener(source)
@@ -193,7 +193,7 @@ class DirectLoaderTest {
     @Disabled("Remove usage of Project")
     fun `sync Request`() {
         getTestProject("RestServiceWithRequest").use {
-            val source = DirectLoader().bind(it)
+            val source = DirectLoader().load(it)
             val target = Project()
 
             val listener = SyncListener(source)
@@ -261,7 +261,7 @@ class DirectLoaderTest {
     companion object {
 
         fun testProject(name: String): SuProject {
-            return getTestProject(name).use { DirectLoader().bind(it) }
+            return getTestProject(name).use { DirectLoader().load(it) }
         }
 
         fun getTestProject(name: String): InputStream {

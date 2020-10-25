@@ -1,11 +1,13 @@
 package eu.k5.soapui.fx
 
 import eu.k5.soapui.streams.direct.DirectLoader
+import eu.k5.soapui.streams.jaxb.JaxbLoader
 import eu.k5.soapui.streams.model.SuProject
 import eu.k5.soapui.transform.client.GenerateTestcaseEvent
 import eu.k5.tolerantxml.client.repair.CreateTolerantConverter
 import tornadofx.Controller
 import java.io.File
+import java.io.InputStream
 import java.nio.file.Files
 import java.util.concurrent.Executors
 import java.util.prefs.Preferences
@@ -52,7 +54,7 @@ class ProjectController : Controller() {
         try {
             project.state.value = ProjectModel.State.LOADING
 
-            val suProject: SuProject = Files.newInputStream(project.path.value).use { DirectLoader().direct(it) }
+            val suProject: SuProject = Files.newInputStream(project.path.value).use { load(it) }
             project.name.set(suProject.name)
             project.suuProject.value = suProject
             project.state.value = ProjectModel.State.LOADED
@@ -61,6 +63,11 @@ class ProjectController : Controller() {
             exception.printStackTrace()
             project.state.value = ProjectModel.State.FAILED
         }
+    }
+
+    private fun load(inputStream: InputStream): SuProject {
+        return JaxbLoader().load(inputStream)
+        //return DirectLoader().direct(inputStream)
     }
 
     fun generateKarate() {

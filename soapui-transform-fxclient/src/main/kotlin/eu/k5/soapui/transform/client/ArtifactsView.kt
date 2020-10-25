@@ -21,7 +21,6 @@ class ArtifactsView(
                         column("Type", Artifact::typeProperty)
                         smartResize()
 
-
                         model.selected.rebindOnChange(this) { selectedArtifact ->
                             item = selectedArtifact ?: Artifact("", "")
                         }
@@ -36,11 +35,9 @@ class ArtifactsView(
             bottom {
                 buttonbar {
                     button("Save as zip").action {
-
                         controller.saveAsZip()
                     }
                     button("Save in folder ").action {
-
                         val initDirectory = controller.getOpenSaveInFolderFolder()
 
                         var directory = chooseDirectory(initialDirectory = initDirectory)

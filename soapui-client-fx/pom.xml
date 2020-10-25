@@ -98,15 +98,14 @@
         <dependency>
             <artifactId>soapui-streams-direct</artifactId>
             <groupId>eu.k5.soapui</groupId>
-            <!--
-            <exclusions>
-                <exclusion>
-                    <groupId>com.smartbear.soapui</groupId>
-                    <artifactId>soapui</artifactId>
-                </exclusion>
-            </exclusions>-->
+
         </dependency>
 
+        <dependency>
+            <artifactId>soapui-streams-jaxb</artifactId>
+            <groupId>eu.k5.soapui</groupId>
+
+        </dependency>
         <dependency>
             <artifactId>soapui-streams</artifactId>
             <groupId>eu.k5.soapui</groupId>
@@ -173,6 +172,11 @@
             <artifactId>junit</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.beust</groupId>
+            <artifactId>jcommander</artifactId>
+            <version>1.78</version>
+        </dependency>
 
     </dependencies>
 

@@ -19,6 +19,6 @@ open class ConfigElement {
 
 
     fun getValue(key: String): String? {
-        return options?.filter { it.localName == key }?.firstOrNull()?.textContent
+        return options?.firstOrNull { it.localName == key }?.textContent
     }
 }

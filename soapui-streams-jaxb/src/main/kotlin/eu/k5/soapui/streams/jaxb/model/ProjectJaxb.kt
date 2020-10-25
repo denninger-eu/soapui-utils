@@ -38,7 +38,7 @@ class ProjectJaxb(
     override fun createTestSuite(name: String): SuuTestSuite = throw UnsupportedOperationException()
 
     override val wsdlServices: List<SuuWsdlService>
-        get() = TODO("Not yet implemented")
+        get() = emptyList()
 
     override fun createWsdlService(name: String): SuuWsdlService = throw UnsupportedOperationException()
 

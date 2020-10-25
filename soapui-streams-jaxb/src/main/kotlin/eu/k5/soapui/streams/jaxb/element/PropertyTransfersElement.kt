@@ -24,7 +24,7 @@ class PropertyTransfersElement {
     @XmlElement(name = "sourcePath", namespace = NAMESPACE)
     var sourcePath: String? = null
 
-    @XmlElement(name = "sourceTransferType", namespace = NAMESPACE)
+    @XmlElement(name = "type", namespace = NAMESPACE)
     var sourceTransferType: String? = null
 
 
