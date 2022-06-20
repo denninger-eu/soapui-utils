@@ -27,7 +27,7 @@
 
         <junit.version>5.6.2</junit.version>
 
-        <kotlin.version>1.4.0</kotlin.version>
+        <kotlin.version>1.6.0</kotlin.version>
         <kotlin.compiler.jvmTarget>1.8</kotlin.compiler.jvmTarget>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
